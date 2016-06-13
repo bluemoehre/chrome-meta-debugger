@@ -1,4 +1,4 @@
-Icons by Google Inc.
+SVG icons by Google Inc.
 https://design.google.com/icons/
 Licensed under the CC-BY license
 https://creativecommons.org/licenses/by/4.0/
