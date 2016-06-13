@@ -102,7 +102,7 @@
                         valueLink: headTags[i].href,
                         attributes: filterAttributes(headTags[i].attributes, [attributeMap[j].keyAttribute, attributeMap[j].valueAttribute])
                     };
-                    if (attributeMap[j].valueAttribute) {
+                    if (attributeMap[j].valueAttribute && attributeMap[j].valueAttribute in headTags[i].attributes) {
                         item.value = headTags[i].attributes[attributeMap[j].valueAttribute].value;
                     } else {
                         item.value = headTags[i].textContent;
