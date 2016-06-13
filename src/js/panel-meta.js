@@ -31,6 +31,11 @@ var filterInput;
 var filterClearButton;
 
 /**
+ * @type {HTMLButtonElement}
+ */
+var filterReloadButton;
+
+/**
  * @type {HTMLInputElement}
  */
 var filterFlagSearchKeys;
@@ -263,6 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
     metaListItemAttributeTemplate = getTemplate('templateMetaItemAttribute');
     filterInput = filterForm.querySelector('input[name="filterString"]');
     filterClearButton = filterForm.querySelector('button[name="clearFilter"]');
+    filterReloadButton = filterForm.querySelector('button[name="reload"]');
     filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]');
     filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]');
 
@@ -274,12 +280,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     filterInput.addEventListener('input', refreshMetaList);
+    filterFlagSearchKeys.addEventListener('change', refreshMetaList);
+    filterFlagSearchValues.addEventListener('change', refreshMetaList);
     filterClearButton.addEventListener('click', function () {
         filterInput.value = '';
         refreshMetaList();
     });
-    filterFlagSearchKeys.addEventListener('change', refreshMetaList);
-    filterFlagSearchValues.addEventListener('change', refreshMetaList);
+    filterReloadButton.addEventListener('click', function () {
+        port.postMessage({
+            action: 'getPageMeta',
+            tabId: chrome.devtools.inspectedWindow.tabId
+        });
+    });
 
     metaList.addEventListener('click', function (evt) {
         var link = evt.target.closest('a');

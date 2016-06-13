@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.4
+---------
+- added reload button
+- fixed crash of debugger if a meta tag is missing its value attribute
+
 v0.3
 ---------
 - added filter toggles
