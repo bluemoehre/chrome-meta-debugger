@@ -314,8 +314,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // automatically focus filter when user starts typing
-document.addEventListener('keydown', function () {
-    filterInput && filterInput.focus();
+// but not when Command (OSX) / CTRL (Win) is pressed to keep copy functionality
+document.addEventListener('keydown', function (evt) {
+    !evt.ctrlKey && !evt.metaKey && filterInput && filterInput.focus();
 });
 
 
