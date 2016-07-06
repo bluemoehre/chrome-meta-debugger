@@ -287,6 +287,10 @@ document.addEventListener('DOMContentLoaded', function () {
         refreshMetaList();
     });
     filterReloadButton.addEventListener('click', function () {
+        filterReloadButton.classList.add('_animate');
+        setTimeout(function () {
+            filterReloadButton.classList.remove('_animate');
+        }, 1000);
         port.postMessage({
             action: 'getPageMeta',
             tabId: chrome.devtools.inspectedWindow.tabId
@@ -307,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 
 // automatically focus filter when user starts typing
 document.addEventListener('keydown', function () {

@@ -1,0 +1,49 @@
+@import "variables.less";
+
+
+body {
+  margin: 0;
+  padding: 10px 10px 0 10px;
+  min-width: 240px;
+  font: @defaultFont;
+  color: #666;
+  background: #fefefe;
+  overflow-x: hidden;
+}
+
+header {
+  color: @brandColor;
+}
+
+header,
+p {
+  margin: 0 0 1em;
+}
+
+h1 {
+  margin: -10px -10px 3px -10px;
+  padding: 10px;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: normal;
+  background: @brandColor;
+
+  span {
+    font-weight: lighter;
+  }
+}
+
+a,
+a:active,
+a:focus {
+  color: @brandColor;
+}
+
+kbd {
+  display: inline-block;
+  padding: 0px 3px;
+  border: 1px solid #ddd;
+  background: #eee;
+  white-space: nowrap;
+  font-size: 0.9em;
+}
