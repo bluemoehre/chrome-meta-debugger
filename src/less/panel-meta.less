@@ -178,8 +178,26 @@ mark {
 #meta {
   width: 100%;
 
-  tr:nth-child(2n+1) td {
-    background-color: #f5f5f5;
+  tr {
+    &:nth-child(odd) {
+      td {
+        background-color: @oddItemBackgroundColor;
+      }
+
+      &._changed td {
+        animation: 1s oddItemChanged;
+      }
+    }
+
+    &:nth-child(even) {
+      td {
+        background-color: @evenItemBackgroundColor;
+      }
+
+      &._changed td {
+        animation: 1s evenItemChanged;
+      }
+    }
   }
 
   th,
@@ -191,7 +209,7 @@ mark {
   }
   tr:hover th,
   tr:hover td {
-    background-color: #e6f0f8;
+    background-color: @itemHoverBackgroundColor;
   }
 
   th {
@@ -292,6 +310,25 @@ mark {
   }
   tr:hover .actions {
     opacity: 1;
+  }
+}
+
+
+@keyframes oddItemChanged {
+  0% {
+    background-color: @changedItemBackgroundColor;
+  }
+  100% {
+    background-color: @oddItemBackgroundColor;
+  }
+}
+
+@keyframes evenItemChanged {
+  0% {
+    background-color: @changedItemBackgroundColor;
+  }
+  100% {
+    background-color: @evenItemBackgroundColor;
   }
 }
 
