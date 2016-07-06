@@ -1,0 +1,299 @@
+@import "variables.less";
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding-top: 34px;
+  color: @textColor;
+  font-size: @defaultFontSize;
+  line-height: @defaultLineHeight;
+  -webkit-user-select: none;
+  overflow-y: scroll;
+
+  // if message is displayed
+  &[data-message] {
+
+    &::before {
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      width: 100%;
+      color: @infoColor;
+      content: attr(data-message);
+    }
+
+    #meta {
+      display: none;
+    }
+  }
+}
+
+mark {
+  background-color: fade(@markColor, 70%);
+}
+
+#filters {
+  @inputVerticalPadding: 2px;
+  @clearButtonSize: 22px;
+
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 4px 5px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px fade(#000000, 50%);
+  z-index: 100;
+
+  input[type="text"] {
+    padding: @inputVerticalPadding @clearButtonSize @inputVerticalPadding 5px;
+    min-width: 252px;
+    width: ~'calc(15% - 6px)';
+    height: 24px;
+    font-size: @defaultFontSize;
+    line-height: 16px;
+    vertical-align: middle;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid @componentBorderColor;
+    box-sizing: border-box;
+
+    &:invalid ~ button[name="clearFilter"] {
+      display: none;
+    }
+  }
+
+  button[name="clearFilter"] {
+    margin-left: -@clearButtonSize;
+    padding: 4px; // scale down icon
+    width: @clearButtonSize;
+    height: @clearButtonSize;
+    vertical-align: middle;
+    background: none;
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    outline: none;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  button[name="reload"] {
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+
+    svg {
+      height: 16px;
+      width: 16px;
+      vertical-align: -4px;
+      fill: @controlColor;
+    }
+
+    &:hover svg {
+      fill: @controlHoverColor;
+    }
+
+    &._animate {
+      transition: transform 1s;
+      transform: rotate(360deg);
+    }
+  }
+
+  .actions {
+    position: relative;
+    margin-left: auto;
+    padding: 0 0 0 10px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      bottom: 2px;
+      border-left: 1px solid @componentBorderColor;
+    }
+  }
+
+  .flag {
+    margin-left: 2px;
+    white-space: nowrap;
+
+    &:first-of-type {
+      margin-left: 4px; // more distance to input
+    }
+
+    input {
+      display: none;
+      width: 12px;
+    }
+
+    span {
+      padding: 3px 7px 3px 5px;
+      display: inline-block;
+      color: @controlColor;
+      vertical-align: middle;
+      height: 24px;
+      line-height: 16px;
+      box-sizing: border-box;
+      cursor: pointer;
+
+      &::before {
+        margin-right: 3px;
+        content: '⚪ ';
+        font-size: 6px;
+        vertical-align: 2px;
+      }
+    }
+    &:hover span {
+      color: @controlHoverColor;
+    }
+    input:checked + span {
+      color: #248BB7;
+      text-shadow: 0 0 2px rgba(0,112,255, 0.3);
+
+      &::before {
+        content: '⚫ ';
+      }
+    }
+  }
+
+}
+
+#meta {
+  width: 100%;
+
+  tr:nth-child(2n+1) td {
+    background-color: #f5f5f5;
+  }
+
+  th,
+  td {
+    position: relative;
+    padding: 2px 10px;
+    text-align: left;
+    border-bottom: 1px solid transparent;
+  }
+  tr:hover th,
+  tr:hover td {
+    background-color: #e6f0f8;
+  }
+
+  th {
+    padding-right: 24px; /* space for actions */
+    background-color: #eeeeee;
+    width: 15%;
+    min-width: 220px; /* see input width */
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+
+  td {
+    background-color: #ffffff;
+  }
+
+  a {
+    text-decoration: none;
+    color: @brandColor;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .tag {
+    display: inline-block;
+    margin: 0 5px 0 -3px;
+    padding: 0px 5px 0px;
+    width: 30px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 15px;
+    color: #ffffff;
+    background-color: #666666;
+    border-radius: 3px;
+    text-transform: uppercase;
+
+    &.-title {
+      background-color: #FF4C4C;
+    }
+
+    &.-base {
+      background-color: #FF9D4C;
+    }
+
+    &.-meta {
+      background-color: #1DBB1D;
+    }
+
+    &.-link {
+      background-color: #3682A3;
+    }
+  }
+
+  .attributes {
+    margin-left: 0.5em;
+    color: #777777;
+    font-weight: normal;
+  }
+
+  .attribute {
+    margin: 0 0.5em;
+    white-space: nowrap;
+
+    .name {
+      color: @infoColor;
+
+      &::after {
+        content: ':';
+      }
+    }
+  }
+
+  .key,
+  .name,
+  .value {
+    -webkit-user-select: text;
+  }
+
+  .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1px;
+    opacity: 0;
+
+    img {
+      margin-top: 1px;
+      width: 18px;
+      height: 18px;
+      opacity: 0.2;
+    }
+
+    a:hover img {
+      opacity: 0.5;
+    }
+  }
+  tr:hover .actions {
+    opacity: 1;
+  }
+}
+
+
