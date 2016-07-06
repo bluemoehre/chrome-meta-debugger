@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.5
+---------
+- fixed a bug which prevented to copy via keyboard
+- added animation to the reload button to provide some feedback to the user
+- some minor optical adjustments
+
 v0.4
 ---------
 - added reload button
