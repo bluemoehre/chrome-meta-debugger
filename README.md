@@ -33,6 +33,7 @@ How to use
 Future Plans
 ------------
 
+- highlight basic errors (e.g. multiple charset definitions)
 - highlight real time changes within the list
 - provide a history of all changes made after the initial page load to track JavaScript behaviors
 
