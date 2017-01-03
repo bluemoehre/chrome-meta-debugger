@@ -37,8 +37,10 @@ mark {
 }
 
 #filters {
-  @inputVerticalPadding: 2px;
-  @clearButtonSize: 22px;
+  @inputPadding: 2px;
+  @inputHeight: 24px;
+  @filterIconSize: 16px;
+  @clearButtonSize: @inputHeight - @inputPadding * 2;
 
   display: flex;
   align-items: center;
@@ -52,40 +54,148 @@ mark {
   box-shadow: 0 0 5px fade(#000000, 50%);
   z-index: 100;
 
-  input[type="text"] {
-    padding: @inputVerticalPadding @clearButtonSize @inputVerticalPadding 5px;
-    min-width: 252px;
-    width: ~'calc(15% - 6px)';
-    height: 24px;
-    font-size: @defaultFontSize;
-    line-height: 16px;
-    vertical-align: middle;
-    outline: none;
-    border: none;
-    border-bottom: 1px solid @componentBorderColor;
-    box-sizing: border-box;
+  .search {
+    position: relative;
 
-    &:invalid ~ button[name="clearFilter"] {
-      display: none;
+    svg {
+      position: absolute;
+      left: @inputPadding;
+      top: ~ 'calc(@{inputHeight} / 2 - @{filterIconSize} / 2)';
+      width: @filterIconSize;
+      height: @filterIconSize;
+      fill: @controlColor;
+    }
+
+    input[type="text"] {
+      padding:
+          @inputPadding
+          @clearButtonSize + @inputPadding
+          @inputPadding
+          @filterIconSize + @inputPadding * 2
+      ;
+      min-width: 252px;
+      width: ~'calc(15% - 6px)';
+      height: @inputHeight;
+      font-size: @defaultFontSize;
+      line-height: 16px;
+      vertical-align: middle;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid @componentBorderColor;
+      box-sizing: border-box;
+
+      &:valid {
+        & ~ svg {
+          fill: @controlActiveColor;
+          filter: drop-shadow(0 0 2px rgba(0,112,255, 0.3));
+        }
+      }
+
+      &:invalid {
+        & ~ button[name="clearFilter"] {
+          display: none;
+        }
+      }
+    }
+
+    button[name="clearFilter"] {
+      position: absolute;
+      top: @inputPadding;
+      right: @inputPadding;
+      padding: 4px; // scale down icon
+      width: @clearButtonSize;
+      height: @clearButtonSize;
+      background: none;
+      border: none;
+      box-sizing: border-box;
+      cursor: pointer;
+      outline: none;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
-  button[name="clearFilter"] {
-    margin-left: -@clearButtonSize;
-    padding: 4px; // scale down icon
-    width: @clearButtonSize;
-    height: @clearButtonSize;
-    vertical-align: middle;
-    background: none;
-    border: none;
-    box-sizing: border-box;
-    cursor: pointer;
-    outline: none;
+  .actions {
+    position: relative;
+    margin-left: auto;
+    padding: 0 0 0 10px;
 
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      bottom: 2px;
+      border-left: 1px solid @componentBorderColor;
+    }
+  }
+
+  .flag {
+    display: inline-flex;
+    margin-left: 2px;
+    padding: 0 6px;
+    height: @inputHeight;
+    color: @controlColor;
+    fill: @controlColor;
+    line-height: 16px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    &:first-of-type {
+      margin-left: 4px; // more distance to input
+    }
+
+    input {
+      display: none;
+
+      &:not(:checked) ~ svg {
+        .checked {
+          fill: none;
+        }
+      }
+
+      &:checked {
+        & ~ svg {
+          fill: @controlActiveColor;
+          filter: drop-shadow(0 0 2px rgba(0,112,255, 0.3));
+
+          .unchecked {
+            fill: none;
+          }
+        }
+
+        & ~ span {
+          color: @controlActiveColor;
+          text-shadow: 0 0 2px rgba(0,112,255, 0.3);
+        }
+      }
+
+    }
+
+    svg {
+      margin-right: 6px;
+      width: 10px;
+      height: 10px;
+      padding: 7px 0;
+    }
+
+    span {
+      padding: 3px 0;
+    }
+
+    &:hover {
+      svg {
+        fill: @controlHoverColor;
+      }
+
+      span {
+        color: @controlHoverColor;
+      }
     }
   }
 
@@ -115,64 +225,6 @@ mark {
     }
   }
 
-  .actions {
-    position: relative;
-    margin-left: auto;
-    padding: 0 0 0 10px;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 5px;
-      bottom: 2px;
-      border-left: 1px solid @componentBorderColor;
-    }
-  }
-
-  .flag {
-    margin-left: 2px;
-    white-space: nowrap;
-
-    &:first-of-type {
-      margin-left: 4px; // more distance to input
-    }
-
-    input {
-      display: none;
-      width: 12px;
-    }
-
-    span {
-      padding: 3px 7px 3px 5px;
-      display: inline-block;
-      color: @controlColor;
-      vertical-align: middle;
-      height: 24px;
-      line-height: 16px;
-      box-sizing: border-box;
-      cursor: pointer;
-
-      &::before {
-        margin-right: 3px;
-        content: '⚪ ';
-        font-size: 6px;
-        vertical-align: 2px;
-      }
-    }
-    &:hover span {
-      color: @controlHoverColor;
-    }
-    input:checked + span {
-      color: #248BB7;
-      text-shadow: 0 0 2px rgba(0,112,255, 0.3);
-
-      &::before {
-        content: '⚫ ';
-      }
-    }
-  }
-
 }
 
 #meta {
@@ -198,6 +250,28 @@ mark {
         animation: 1s evenItemChanged;
       }
     }
+
+    &:hover {
+      td, th {
+        background-color: @hoverItemBackgroundColor;
+      }
+    }
+
+    &.error {
+      td {
+        background-color: @errorItemBackgroundColor;
+      }
+
+      th {
+        background-color: darken(@errorItemBackgroundColor, 3%);
+      }
+
+      &:hover {
+        td, th {
+          background-color: darken(@errorItemBackgroundColor, 5%);
+        }
+      }
+    }
   }
 
   th,
@@ -206,10 +280,6 @@ mark {
     padding: 2px 10px;
     text-align: left;
     border-bottom: 1px solid transparent;
-  }
-  tr:hover th,
-  tr:hover td {
-    background-color: @itemHoverBackgroundColor;
   }
 
   th {
