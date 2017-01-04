@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.6
+---------
+- replaced unicode icons with SVG icons, because unicode got colored in Chrome
+- added highlighting for duplicated meta and title tags
+- changed styles to force break values if too long and additionally truncate them (e.g. Base64 encoded values)
+
 v0.5
 ---------
 - fixed a bug which prevented to copy via keyboard

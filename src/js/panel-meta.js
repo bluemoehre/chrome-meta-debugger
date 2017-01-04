@@ -2,7 +2,7 @@
  * Special char for marking string parts
  * @type {string}
  */
-var MARK_CHAR = '\uFEFF'; // using U+FEFF (Zero width no-break space) for marking
+const MARK_CHAR = '\uFEFF'; // using U+FEFF (Zero width no-break space) for marking
 
 /**
  * Connection to background page
@@ -117,12 +117,25 @@ var rxMarkChar = new RegExp(MARK_CHAR, 'g');
 /**
  * Link all URLs within a string
  * @param string
- * @returns {XML|string|void}
+ * @returns {string}
  */
 function linkURLs(string) {
     return string.replace(rxUrl, function (match) {
         return '<a href="' + stripWordMarks(match) + '" target="_blank">' + match + '</a>';
     });
+}
+
+/**
+ * Truncates a string and adds ellipsis at the end
+ * @param {string} string
+ * @param {number} length
+ * @return {string}
+ */
+function truncate(string, length) {
+    return string.length > length
+        ? string.substr(0, length) + '…'
+        : string
+    ;
 }
 
 /**
@@ -165,9 +178,14 @@ function convertMarksToHtml(string) {
 function refreshMetaList() {
     var filterString;
     var filterRx;
-    var tmp = [];
+    var value;
+    var classes;
     var keyMatches = null;
     var valueMatches = null;
+    var keys = [];
+    var duplicatedKeys = [];
+    var items = [];
+    var i = 0;
 
     try {
         filterString = filterInput.value;
@@ -179,21 +197,40 @@ function refreshMetaList() {
     } catch (e) {
     }
 
-    for (var i = 0; i < metaData.length; i++) {
-        if (filterFlagSearchKeys.checked) {
-            keyMatches = metaData[i].key.match(filterRx);
+    // mark duplicated meta and title tags
+    for (i = 0; i < metaData.length; i++) {
+        if (metaData[i].tag === 'meta' || metaData[i].tag === 'title') {
+            (keys.indexOf(metaData[i].key) < 0 ? keys : duplicatedKeys).push(metaData[i].key);
         }
-        if (filterFlagSearchValues.checked) {
-            valueMatches = metaData[i].value.match(filterRx);
+    }
+
+    for (i = 0; i < metaData.length; i++) {
+        if (filterString) {
+            if (filterFlagSearchKeys.checked) {
+                keyMatches = metaData[i].key.match(filterRx);
+            }
+            if (filterFlagSearchValues.checked) {
+                valueMatches = metaData[i].value.match(filterRx);
+            }
         }
         if (!filterString || keyMatches || valueMatches) {
-            tmp.push(replacePlaceholders(metaListItemTemplate, {
+            // truncate value if it does not contain any filter match
+            value = valueMatches ? metaData[i].value : truncate(metaData[i].value, 900);
+
+            classes = [];
+            // test for duplicated keys
+            if (duplicatedKeys.indexOf(metaData[i].key) > -1) classes.push('error');
+            // test if value has a whitespace ratio of 1:25 else enable word-break
+            if ((value.match(/([\s]+)/g) || []).length < value.length / 25) classes.push('break-value');
+
+            items.push(replacePlaceholders(metaListItemTemplate, {
                 idx: metaData[i].idx,
+                class: classes.join(' '),
                 tag: metaData[i].tag,
                 key: convertMarksToHtml(htmlEncode(markWords(metaData[i].key, keyMatches))),
                 value: metaData[i].valueLink
-                    ? '<a href="' + metaData[i].valueLink + '" target="_blank">' + convertMarksToHtml(htmlEncode(markWords(metaData[i].value, valueMatches))) + '</a>'
-                    : convertMarksToHtml(linkURLs(htmlEncode(markWords(metaData[i].value, valueMatches)))),
+                    ? '<a href="' + metaData[i].valueLink + '" target="_blank">' + convertMarksToHtml(htmlEncode(markWords(value, valueMatches))) + '</a>'
+                    : convertMarksToHtml(linkURLs(htmlEncode(markWords(value, valueMatches)))),
                 attributes: function () {
                     var attributes = [];
                     for (var name in metaData[i].attributes) {
@@ -205,12 +242,12 @@ function refreshMetaList() {
                         }
                     }
                     return attributes.join('');
-                }
+                },
             }, false));
         }
     }
 
-    metaList.innerHTML = tmp.join('');
+    metaList.innerHTML = items.join('');
 }
 
 /**

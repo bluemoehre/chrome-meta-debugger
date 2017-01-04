@@ -198,6 +198,9 @@ mark {
 #meta tr.error:hover th {
   background-color: #ffd5cc;
 }
+#meta tr.break-value td > .value {
+  word-break: break-all;
+}
 #meta th,
 #meta td {
   position: relative;

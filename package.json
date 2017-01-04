@@ -1,0 +1,18 @@
+{
+  "name": "chrome-meta-debugger",
+  "version": "0.6.0",
+  "description": "This Google Chrome extension simplifies the daily work with webpage meta data. It allows you to see all these information at a glance, nicely grouped and in real time within your DevTools.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bluemoehre/chrome-meta-debugger.git"
+  },
+  "author": "bluemoehre",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.3.0"
+  }
+}
