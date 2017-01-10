@@ -36,6 +36,11 @@ mark {
   background-color: fade(@markColor, 70%);
 }
 
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
 #filters {
   @inputPadding: 2px;
   @inputHeight: 24px;
@@ -227,6 +232,31 @@ mark {
 
 }
 
+
+#notifications {
+  margin: 0 0 0 auto;
+  list-style: none;
+
+  svg {
+    height: 16px;
+    width: 16px;
+    vertical-align: top;
+    fill: currentColor;
+  }
+
+  .warning {
+    color: @warningColor;
+  }
+
+  a:hover {
+    .text {
+      text-decoration: underline;
+    }
+  }
+
+}
+
+
 #meta {
   width: 100%;
 
@@ -257,18 +287,18 @@ mark {
       }
     }
 
-    &.error {
+    &.warning {
       td {
-        background-color: @errorItemBackgroundColor;
+        background-color: @warningItemBackgroundColor;
       }
 
       th {
-        background-color: darken(@errorItemBackgroundColor, 3%);
+        background-color: darken(@warningItemBackgroundColor, 3%);
       }
 
       &:hover {
         td, th {
-          background-color: darken(@errorItemBackgroundColor, 5%);
+          background-color: darken(@warningItemBackgroundColor, 5%);
         }
       }
     }
@@ -341,13 +371,23 @@ mark {
     }
   }
 
+  .key,
+  .name,
+  .value {
+    -webkit-user-select: text;
+  }
+
+  .value {
+    margin-right: 1em;
+  }
+
   .attributes {
     color: #777777;
     font-weight: normal;
   }
 
   .attribute {
-    margin: 0 0 0 1em;
+    display: inline-block;
     white-space: nowrap;
 
     .name {
@@ -357,12 +397,6 @@ mark {
         content: ':';
       }
     }
-  }
-
-  .key,
-  .name,
-  .value {
-    -webkit-user-select: text;
   }
 
   .actions {

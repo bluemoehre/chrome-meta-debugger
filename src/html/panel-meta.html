@@ -41,6 +41,7 @@
             </svg>
             <span>Values</span>
         </label>
+        <ul id="notifications"></ul>
         <div class="actions">
             <button type="button" name="reload" title="Refresh List">
                 <!-- icon_reload.svg -->
@@ -57,7 +58,7 @@
                 <span class="tag -__tag__">__tag__</span>
                 <span class="key">__key__</span>
                 <div class="actions">
-                    <a href="#!inspect:__idx__" title="Inspect in Elements Panel">
+                    <a href="#!inspect=__idx__" title="Inspect in Elements Panel">
                         <img src="/img/icon_code.svg" alt="Inspect"/>
                     </a>
                 </div>
@@ -73,6 +74,18 @@
             <span class="name">__name__</span>
             <span class="value">__value__</span>
         </span>
+    </template>
+    <template id="notificationWarning">
+        <li class="warning">
+            <a href="#!searchKeys=__search__">
+                <!-- icon_warning.svg -->
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                </svg>
+                <span class="text">__text__</span>
+            </a>
+        </li>
     </template>
 </body>
 </html>

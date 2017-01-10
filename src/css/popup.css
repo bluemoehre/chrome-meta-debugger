@@ -8,7 +8,7 @@ body {
   overflow-x: hidden;
 }
 header {
-  color: #006D9C;
+  color: #006d9c;
 }
 header,
 p {
@@ -20,7 +20,7 @@ h1 {
   color: #fff;
   font-size: 1.5em;
   font-weight: normal;
-  background: #006D9C;
+  background: #006d9c;
   text-transform: lowercase;
 }
 h1 span {
@@ -29,7 +29,7 @@ h1 span {
 a,
 a:active,
 a:focus {
-  color: #006D9C;
+  color: #006d9c;
 }
 kbd {
   display: inline-block;

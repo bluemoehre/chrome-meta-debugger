@@ -5,6 +5,13 @@
 const MARK_CHAR = '\uFEFF'; // using U+FEFF (Zero width no-break space) for marking
 
 /**
+ * @type {[string]}
+ */
+const IGNORED_DUPLICATE_KEYS = [
+    'msapplication-task'
+];
+
+/**
  * Connection to background page
  * @type chrome.runtime.Port
  */
@@ -59,6 +66,16 @@ var metaListItemTemplate;
  * @type {string}
  */
 var metaListItemAttributeTemplate;
+
+/**
+ * @type {HTMLElement}
+ */
+var notificationList;
+
+/**
+ * @type {HTMLElement}
+ */
+var notificationWarningTemplate;
 
 /**
  * @type {number}
@@ -182,8 +199,8 @@ function refreshMetaList() {
     var classes;
     var keyMatches = null;
     var valueMatches = null;
-    var keys = [];
-    var duplicatedKeys = [];
+    var distinctKeys = [];
+    var duplicateKeys = [];
     var items = [];
     var i = 0;
 
@@ -197,10 +214,14 @@ function refreshMetaList() {
     } catch (e) {
     }
 
-    // mark duplicated meta and title tags
+    // mark duplicate meta, base and title tags
     for (i = 0; i < metaData.length; i++) {
-        if (metaData[i].tag === 'meta' || metaData[i].tag === 'title') {
-            (keys.indexOf(metaData[i].key) < 0 ? keys : duplicatedKeys).push(metaData[i].key);
+        if (metaData[i].tag === 'meta' || metaData[i].tag === 'base' || metaData[i].tag === 'title') {
+            if (distinctKeys.indexOf(metaData[i].key) < 0) {
+                distinctKeys.push(metaData[i].key);
+            } else if (IGNORED_DUPLICATE_KEYS.indexOf(metaData[i].key) < 0) {
+                duplicateKeys.push(metaData[i].key);
+            }
         }
     }
 
@@ -218,8 +239,8 @@ function refreshMetaList() {
             value = valueMatches ? metaData[i].value : truncate(metaData[i].value, 900);
 
             classes = [];
-            // test for duplicated keys
-            if (duplicatedKeys.indexOf(metaData[i].key) > -1) classes.push('error');
+            // test for duplicate keys
+            if (duplicateKeys.indexOf(metaData[i].key) >= 0) classes.push('warning');
             // test if value has a whitespace ratio of 1:25 else enable word-break
             if ((value.match(/([\s]+)/g) || []).length < value.length / 25) classes.push('break-value');
 
@@ -248,6 +269,18 @@ function refreshMetaList() {
     }
 
     metaList.innerHTML = items.join('');
+
+
+    var notifications = [];
+
+    if (duplicateKeys.length) {
+        notifications.push(replacePlaceholders(notificationWarningTemplate, {
+            text: 'Duplicate keys found',
+            search: duplicateKeys.join(',')
+        }));
+    }
+
+    notificationList.innerHTML = notifications.join();
 }
 
 /**
@@ -308,6 +341,8 @@ document.addEventListener('DOMContentLoaded', function () {
     filterReloadButton = filterForm.querySelector('button[name="reload"]');
     filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]');
     filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]');
+    notificationList = document.getElementById('notifications');
+    notificationWarningTemplate = getTemplate('notificationWarning');
 
     filterForm.addEventListener('reset', function () {
         setTimeout(function () {
@@ -334,13 +369,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    metaList.addEventListener('click', function (evt) {
+    document.addEventListener('click', function (evt) {
         var link = evt.target.closest('a');
         if (link && link.matches('a[href^="#!"]')) {
-            var match = link.getAttribute('href').match(/^#!(\w+):(.*)$/);
+            var match = link.getAttribute('href').match(/^#!(\w+)=(.*)$/);
             switch (match[1]) {
                 case 'inspect':
                     inspectInElementsPanel(match[2]);
+                    break;
+                case 'searchKeys':
+                    filterFlagSearchKeys.checked = true;
+                    filterFlagSearchValues.checked = false;
+                    filterInput.value = match[2];
+                    refreshMetaList();
                     break;
                 default:
                     console.error('unknown link action');

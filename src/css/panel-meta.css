@@ -25,6 +25,10 @@ body[data-message] #meta {
 mark {
   background-color: rgba(255, 255, 0, 0.7);
 }
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
 #filters {
   display: flex;
   align-items: center;
@@ -63,7 +67,7 @@ mark {
   box-sizing: border-box;
 }
 #filters .search input[type="text"]:valid ~ svg {
-  fill: #248BB7;
+  fill: #248bb7;
   filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
 }
 #filters .search input[type="text"]:invalid ~ button[name="clearFilter"] {
@@ -122,14 +126,14 @@ mark {
   fill: none;
 }
 #filters .flag input:checked ~ svg {
-  fill: #248BB7;
+  fill: #248bb7;
   filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
 }
 #filters .flag input:checked ~ svg .unchecked {
   fill: none;
 }
 #filters .flag input:checked ~ span {
-  color: #248BB7;
+  color: #248bb7;
   text-shadow: 0 0 2px rgba(0, 112, 255, 0.3);
 }
 #filters .flag svg {
@@ -169,6 +173,22 @@ mark {
   transition: transform 1s;
   transform: rotate(360deg);
 }
+#notifications {
+  margin: 0 0 0 auto;
+  list-style: none;
+}
+#notifications svg {
+  height: 16px;
+  width: 16px;
+  vertical-align: top;
+  fill: currentColor;
+}
+#notifications .warning {
+  color: #FF9d4c;
+}
+#notifications a:hover .text {
+  text-decoration: underline;
+}
 #meta {
   width: 100%;
 }
@@ -188,15 +208,15 @@ mark {
 #meta tr:hover th {
   background-color: #e6f0f8;
 }
-#meta tr.error td {
-  background-color: #ffeae6;
+#meta tr.warning td {
+  background-color: #ffdfc8;
 }
-#meta tr.error th {
-  background-color: #ffddd7;
+#meta tr.warning th {
+  background-color: #ffd6b9;
 }
-#meta tr.error:hover td,
-#meta tr.error:hover th {
-  background-color: #ffd5cc;
+#meta tr.warning:hover td,
+#meta tr.warning:hover th {
+  background-color: #ffd0ae;
 }
 #meta tr.break-value td > .value {
   word-break: break-all;
@@ -223,7 +243,7 @@ mark {
 }
 #meta a {
   text-decoration: none;
-  color: #006D9C;
+  color: #006d9c;
 }
 #meta a:hover {
   text-decoration: underline;
@@ -254,12 +274,20 @@ mark {
 #meta .tag.-link {
   background-color: #3682A3;
 }
+#meta .key,
+#meta .name,
+#meta .value {
+  -webkit-user-select: text;
+}
+#meta .value {
+  margin-right: 1em;
+}
 #meta .attributes {
   color: #777777;
   font-weight: normal;
 }
 #meta .attribute {
-  margin: 0 0 0 1em;
+  display: inline-block;
   white-space: nowrap;
 }
 #meta .attribute .name {
@@ -267,11 +295,6 @@ mark {
 }
 #meta .attribute .name::after {
   content: ':';
-}
-#meta .key,
-#meta .name,
-#meta .value {
-  -webkit-user-select: text;
 }
 #meta .actions {
   position: absolute;
