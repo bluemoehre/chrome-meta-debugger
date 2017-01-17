@@ -8,7 +8,8 @@ const MARK_CHAR = '\uFEFF'; // using U+FEFF (Zero width no-break space) for mark
  * @type {[string]}
  */
 const IGNORED_DUPLICATE_KEYS = [
-    'msapplication-task'
+    'msapplication-task',
+    'msapplication-task-separator'
 ];
 
 /**
