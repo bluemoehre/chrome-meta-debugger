@@ -65,6 +65,8 @@ a {
 
   .search {
     position: relative;
+    width: ~ "calc(15% - 5px)";
+    min-width: 251px;
 
     svg {
       position: absolute;
@@ -82,8 +84,7 @@ a {
           @inputPadding
           @filterIconSize + @inputPadding * 2
       ;
-      min-width: 252px;
-      width: ~'calc(15% - 6px)';
+      width: 100%;
       height: @inputHeight;
       font-size: @defaultFontSize;
       line-height: 16px;
@@ -404,17 +405,20 @@ a {
   }
 
   .actions {
+    @actionIconSize: 18px;
+
     position: absolute;
-    top: 0;
+    top: 50%;
     right: 0;
-    bottom: 0;
     padding: 1px;
+    height: @actionIconSize;
     opacity: 0;
+    transform: translateY(-50%);
 
     img {
       margin-top: 1px;
-      width: 18px;
-      height: 18px;
+      width: @actionIconSize;
+      height: @actionIconSize;
       opacity: 0.2;
     }
 
