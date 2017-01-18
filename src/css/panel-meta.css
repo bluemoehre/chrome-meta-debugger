@@ -44,8 +44,9 @@ a {
 }
 #filters .search {
   position: relative;
-  width: calc(15% - 5px);
-  min-width: 251px;
+  padding-right: 5px;
+  width: calc(15% - 8px);
+  min-width: 245px;
 }
 #filters .search svg {
   position: absolute;
