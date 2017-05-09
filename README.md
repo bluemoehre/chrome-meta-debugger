@@ -2,7 +2,7 @@ chrome-meta-debugger
 ====================
 
 This Chrome extension was made to simplify the daily work with webpage meta data (head contents) like
-titles, canonicals, Open Graph data, icons and many more things. 
+titles, canonicals, Open Graph data, icons and many more things.
 
 It will add another panel to your Chrome DevTools and allow you to see all information at a glance, nicely grouped
 and in real time.
@@ -33,6 +33,7 @@ How to use
 Future Plans
 ------------
 
+- better handling of search event within meta panel
 - highlight real time changes within the list
 - provide a history of all changes made after the initial page load to track JavaScript behaviors
 - add image preview
@@ -45,5 +46,3 @@ Icons
 The SVG icons used in this project have been created by Google Inc. and
 are licensed under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/).
 Have a look into the [Google Materials Collection](https://design.google.com/icons/) for more of these.
-
-
