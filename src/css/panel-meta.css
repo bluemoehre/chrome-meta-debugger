@@ -1,35 +1,86 @@
-/* 62.5% of 16px = 10px */
+:root {
+  --default-font-family: Roboto, Helvetica, Tahoma, sans-serif;
+  --default-font-size: 0.75rem;
+  --default-line-height: normal;
+  --default-font: var(--default-font-size)/var(--default-line-height) var(--default-font-family);
+  --background-color: #ffffff;
+  --brand-color: #006d9c;
+  --text-color: #000000;
+  --link-color: #006d9c;
+  --mark-color: #ffff00;
+  --warning-color: #FF9d4c;
+  --text-bold-weight: 700;
+  --filter-background-color: #ffffff;
+  --filter-border-color: #bbbbbb;
+  --filter-shadow-color: #00000033;
+  --control-color: #999999;
+  --control-hover-color: #666666;
+  --control-active-color: #0090ce;
+  --attr-name-color: #aaaaaa;
+  --attr-value-color: #777777;
+  --head-item-background-color: #eeeeee;
+  --odd-item-background-color: #f5f5f5;
+  --even-item-background-color: #ffffff;
+  --warning-item-background-color: #ffdfc8;
+  --hover-item-background-color: #e6f0f8;
+  --changed-item-background-color: #ffe4c4; }
+  :root.theme-dark {
+    --background-color: #252525;
+    --brand-color: #006d9c;
+    --text-color: #dddddd;
+    --link-color: #0090ce;
+    --mark-color: #edd100;
+    --warning-color: #FF9d4c;
+    --text-bold-weight: 600;
+    --filter-background-color: #333333;
+    --filter-border-color: #505050;
+    --filter-shadow-color: #000000;
+    --control-color: #999999;
+    --control-hover-color: #c0c0c0;
+    --control-active-color: #0090ce;
+    --attr-name-color: #777777;
+    --attr-value-color: #999999;
+    --head-item-background-color: #333333;
+    --odd-item-background-color: #282828;
+    --even-item-background-color: #2b2b2b;
+    --warning-item-background-color: #96501f;
+    --hover-item-background-color: #3a3a3a;
+    --changed-item-background-color: #3a2812; }
+
 body {
   margin: 0;
-  padding: 0;
-}
+  padding: 0; }
+
 body {
   padding-top: 34px;
-  color: #000000;
-  font-size: 12px;
-  line-height: normal;
+  color: var(--text-color);
+  font-size: var(--default-font-size);
+  line-height: var(--default-line-height);
+  background-color: var(--background-color);
   -webkit-user-select: none;
-  overflow-y: scroll;
-}
-body[data-message]::before {
-  position: absolute;
-  text-align: center;
-  top: 50%;
-  width: 100%;
-  color: #aaaaaa;
-  content: attr(data-message);
-}
-body[data-message] #meta {
-  display: none;
-}
+  overflow-y: scroll; }
+  body[data-message]::before {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    color: var(--attr-name-color);
+    content: attr(data-message); }
+  body[data-message] #meta {
+    display: none; }
+
 mark {
-  background-color: rgba(255, 255, 0, 0.7);
-}
+  background-color: var(--mark-color); }
+
 a {
   text-decoration: inherit;
-  color: inherit;
-}
+  color: inherit; }
+
 #filters {
+  --input-padding: 2px;
+  --input-height: 24px;
+  --filter-icon-size: 16px;
+  --clear-button-size: calc(var(--input-height) - var(--input-padding) * 2);
   display: flex;
   align-items: center;
   position: fixed;
@@ -37,301 +88,248 @@ a {
   left: 0;
   right: 0;
   padding: 4px 5px;
-  background-color: #ffffff;
+  background-color: var(--filter-background-color);
   box-sizing: border-box;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  z-index: 100;
-}
-#filters .search {
-  position: relative;
-  padding-right: 5px;
-  width: calc(15% - 8px);
-  min-width: 245px;
-}
-#filters .search svg {
-  position: absolute;
-  left: 2px;
-  top: calc(24px / 2 - 16px / 2);
-  width: 16px;
-  height: 16px;
-  fill: #999999;
-}
-#filters .search input[type="text"] {
-  padding: 2px 22px 2px 20px;
-  width: 100%;
-  height: 24px;
-  font-size: 12px;
-  line-height: 16px;
-  vertical-align: middle;
-  outline: none;
-  border: none;
-  border-bottom: 1px solid #bbbbbb;
-  box-sizing: border-box;
-}
-#filters .search input[type="text"]:valid ~ svg {
-  fill: #248bb7;
-  filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
-}
-#filters .search input[type="text"]:invalid ~ button[name="clearFilter"] {
-  display: none;
-}
-#filters .search button[name="clearFilter"] {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  padding: 4px;
-  width: 20px;
-  height: 20px;
-  background: none;
-  border: none;
-  box-sizing: border-box;
-  cursor: pointer;
-  outline: none;
-}
-#filters .search button[name="clearFilter"] img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-#filters .actions {
-  position: relative;
-  margin-left: auto;
-  padding: 0 0 0 10px;
-}
-#filters .actions::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 5px;
-  bottom: 2px;
-  border-left: 1px solid #bbbbbb;
-}
-#filters .flag {
-  display: inline-flex;
-  margin-left: 2px;
-  padding: 0 6px;
-  height: 24px;
-  color: #999999;
-  fill: #999999;
-  line-height: 16px;
-  white-space: nowrap;
-  cursor: pointer;
-  box-sizing: border-box;
-}
-#filters .flag:first-of-type {
-  margin-left: 4px;
-}
-#filters .flag input {
-  display: none;
-}
-#filters .flag input:not(:checked) ~ svg .checked {
-  fill: none;
-}
-#filters .flag input:checked ~ svg {
-  fill: #248bb7;
-  filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
-}
-#filters .flag input:checked ~ svg .unchecked {
-  fill: none;
-}
-#filters .flag input:checked ~ span {
-  color: #248bb7;
-  text-shadow: 0 0 2px rgba(0, 112, 255, 0.3);
-}
-#filters .flag svg {
-  margin-right: 6px;
-  width: 10px;
-  height: 10px;
-  padding: 7px 0;
-}
-#filters .flag span {
-  padding: 3px 0;
-}
-#filters .flag:hover svg {
-  fill: #666666;
-}
-#filters .flag:hover span {
-  color: #666666;
-}
-#filters button[name="reload"] {
-  padding: 4px;
-  width: 24px;
-  height: 24px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
-}
-#filters button[name="reload"] svg {
-  height: 16px;
-  width: 16px;
-  vertical-align: -4px;
-  fill: #999999;
-}
-#filters button[name="reload"]:hover svg {
-  fill: #666666;
-}
-#filters button[name="reload"]._animate {
-  transition: transform 1s;
-  transform: rotate(360deg);
-}
+  box-shadow: 0 0 5px var(--filter-shadow-color);
+  z-index: 100; }
+  #filters .search {
+    position: relative;
+    padding-right: 5px;
+    width: calc(15% - 5px);
+    min-width: 248px; }
+    #filters .search .searchIcon {
+      position: absolute;
+      left: var(--input-padding);
+      top: calc(var(--input-height) / 2 - var(--filter-icon-size) / 2);
+      width: var(--filter-icon-size);
+      height: var(--filter-icon-size);
+      fill: var(--control-color); }
+    #filters .search input[type="text"] {
+      padding: var(--input-padding) calc(var(--clear-button-size) + var(--input-padding)) var(--input-padding) calc(var(--filter-icon-size) + var(--input-padding) * 2);
+      width: 100%;
+      height: var(--input-height);
+      font-size: var(--default-font-size);
+      line-height: 16px;
+      color: inherit;
+      vertical-align: middle;
+      background: none;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid var(--filter-border-color);
+      box-sizing: border-box; }
+      #filters .search input[type="text"]:valid ~ .searchIcon {
+        fill: var(--control-active-color);
+        filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3)); }
+      #filters .search input[type="text"]:invalid ~ button[name="clearFilter"] {
+        display: none; }
+    #filters .search button[name="clearFilter"] {
+      position: absolute;
+      top: var(--input-padding);
+      right: var(--input-padding);
+      padding: 4px;
+      width: var(--clear-button-size);
+      height: var(--clear-button-size);
+      color: inherit;
+      background: none;
+      border: none;
+      box-sizing: border-box;
+      cursor: pointer;
+      outline: none; }
+      #filters .search button[name="clearFilter"] svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        fill: currentColor; }
+  #filters .actions {
+    position: relative;
+    margin-left: auto;
+    padding: 0 0 0 10px; }
+    #filters .actions::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      bottom: 2px;
+      border-left: 1px solid var(--filter-border-color); }
+  #filters .flag {
+    display: inline-flex;
+    margin-left: 2px;
+    padding: 0 6px;
+    height: var(--input-height);
+    color: var(--control-color);
+    fill: var(--control-color);
+    line-height: 16px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-sizing: border-box; }
+    #filters .flag:first-of-type {
+      margin-left: 4px; }
+    #filters .flag input {
+      display: none; }
+      #filters .flag input:not(:checked) ~ svg .checked {
+        fill: none; }
+      #filters .flag input:checked ~ svg {
+        fill: var(--control-active-color);
+        filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3)); }
+        #filters .flag input:checked ~ svg .unchecked {
+          fill: none; }
+      #filters .flag input:checked ~ span {
+        color: var(--control-active-color);
+        text-shadow: 0 0 2px rgba(0, 112, 255, 0.3); }
+    #filters .flag svg {
+      margin-right: 6px;
+      width: 10px;
+      height: 10px;
+      padding: 7px 0; }
+    #filters .flag span {
+      padding: 3px 0; }
+    #filters .flag:hover svg {
+      fill: var(--control-hover-color); }
+    #filters .flag:hover span {
+      color: var(--control-hover-color); }
+  #filters button[name="reload"] {
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none; }
+    #filters button[name="reload"] svg {
+      height: 16px;
+      width: 16px;
+      vertical-align: -4px;
+      fill: var(--control-color); }
+    #filters button[name="reload"]:hover svg {
+      fill: var(--control-hover-color); }
+    #filters button[name="reload"]._animate {
+      transition: transform 1s;
+      transform: rotate(360deg); }
+
 #notifications {
   margin: 0 0 0 auto;
-  list-style: none;
-}
-#notifications svg {
-  height: 16px;
-  width: 16px;
-  vertical-align: top;
-  fill: currentColor;
-}
-#notifications .warning {
-  color: #FF9d4c;
-}
-#notifications a:hover .text {
-  text-decoration: underline;
-}
+  list-style: none; }
+  #notifications svg {
+    height: 16px;
+    width: 16px;
+    vertical-align: top;
+    fill: currentColor; }
+  #notifications .warning {
+    color: var(--warning-color); }
+  #notifications a:hover .text {
+    text-decoration: underline; }
+
 #meta {
-  width: 100%;
-}
-#meta tr:nth-child(odd) td {
-  background-color: #f5f5f5;
-}
-#meta tr:nth-child(odd)._changed td {
-  animation: 1s oddItemChanged;
-}
-#meta tr:nth-child(even) td {
-  background-color: #ffffff;
-}
-#meta tr:nth-child(even)._changed td {
-  animation: 1s evenItemChanged;
-}
-#meta tr:hover td,
-#meta tr:hover th {
-  background-color: #e6f0f8;
-}
-#meta tr.warning td {
-  background-color: #ffdfc8;
-}
-#meta tr.warning th {
-  background-color: #ffd6b9;
-}
-#meta tr.warning:hover td,
-#meta tr.warning:hover th {
-  background-color: #ffd0ae;
-}
-#meta tr.break-value td > .value {
-  word-break: break-all;
-}
-#meta th,
-#meta td {
-  position: relative;
-  padding: 2px 10px;
-  text-align: left;
-  border-bottom: 1px solid transparent;
-}
-#meta th {
-  padding-right: 24px;
-  /* space for actions */
-  background-color: #eeeeee;
-  width: 15%;
-  min-width: 220px;
-  /* see input width */
-  white-space: nowrap;
-  word-break: keep-all;
-}
-#meta td {
-  background-color: #ffffff;
-}
-#meta a {
-  text-decoration: none;
-  color: #006d9c;
-}
-#meta a:hover {
-  text-decoration: underline;
-}
-#meta .tag {
-  display: inline-block;
-  margin: 0 5px 0 -3px;
-  padding: 0px 5px 0px;
-  width: 30px;
-  text-align: center;
-  font-weight: normal;
-  font-size: 10px;
-  line-height: 15px;
-  color: #ffffff;
-  background-color: #666666;
-  border-radius: 3px;
-  text-transform: uppercase;
-}
-#meta .tag.-title {
-  background-color: #FF4C4C;
-}
-#meta .tag.-base {
-  background-color: #FF9D4C;
-}
-#meta .tag.-meta {
-  background-color: #1DBB1D;
-}
-#meta .tag.-link {
-  background-color: #3682A3;
-}
-#meta .key,
-#meta .name,
-#meta .value {
-  -webkit-user-select: text;
-}
-#meta .value {
-  margin-right: 1em;
-}
-#meta .attributes {
-  color: #777777;
-  font-weight: normal;
-}
-#meta .attribute {
-  display: inline-block;
-  white-space: nowrap;
-}
-#meta .attribute .name {
-  color: #aaaaaa;
-}
-#meta .attribute .name::after {
-  content: ':';
-}
-#meta .actions {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  padding: 1px;
-  height: 18px;
-  opacity: 0;
-  transform: translateY(-50%);
-}
-#meta .actions img {
-  margin-top: 1px;
-  width: 18px;
-  height: 18px;
-  opacity: 0.2;
-}
-#meta .actions a:hover img {
-  opacity: 0.5;
-}
-#meta tr:hover .actions {
-  opacity: 1;
-}
+  width: 100%; }
+  #meta tr:nth-child(odd) td {
+    background-color: var(--odd-item-background-color); }
+  #meta tr:nth-child(odd)._changed td {
+    animation: 1s oddItemChanged; }
+  #meta tr:nth-child(even) td {
+    background-color: var(--even-item-background-color); }
+  #meta tr:nth-child(even)._changed td {
+    animation: 1s evenItemChanged; }
+  #meta tr:hover td, #meta tr:hover th {
+    background-color: var(--hover-item-background-color); }
+  #meta tr.warning td {
+    background-color: var(--warning-item-background-color); }
+  #meta tr.warning th {
+    background-color: var(--warning-item-background-color); }
+  #meta tr.warning:hover td, #meta tr.warning:hover th {
+    background-color: var(--warning-item-background-color); }
+  #meta tr.break-value td > .value {
+    word-break: break-all; }
+  #meta th,
+  #meta td {
+    position: relative;
+    padding: 2px 10px;
+    text-align: left;
+    border-bottom: 1px solid transparent; }
+  #meta th {
+    padding-right: 24px;
+    /* space for actions */
+    background-color: var(--head-item-background-color);
+    width: 15%;
+    min-width: 220px;
+    /* see input width */
+    font-weight: var(--text-bold-weight);
+    white-space: nowrap;
+    word-break: keep-all; }
+  #meta td {
+    background-color: #ffffff;
+    font-weight: normal; }
+  #meta a {
+    text-decoration: none;
+    color: var(--link-color); }
+    #meta a:hover {
+      text-decoration: underline; }
+  #meta .tag {
+    display: inline-block;
+    margin: 0 5px 0 -3px;
+    padding: 0px 5px 0px;
+    width: 30px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 15px;
+    color: #ffffff;
+    background-color: #666666;
+    border-radius: 3px;
+    text-transform: uppercase; }
+    #meta .tag.-title {
+      background-color: #FF4C4C; }
+    #meta .tag.-base {
+      background-color: #FF9D4C; }
+    #meta .tag.-meta {
+      background-color: #1DBB1D; }
+    #meta .tag.-link {
+      background-color: #3682A3; }
+  #meta .key,
+  #meta .name,
+  #meta .value {
+    -webkit-user-select: text; }
+  #meta .value {
+    margin-right: 1em; }
+  #meta .attributes {
+    color: var(--attr-value-color);
+    font-weight: normal; }
+  #meta .attribute {
+    display: inline-block;
+    white-space: nowrap; }
+    #meta .attribute .name {
+      color: var(--attr-name-color); }
+      #meta .attribute .name::after {
+        content: ':'; }
+  #meta .actions {
+    --action-icon-size: 18px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    padding: 1px;
+    height: var(--action-icon-size);
+    opacity: 0;
+    transform: translateY(-50%); }
+    #meta .actions a {
+      color: inherit; }
+      #meta .actions a svg {
+        margin-top: 1px;
+        width: var(--action-icon-size);
+        height: var(--action-icon-size);
+        fill: currentColor;
+        opacity: 0.2; }
+      #meta .actions a:hover svg {
+        opacity: 0.5; }
+  #meta tr:hover .actions {
+    opacity: 1; }
+
 @keyframes oddItemChanged {
   0% {
-    background-color: #ffe4c4;
-  }
+    background-color: var(--changed-item-background-color); }
   100% {
-    background-color: #f5f5f5;
-  }
-}
+    background-color: var(--odd-item-background-color); } }
+
 @keyframes evenItemChanged {
   0% {
-    background-color: #ffe4c4;
-  }
+    background-color: var(--changed-item-background-color); }
   100% {
-    background-color: #ffffff;
-  }
-}
+    background-color: var(--even-item-background-color); } }

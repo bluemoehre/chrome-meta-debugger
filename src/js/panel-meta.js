@@ -333,6 +333,11 @@ port.onMessage.addListener(function (message) {
 
 // load templates & select elements & bind event handlers
 document.addEventListener('DOMContentLoaded', function () {
+    // detect color theme and add class to body
+    if (chrome.devtools.panels.themeName === 'dark') {
+      document.documentElement.classList.add('theme-dark');
+    }
+
     filterForm = document.getElementById('filters');
     metaList = document.getElementById('meta');
     metaListItemTemplate = getTemplate('templateMetaItem');

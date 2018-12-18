@@ -1,4 +1,4 @@
-@import "variables.less";
+@import "variables.scss";
 
 
 /* latin */
@@ -18,38 +18,32 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
-
-html {
-  font-size: @rootFontSize;
-}
-
 body {
   margin: 0;
-  padding: 1rem 1rem 0 1rem;
-  min-width: 24rem;
-  font: @defaultFont;
+  padding: 0 .75rem;
+  min-width: 16rem;
+  font: var(--default-font);
   color: #666;
   background: #fefefe;
   overflow-x: hidden;
 }
 
 header {
-  color: @brandColor;
+  color: var(--brand-color);
 }
 
 header,
 p {
-  margin: 0 0 1rem;
+  margin: 0 0 .75rem;
 }
 
 h1 {
-  margin: -1rem -1rem .3rem -1rem;
-  padding: 1rem;
+  margin: 0 -.75rem .5rem;
+  padding: .75rem;
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: normal;
-  line-height: 1.2em;
-  background: @brandColor;
+  background: var(--brand-color);
   text-transform: lowercase;
 
   span {
@@ -60,7 +54,7 @@ h1 {
 a,
 a:active,
 a:focus {
-  color: @brandColor;
+  color: var(--brand-color);
 }
 
 kbd {
@@ -69,6 +63,5 @@ kbd {
   border: 1px solid #ddd;
   background: #eee;
   white-space: nowrap;
-  font-size: 1.2rem;
-  line-height: @defaultLineHeight;
+  line-height: var(--default-line-height);
 }

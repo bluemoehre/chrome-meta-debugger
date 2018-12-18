@@ -1,9 +1,4 @@
-@import "variables.less";
-
-// TODO convert panel styles to em/rem
-@defaultFontSize: 12px;
-@defaultLineHeight: normal;
-
+@import "variables.scss";
 
 body {
   margin: 0;
@@ -12,9 +7,10 @@ body {
 
 body {
   padding-top: 34px;
-  color: @textColor;
-  font-size: @defaultFontSize;
-  line-height: @defaultLineHeight;
+  color: var(--text-color);
+  font-size: var(--default-font-size);
+  line-height: var(--default-line-height);
+  background-color: var(--background-color);
   -webkit-user-select: none;
   overflow-y: scroll;
 
@@ -26,7 +22,7 @@ body {
       text-align: center;
       top: 50%;
       width: 100%;
-      color: @infoColor;
+      color: var(--attr-name-color);
       content: attr(data-message);
     }
 
@@ -37,7 +33,7 @@ body {
 }
 
 mark {
-  background-color: fade(@markColor, 70%);
+  background-color: var(--mark-color);
 }
 
 a {
@@ -46,10 +42,10 @@ a {
 }
 
 #filters {
-  @inputPadding: 2px;
-  @inputHeight: 24px;
-  @filterIconSize: 16px;
-  @clearButtonSize: @inputHeight - @inputPadding * 2;
+  --input-padding: 2px;
+  --input-height: 24px;
+  --filter-icon-size: 16px;
+  --clear-button-size: calc(var(--input-height) - var(--input-padding) * 2);
 
   display: flex;
   align-items: center;
@@ -58,46 +54,48 @@ a {
   left: 0;
   right: 0;
   padding: 4px 5px;
-  background-color: #ffffff;
+  background-color: var(--filter-background-color);
   box-sizing: border-box;
-  box-shadow: 0 0 5px fade(#000000, 50%);
+  box-shadow: 0 0 5px var(--filter-shadow-color);
   z-index: 100;
 
   .search {
     position: relative;
     padding-right: 5px;
-    width: ~ "calc(15% - 8px)";
-    min-width: 245px;
+    width: calc(15% - 5px);
+    min-width: 248px;
 
-    svg {
+    .searchIcon {
       position: absolute;
-      left: @inputPadding;
-      top: ~ 'calc(@{inputHeight} / 2 - @{filterIconSize} / 2)';
-      width: @filterIconSize;
-      height: @filterIconSize;
-      fill: @controlColor;
+      left: var(--input-padding);
+      top: calc(var(--input-height) / 2 - var(--filter-icon-size) / 2);
+      width: var(--filter-icon-size);
+      height: var(--filter-icon-size);
+      fill: var(--control-color);
     }
 
     input[type="text"] {
       padding:
-          @inputPadding
-          @clearButtonSize + @inputPadding
-          @inputPadding
-          @filterIconSize + @inputPadding * 2
+          var(--input-padding)
+          calc(var(--clear-button-size) + var(--input-padding))
+          var(--input-padding)
+          calc(var(--filter-icon-size) + var(--input-padding) * 2)
       ;
       width: 100%;
-      height: @inputHeight;
-      font-size: @defaultFontSize;
+      height: var(--input-height);
+      font-size: var(--default-font-size);
       line-height: 16px;
+      color: inherit;
       vertical-align: middle;
+      background: none;
       outline: none;
       border: none;
-      border-bottom: 1px solid @componentBorderColor;
+      border-bottom: 1px solid var(--filter-border-color);
       box-sizing: border-box;
 
       &:valid {
-        & ~ svg {
-          fill: @controlActiveColor;
+        & ~ .searchIcon {
+          fill: var(--control-active-color);
           filter: drop-shadow(0 0 2px rgba(0,112,255, 0.3));
         }
       }
@@ -111,21 +109,23 @@ a {
 
     button[name="clearFilter"] {
       position: absolute;
-      top: @inputPadding;
-      right: @inputPadding;
+      top: var(--input-padding);
+      right: var(--input-padding);
       padding: 4px; // scale down icon
-      width: @clearButtonSize;
-      height: @clearButtonSize;
+      width: var(--clear-button-size);
+      height: var(--clear-button-size);
+      color: inherit;
       background: none;
       border: none;
       box-sizing: border-box;
       cursor: pointer;
       outline: none;
 
-      img {
+      svg {
         display: block;
         width: 100%;
         height: 100%;
+        fill: currentColor;
       }
     }
   }
@@ -141,7 +141,7 @@ a {
       top: 2px;
       left: 5px;
       bottom: 2px;
-      border-left: 1px solid @componentBorderColor;
+      border-left: 1px solid var(--filter-border-color);
     }
   }
 
@@ -149,9 +149,9 @@ a {
     display: inline-flex;
     margin-left: 2px;
     padding: 0 6px;
-    height: @inputHeight;
-    color: @controlColor;
-    fill: @controlColor;
+    height: var(--input-height);
+    color: var(--control-color);
+    fill: var(--control-color);
     line-height: 16px;
     white-space: nowrap;
     cursor: pointer;
@@ -172,7 +172,7 @@ a {
 
       &:checked {
         & ~ svg {
-          fill: @controlActiveColor;
+          fill: var(--control-active-color);
           filter: drop-shadow(0 0 2px rgba(0,112,255, 0.3));
 
           .unchecked {
@@ -181,7 +181,7 @@ a {
         }
 
         & ~ span {
-          color: @controlActiveColor;
+          color: var(--control-active-color);
           text-shadow: 0 0 2px rgba(0,112,255, 0.3);
         }
       }
@@ -201,11 +201,11 @@ a {
 
     &:hover {
       svg {
-        fill: @controlHoverColor;
+        fill: var(--control-hover-color);
       }
 
       span {
-        color: @controlHoverColor;
+        color: var(--control-hover-color);
       }
     }
   }
@@ -223,11 +223,11 @@ a {
       height: 16px;
       width: 16px;
       vertical-align: -4px;
-      fill: @controlColor;
+      fill: var(--control-color);
     }
 
     &:hover svg {
-      fill: @controlHoverColor;
+      fill: var(--control-hover-color);
     }
 
     &._animate {
@@ -251,7 +251,7 @@ a {
   }
 
   .warning {
-    color: @warningColor;
+    color: var(--warning-color);
   }
 
   a:hover {
@@ -269,7 +269,7 @@ a {
   tr {
     &:nth-child(odd) {
       td {
-        background-color: @oddItemBackgroundColor;
+        background-color: var(--odd-item-background-color);
       }
 
       &._changed td {
@@ -279,7 +279,7 @@ a {
 
     &:nth-child(even) {
       td {
-        background-color: @evenItemBackgroundColor;
+        background-color: var(--even-item-background-color);
       }
 
       &._changed td {
@@ -289,22 +289,22 @@ a {
 
     &:hover {
       td, th {
-        background-color: @hoverItemBackgroundColor;
+        background-color: var(--hover-item-background-color);
       }
     }
 
     &.warning {
       td {
-        background-color: @warningItemBackgroundColor;
+        background-color: var(--warning-item-background-color);
       }
 
       th {
-        background-color: darken(@warningItemBackgroundColor, 3%);
+        background-color: var(--warning-item-background-color);
       }
 
       &:hover {
         td, th {
-          background-color: darken(@warningItemBackgroundColor, 5%);
+          background-color: var(--warning-item-background-color);
         }
       }
     }
@@ -326,20 +326,22 @@ a {
 
   th {
     padding-right: 24px; /* space for actions */
-    background-color: #eeeeee;
+    background-color: var(--head-item-background-color);
     width: 15%;
     min-width: 220px; /* see input width */
+    font-weight: var(--text-bold-weight);
     white-space: nowrap;
     word-break: keep-all;
   }
 
   td {
     background-color: #ffffff;
+    font-weight: normal;
   }
 
   a {
     text-decoration: none;
-    color: @brandColor;
+    color: var(--link-color);
 
     &:hover {
       text-decoration: underline;
@@ -388,7 +390,7 @@ a {
   }
 
   .attributes {
-    color: #777777;
+    color: var(--attr-value-color);
     font-weight: normal;
   }
 
@@ -397,7 +399,7 @@ a {
     white-space: nowrap;
 
     .name {
-      color: @infoColor;
+      color: var(--attr-name-color);
 
       &::after {
         content: ':';
@@ -406,25 +408,30 @@ a {
   }
 
   .actions {
-    @actionIconSize: 18px;
+    --action-icon-size: 18px;
 
     position: absolute;
     top: 50%;
     right: 0;
     padding: 1px;
-    height: @actionIconSize;
+    height: var(--action-icon-size);
     opacity: 0;
     transform: translateY(-50%);
 
-    img {
-      margin-top: 1px;
-      width: @actionIconSize;
-      height: @actionIconSize;
-      opacity: 0.2;
-    }
+    a {
+      color: inherit;
 
-    a:hover img {
-      opacity: 0.5;
+      svg {
+        margin-top: 1px;
+        width: var(--action-icon-size);
+        height: var(--action-icon-size);
+        fill: currentColor;
+        opacity: 0.2;
+      }
+
+      &:hover svg {
+        opacity: 0.5;
+      }
     }
   }
   tr:hover .actions {
@@ -435,20 +442,18 @@ a {
 
 @keyframes oddItemChanged {
   0% {
-    background-color: @changedItemBackgroundColor;
+    background-color: var(--changed-item-background-color);
   }
   100% {
-    background-color: @oddItemBackgroundColor;
+    background-color: var(--odd-item-background-color);
   }
 }
 
 @keyframes evenItemChanged {
   0% {
-    background-color: @changedItemBackgroundColor;
+    background-color: var(--changed-item-background-color);
   }
   100% {
-    background-color: @evenItemBackgroundColor;
+    background-color: var(--even-item-background-color);
   }
 }
-
-

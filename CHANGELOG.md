@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.7
+---------
+- added Chrome dark theme support
+- switched from LESS to SASS/SCSS
+
 v0.6
 ---------
 - replaced unicode icons with SVG icons, because unicode got colored in Chrome

@@ -1,35 +1,30 @@
-// ----- generic requirements -----
+const gulp = require('gulp');
+const sass = require('gulp-sass');
 
 
-
-// ----- gulp dependencies -----
-
-var gulp         = require('gulp');
-var less         = require('gulp-less');
-
-
-// ----- config -----
-
-var lessMainFiles = [
-    './src/less/@(panel-meta|popup).less'
+const scssEntryPoints = [
+  './src/scss/@(panel-meta|popup).scss'
 ];
-var lessWatchFiles = [
-    './src/less/**/*.less'
+const scssWatchFiles = [
+  './src/scss/**/*.scss'
 ];
-var cssDestination = 'src/css/';
+const cssDestination = './src/css/';
 
 
-// ----- tasks -----
+function compileCss() {
+  return gulp
+    .src(scssEntryPoints)
+    .pipe(sass()).on('error', function (err) {
+      console.error(err.message);
+      this.emit('end') // prevent abort of watch process
+    })
+    .pipe(gulp.dest(cssDestination));
+}
 
-gulp.task('compileLess', function () {
-    return gulp.src(lessMainFiles)
-        .pipe(less()).on('error', function (err) {
-            console.error(err.message);
-            this.emit('end'); // prevent abort of watch process
-        })
-        .pipe(gulp.dest(cssDestination));
-});
+function watch() {
+  gulp.watch(scssWatchFiles, compileCss);
+}
 
-gulp.task('watch', ['compileLess'], function () {
-    gulp.watch(lessWatchFiles, ['compileLess']);
-});
+
+exports.compileCss = compileCss;
+exports.watch = watch;
