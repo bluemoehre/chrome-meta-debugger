@@ -44,5 +44,5 @@ Icons
 -----
 
 The SVG icons used in this project have been created by Google Inc. and
-are licensed under the [CC-BY license](https://creativecommons.org/licenses/by/4.0/).
-Have a look into the [Google Materials Collection](https://design.google.com/icons/) for more of these.
+are licensed under the [Apache-2.0 License](https://github.com/google/material-design-icons/blob/master/LICENSE).
+Have a look into the [Material Design Icons](https://github.com/google/material-design-icons) for more of these.
