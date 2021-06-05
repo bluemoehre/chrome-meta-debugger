@@ -5,10 +5,7 @@
   "version": "0.7",
   "author": "bluemoehre",
 
-  "permissions": [
-    "activeTab",
-    "*://*/*"
-  ],
+  "permissions": ["activeTab", "*://*/*"],
 
   "icons": {
     "16": "img/icon16.png",
@@ -22,13 +19,11 @@
       "38": "img/icon38.png"
     },
     "default_title": "Meta Debugger Extension",
-    "default_popup" : "html/popup.html"
+    "default_popup": "html/popup.html"
   },
 
   "background": {
-    "scripts": [
-      "js/background.js"
-    ]
+    "scripts": ["js/background.js"]
   },
 
   "devtools_page": "html/background-devtools.html"

@@ -2,7 +2,7 @@
   --default-font-family: Roboto, Helvetica, Tahoma, sans-serif;
   --default-font-size: 0.75rem;
   --default-line-height: normal;
-  --default-font: var(--default-font-size)/var(--default-line-height) var(--default-font-family);
+  --default-font: var(--default-font-size) / var(--default-line-height) var(--default-font-family);
 
   --background-color: #ffffff;
 
@@ -10,7 +10,7 @@
   --text-color: #000000;
   --link-color: #006d9c;
   --mark-color: #ffff00;
-  --warning-color: #FF9d4c;
+  --warning-color: #ff9d4c;
   --text-bold-weight: 700;
 
   --filter-background-color: #ffffff;
@@ -30,7 +30,6 @@
   --hover-item-background-color: #e6f0f8;
   --changed-item-background-color: #ffe4c4;
 
-
   &.theme-dark {
     --background-color: #252525;
 
@@ -38,7 +37,7 @@
     --text-color: #dddddd;
     --link-color: #0090ce;
     --mark-color: #edd100;
-    --warning-color: #FF9d4c;
+    --warning-color: #ff9d4c;
     --text-bold-weight: 600;
 
     --filter-background-color: #333333;

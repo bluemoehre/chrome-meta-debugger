@@ -1,4 +1,4 @@
-@import "variables.scss";
+@import 'variables.scss';
 
 body {
   margin: 0;
@@ -16,7 +16,6 @@ body {
 
   // if message is displayed
   &[data-message] {
-
     &::before {
       position: absolute;
       text-align: center;
@@ -74,13 +73,9 @@ a {
       fill: var(--control-color);
     }
 
-    input[type="text"] {
-      padding:
-          var(--input-padding)
-          calc(var(--clear-button-size) + var(--input-padding))
-          var(--input-padding)
-          calc(var(--filter-icon-size) + var(--input-padding) * 2)
-      ;
+    input[type='text'] {
+      padding: var(--input-padding) calc(var(--clear-button-size) + var(--input-padding)) var(--input-padding)
+        calc(var(--filter-icon-size) + var(--input-padding) * 2);
       width: 100%;
       height: var(--input-height);
       font-size: var(--default-font-size);
@@ -96,18 +91,18 @@ a {
       &:valid {
         & ~ .searchIcon {
           fill: var(--control-active-color);
-          filter: drop-shadow(0 0 2px rgba(0,112,255, 0.3));
+          filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
         }
       }
 
       &:invalid {
-        & ~ button[name="clearFilter"] {
+        & ~ button[name='clearFilter'] {
           display: none;
         }
       }
     }
 
-    button[name="clearFilter"] {
+    button[name='clearFilter'] {
       position: absolute;
       top: var(--input-padding);
       right: var(--input-padding);
@@ -173,7 +168,7 @@ a {
       &:checked {
         & ~ svg {
           fill: var(--control-active-color);
-          filter: drop-shadow(0 0 2px rgba(0,112,255, 0.3));
+          filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
 
           .unchecked {
             fill: none;
@@ -182,10 +177,9 @@ a {
 
         & ~ span {
           color: var(--control-active-color);
-          text-shadow: 0 0 2px rgba(0,112,255, 0.3);
+          text-shadow: 0 0 2px rgba(0, 112, 255, 0.3);
         }
       }
-
     }
 
     svg {
@@ -210,7 +204,7 @@ a {
     }
   }
 
-  button[name="reload"] {
+  button[name='reload'] {
     padding: 4px;
     width: 24px;
     height: 24px;
@@ -235,9 +229,7 @@ a {
       transform: rotate(360deg);
     }
   }
-
 }
-
 
 #notifications {
   margin: 0 0 0 auto;
@@ -259,9 +251,7 @@ a {
       text-decoration: underline;
     }
   }
-
 }
-
 
 #meta {
   width: 100%;
@@ -288,7 +278,8 @@ a {
     }
 
     &:hover {
-      td, th {
+      td,
+      th {
         background-color: var(--hover-item-background-color);
       }
     }
@@ -303,7 +294,8 @@ a {
       }
 
       &:hover {
-        td, th {
+        td,
+        th {
           background-color: var(--warning-item-background-color);
         }
       }
@@ -363,19 +355,19 @@ a {
     text-transform: uppercase;
 
     &.-title {
-      background-color: #FF4C4C;
+      background-color: #ff4c4c;
     }
 
     &.-base {
-      background-color: #FF9D4C;
+      background-color: #ff9d4c;
     }
 
     &.-meta {
-      background-color: #1DBB1D;
+      background-color: #1dbb1d;
     }
 
     &.-link {
-      background-color: #3682A3;
+      background-color: #3682a3;
     }
   }
 
@@ -438,7 +430,6 @@ a {
     opacity: 1;
   }
 }
-
 
 @keyframes oddItemChanged {
   0% {

@@ -1,5 +1,4 @@
-chrome-meta-debugger
-====================
+# chrome-meta-debugger
 
 This Chrome extension was made to simplify the daily work with webpage meta data (head contents) like
 titles, canonicals, Open Graph data, icons and many more things.
@@ -7,9 +6,7 @@ titles, canonicals, Open Graph data, icons and many more things.
 It will add another panel to your Chrome DevTools and allow you to see all information at a glance, nicely grouped
 and in real time.
 
-
-How to install
---------------
+## How to install
 
 - Open Google Chrome (if you are not already using it ;)
 - Navigate to [Chrome Web Store / Extensions / Meta Debugger](https://chrome.google.com/webstore/detail/meta-debugger/jfpdemgdamgplelnlmaecbonkfgfgomp)
@@ -18,9 +15,7 @@ How to install
 A little icon should now appear right next to your address bar.
 If you now open the DevTools a new panel "Meta" should be provided.
 
-
-How to use
-----------
+## How to use
 
 - Results are displayed in their source code order
 - The result list is always kept up-to-date. When (for whatever reason) it seems stucked,
@@ -29,9 +24,7 @@ How to use
 - You can filter by multiple arguments if you use `,` as delimiter (e.g. "title, canonical")
 - To show up result options/actions simply hover its row
 
-
-Future Plans
-------------
+## Future Plans
 
 - better handling of search event within meta panel
 - highlight real time changes within the list
@@ -39,9 +32,7 @@ Future Plans
 - add image preview
 - add option to exclude stylesheets
 
-
-Icons
------
+## Icons
 
 The SVG icons used in this project have been created by Google Inc. and
 are licensed under the [Apache-2.0 License](https://github.com/google/material-design-icons/blob/master/LICENSE).

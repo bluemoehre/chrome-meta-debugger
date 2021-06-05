@@ -1,5 +1,4 @@
-@import "variables.scss";
-
+@import 'variables.scss';
 
 /* latin */
 @font-face {
@@ -20,7 +19,7 @@
 
 body {
   margin: 0;
-  padding: 0 .75rem;
+  padding: 0 0.75rem;
   min-width: 16rem;
   font: var(--default-font);
   color: #666;
@@ -34,12 +33,12 @@ header {
 
 header,
 p {
-  margin: 0 0 .75rem;
+  margin: 0 0 0.75rem;
 }
 
 h1 {
-  margin: 0 -.75rem .5rem;
-  padding: .75rem;
+  margin: 0 -0.75rem 0.5rem;
+  padding: 0.75rem;
   color: #fff;
   font-size: 1.25rem;
   font-weight: normal;
@@ -59,7 +58,7 @@ a:focus {
 
 kbd {
   display: inline-block;
-  padding: 0px .3rem;
+  padding: 0px 0.3rem;
   border: 1px solid #ddd;
   background: #eee;
   white-space: nowrap;
