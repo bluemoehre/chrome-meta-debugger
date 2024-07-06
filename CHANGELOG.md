@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.8
+
+- migrate to Manifest V3
+- rewrite messaging
+
 ## v0.7
 
 - added Chrome dark theme support

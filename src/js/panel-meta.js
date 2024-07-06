@@ -1,3 +1,20 @@
+// panel script
+
+/**
+ * @type {string}
+ */
+const PORT_NAME = 'devtools.panel.meta'
+
+/**
+ * @type {string}
+ */
+const MSG_ACTION_ERROR = 'error'
+
+/**
+ * @type {string}
+ */
+const MSG_ACTION_UPDATE = 'update'
+
 /**
  * Special char for marking string parts
  * @type {string}
@@ -10,8 +27,13 @@ const MARK_CHAR = '\uFEFF' // using U+FEFF (Zero width no-break space) for marki
 const IGNORED_DUPLICATE_KEYS = ['msapplication-task', 'msapplication-task-separator']
 
 /**
- * Connection to background page
- * @type chrome.runtime.Port
+ * @type {number}
+ */
+var tabId = chrome.devtools.inspectedWindow.tabId
+
+/**
+ * Connection to service worker
+ * @type {chrome.runtime.Port | null}
  */
 var port
 
@@ -304,41 +326,75 @@ function inspectInElementsPanel(idx) {
   )
 }
 
-port = chrome.runtime.connect({
-  name: 'panel-meta',
-})
+/**
+ * Injects the devTools to given tab
+ * @param {number} tabId
+ * @return {Promise<void>}
+ */
+function injectDevtools(tabId) {
+  return new Promise(function (resolve) {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId },
+        files: ['js/devtools.js'],
+      },
+      function () {
+        console.log('content script initialized', { tabId })
+        resolve(tabId)
+      }
+    )
+  })
+}
 
-// listen for messages
-port.onMessage.addListener(function (message) {
-  console.info('got message', message)
-  switch (message['action']) {
-    case 'refresh':
-      clearTimeout(statusTimeout)
-      statusTimeout = setTimeout(function () {
-        document.body.setAttribute('data-message', 'Waiting for metadata …')
-        statusTimeout = setTimeout(function () {
-          document.body.setAttribute('data-message', 'Timeout while getting metadata. A page reload may help.')
-        }, 3000)
-      }, 50)
-      port.postMessage({
-        action: 'getPageMeta',
-        tabId: chrome.devtools.inspectedWindow.tabId,
-      })
-      break
-    case 'updatePageMeta':
-      clearTimeout(statusTimeout)
-      document.body.removeAttribute('data-message')
-      metaData = message['data']
-      refreshMetaList()
-      break
-    case 'error':
-      clearTimeout(statusTimeout)
-      document.body.setAttribute('data-message', message['error'])
-      break
-    default:
-      console.error('unknown action in message')
-  }
-})
+/**
+ * Connects to the content script in the related tab
+ * @param {number} tabId
+ * @returns {chrome.runtime.Port}
+ */
+function connect(tabId) {
+  // connect to devtools panel
+  port = chrome.tabs.connect(tabId, { name: PORT_NAME })
+
+  // handle disconnect
+  port.onDisconnect.addListener(function () {
+    if (chrome.runtime.lastError) {
+      console.info(chrome.runtime.lastError.message)
+    }
+    console.log('tab disconnected')
+    port = null
+  })
+
+  // listen for messages
+  port.onMessage.addListener(function (message, port) {
+    console.log('received message', { message, port })
+    switch (message.action) {
+      // case 'refresh':
+      //   clearTimeout(statusTimeout)
+      //   statusTimeout = setTimeout(function () {
+      //     document.body.setAttribute('data-message', 'Waiting for metadata …')
+      //     statusTimeout = setTimeout(function () {
+      //       document.body.setAttribute('data-message', 'Timeout while getting metadata. A page reload may help.')
+      //     }, 3000)
+      //   }, 50)
+      //   port?.postMessage({ action: ACTION_UPDATE })
+      //   break
+      case MSG_ACTION_UPDATE:
+        clearTimeout(statusTimeout)
+        document.body.removeAttribute('data-message')
+        metaData = message.data
+        refreshMetaList()
+        break
+      case MSG_ACTION_ERROR:
+        clearTimeout(statusTimeout)
+        document.body.setAttribute('data-message', message.error)
+        break
+      default:
+        console.error('unknown action in message')
+    }
+  })
+
+  return port
+}
 
 // load templates & select elements & bind event handlers
 document.addEventListener('DOMContentLoaded', function () {
@@ -378,10 +434,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(function () {
       filterReloadButton.classList.remove('_animate')
     }, 1000)
-    port.postMessage({
-      action: 'getPageMeta',
-      tabId: chrome.devtools.inspectedWindow.tabId,
-    })
+    port?.postMessage({ action: MSG_ACTION_UPDATE })
   })
 
   document.addEventListener('click', function (evt) {
@@ -411,14 +464,17 @@ document.addEventListener('keydown', function (evt) {
   !evt.ctrlKey && !evt.metaKey && filterInput && filterInput.focus()
 })
 
-// initially init message channel
-port.postMessage({
-  action: 'init',
-  tabId: chrome.devtools.inspectedWindow.tabId,
+console.log('panel initialized')
+
+// Handle tab updates (e.g. reload)
+chrome.tabs.onUpdated.addListener(function (updatedTabId, changeInfo) {
+  // skip updates for other tabs
+  if (updatedTabId !== tabId) return
+  // skip updates which are pending
+  if (changeInfo.status !== 'complete') return
+
+  console.log('tab updated', { tabId, changeInfo })
+  injectDevtools(tabId).then(connect)
 })
 
-// initially get page meta
-port.postMessage({
-  action: 'getPageMeta',
-  tabId: chrome.devtools.inspectedWindow.tabId,
-})
+injectDevtools(tabId).then(connect)

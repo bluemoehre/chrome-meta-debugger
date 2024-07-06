@@ -2,8 +2,17 @@
   // prevent double init
   if (window[chrome.runtime.id]) return
   window[chrome.runtime.id] = true
+  // console.log('DevTools:Meta', 'content script injected')
 
-  //console.info('devtools injected');
+  /**
+   * @type {string}
+   */
+  var PORT_NAME = 'devtools.panel.meta'
+
+  /**
+   * @type {string}
+   */
+  var ACTION_UPDATE = 'update'
 
   /**
    * Returns the given object but without the excluded keys
@@ -45,7 +54,6 @@
       //         valueAttribute: '< value attribute >' // the main value of this tag
       //     }
       //],
-
       TITLE: [
         {
           keyAttribute: null,
@@ -133,31 +141,51 @@
     return result
   }
 
-  // listen for messages
-  chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    //console.info('got message', message, 'from extension', sender.id);
-    if (typeof sendResponse !== 'function') {
-      sendResponse = function () {}
-    }
-    switch (message.action) {
-      case 'getPageMeta':
-        sendResponse({
-          action: 'updatePageMeta',
-          data: getPageMeta(),
-        })
-        break
-      default:
-      //console.error('unknown action "'+ message.action +'" in message');
-    }
+  /**
+   * Sends current meta data to devtools panel
+   * @param {chrome.runtime.Port} port
+   * @param {*} message
+   */
+  function sendMessage(port, message) {
+    // console.log('DevTools:Meta', 'sending message to panel', { message })
+    port.postMessage(message)
+  }
+
+  // handle connects from devtools panel
+  chrome.runtime.onConnect.addListener(function (newPort) {
+    if (newPort.name !== PORT_NAME) return
+    port = newPort
+    // console.info('DevTools:Meta', 'panel connected', { port: port.name, sender: port.sender })
+
+    // listen for messages
+    port.onMessage.addListener(function (message, port) {
+      // console.log('DevTools:Meta', 'received message', { message, port: port.name, sender: port.sender })
+      switch (message.action) {
+        case ACTION_UPDATE:
+          sendMessage(port, { action: ACTION_UPDATE, data: getPageMeta() })
+          break
+        default:
+          // console.error('DevTools:Meta', 'unknown action "' + message.action + '" in message')
+      }
+    })
+
+    // handle disconnect
+    port.onDisconnect.addListener(function (port) {
+      // console.info('DevTools:Meta', 'panel disconnected', { port: port.name, sender: port.sender })
+      port = null
+    })
+
+    // initially send the current data
+    sendMessage(port, { action: ACTION_UPDATE, data: getPageMeta() })
   })
 
   // observe changes to the HEAD
   document.addEventListener('DOMContentLoaded', function () {
     new MutationObserver(function (mutations) {
-      chrome.runtime.sendMessage({
-        action: 'updatePageMeta',
-        data: getPageMeta(),
-      })
+      // console.log('DevTools:Meta', 'DOM mutation detected', { mutations })
+      if (port) {
+        sendMessage(port, { action: ACTION_UPDATE, data: getPageMeta() })
+      }
     }).observe(document.querySelector('head'), {
       attributes: true,
       childList: true,

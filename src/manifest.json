@@ -1,11 +1,19 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Meta Debugger",
   "description": "Debug the head section of any webpage in a comfortable way.",
-  "version": "0.7",
+  "version": "0.8",
   "author": "bluemoehre",
 
-  "permissions": ["activeTab", "*://*/*"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "nativeMessaging"
+  ],
+  
+  "host_permissions": [
+    "*://*/*"
+  ],
 
   "icons": {
     "16": "img/icon16.png",
@@ -13,17 +21,13 @@
     "128": "img/icon128.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_icon": {
       "19": "img/icon.png",
       "38": "img/icon38.png"
     },
     "default_title": "Meta Debugger Extension",
     "default_popup": "html/popup.html"
-  },
-
-  "background": {
-    "scripts": ["js/background.js"]
   },
 
   "devtools_page": "html/background-devtools.html"
