@@ -398,7 +398,7 @@ function connect(tabId) {
 
 // load templates & select elements & bind event handlers
 document.addEventListener('DOMContentLoaded', function () {
-  // detect color theme and add class to body
+  // detect color theme and add class to the document element
   if (chrome.devtools.panels.themeName === 'dark') {
     document.documentElement.classList.add('theme-dark')
   }

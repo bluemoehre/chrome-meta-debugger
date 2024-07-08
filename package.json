@@ -10,9 +10,5 @@
     "url": "https://github.com/bluemoehre/chrome-meta-debugger.git"
   },
   "author": "bluemoehre",
-  "license": "GPL-3.0",
-  "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-sass": "^4.0.2"
-  }
+  "license": "GPL-3.0"
 }
