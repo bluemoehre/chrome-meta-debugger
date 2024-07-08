@@ -1,18 +1,18 @@
 @import 'theme.css';
 
 body {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: max-content auto max-content;
+  grid-template-areas: 'header' 'main' 'footer';
   margin: 0;
   padding: 0;
-}
-
-body {
-  padding-top: 34px;
+  height: 100vh;
   color: var(--text-color);
   font-size: var(--default-font-size);
   line-height: var(--default-line-height);
   background-color: var(--background-color);
   user-select: none;
-  overflow-y: scroll;
 
   /* if message is displayed */
   &[data-message] {
@@ -40,6 +40,22 @@ a {
   color: inherit;
 }
 
+header {
+  grid-area: header;
+  z-index: 100; /* make shadow visible */
+}
+
+main {
+  grid-area: main;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+footer {
+  grid-area: footer;
+  z-index: 100; /* make shadow visible */
+}
+
 #filters {
   --input-padding: 2px;
   --input-height: 24px;
@@ -48,15 +64,11 @@ a {
 
   display: flex;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   padding: 4px 5px;
   background-color: var(--filter-background-color);
   box-sizing: border-box;
-  box-shadow: 0 0 5px var(--filter-shadow-color);
-  z-index: 100;
+  /* border-bottom: 1px solid var(--status-border-color); */
+  filter: drop-shadow(0 0 5px var(--filter-shadow-color));
 
   .search {
     position: relative;
@@ -231,28 +243,6 @@ a {
   }
 }
 
-#notifications {
-  margin: 0 0 0 auto;
-  list-style: none;
-
-  svg {
-    height: 16px;
-    width: 16px;
-    vertical-align: top;
-    fill: currentColor;
-  }
-
-  .warning {
-    color: var(--warning-color);
-  }
-
-  a:hover {
-    .text {
-      text-decoration: underline;
-    }
-  }
-}
-
 #meta {
   width: 100%;
 
@@ -302,7 +292,7 @@ a {
     }
 
     &.break-value {
-      td > .value {
+      .value {
         word-break: break-all;
       }
     }
@@ -428,6 +418,42 @@ a {
   }
   tr:hover .actions {
     opacity: 1;
+  }
+}
+
+#statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 12px;
+  padding: 2px 10px;
+  height: 24px;
+  color: var(--status-color);
+  background: var(--status-background-color);
+  filter: drop-shadow(0 0 5px var(--filter-shadow-color));
+  /* border-top: 1px solid var(--status-border-color); */
+}
+
+#notifications {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  svg {
+    height: 16px;
+    width: 16px;
+    vertical-align: top;
+    fill: currentColor;
+  }
+
+  .warning {
+    color: var(--warning-color);
+  }
+
+  a:hover {
+    .text {
+      text-decoration: underline;
+    }
   }
 }
 

@@ -98,6 +98,16 @@ var notificationList
 var notificationWarningTemplate
 
 /**
+ * @type {HTMLElement}
+ */
+var statusBar
+
+/**
+ * @type {HTMLElement}
+ */
+var itemCount
+
+/**
  * @type {number}
  */
 var statusTimeout
@@ -301,6 +311,10 @@ function refreshMetaList() {
   }
 
   metaList.innerHTML = items.join('')
+  resultCount.textContent =
+    items.length < metaData.length
+      ? `${items.length} / ${metaData.length} items`
+      : `${metaData.length} items`
 
   var notifications = []
 
@@ -308,7 +322,7 @@ function refreshMetaList() {
     notifications.push(
       replacePlaceholders(notificationWarningTemplate, {
         text: 'Duplicate keys found',
-        search: duplicateKeys.join(','),
+        search: duplicateKeys.join(', '),
       })
     )
   }
@@ -414,6 +428,8 @@ document.addEventListener('DOMContentLoaded', function () {
   filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]')
   notificationList = document.getElementById('notifications')
   notificationWarningTemplate = getTemplate('notificationWarning')
+  statusBar = document.getElementById('statusBar')
+  resultCount = document.getElementById('resultCount')
 
   filterForm.addEventListener('reset', function () {
     setTimeout(function () {

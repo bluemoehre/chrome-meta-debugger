@@ -16,6 +16,11 @@
   --filter-background-color: #ffffff;
   --filter-border-color: #bbbbbb;
   --filter-shadow-color: #00000033;
+  
+  --status-color: #777777;
+  --status-background-color: #ffffff;
+  --status-border-color: #bbbbbb;
+  --status-shadow-color: #00000033;
 
   --control-color: #999999;
   --control-hover-color: #666666;
@@ -42,7 +47,12 @@
 
     --filter-background-color: #333333;
     --filter-border-color: #505050;
-    --filter-shadow-color: #000000;
+    --filter-shadow-color: #000000cc;
+    
+    --status-color: #999999;
+    --status-background-color: #282828;
+    --status-border-color: #505050;
+    --status-shadow-color: #000000cc;
 
     --control-color: #999999;
     --control-hover-color: #c0c0c0;
