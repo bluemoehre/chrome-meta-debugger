@@ -151,6 +151,22 @@
     port.postMessage(message)
   }
 
+  /**
+   * Creates a new Mutation Observer for the document head
+   * @returns {MutationObserver}
+   */
+  function createMutationObserver() {
+    return new MutationObserver(function (mutations) {
+      // console.log('DevTools:Meta', 'DOM mutation detected')
+      sendMessage(port, { action: ACTION_UPDATE, data: getPageMeta() })
+    }).observe(document.querySelector('head'), {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
+  }
+
   // handle connects from devtools panel
   chrome.runtime.onConnect.addListener(function (newPort) {
     if (newPort.name !== PORT_NAME) return
@@ -180,16 +196,9 @@
   })
 
   // observe changes to the HEAD
-  document.addEventListener('DOMContentLoaded', function () {
-    new MutationObserver(function (mutations) {
-      // console.log('DevTools:Meta', 'DOM mutation detected', { mutations })
-      if (port) {
-        sendMessage(port, { action: ACTION_UPDATE, data: getPageMeta() })
-      }
-    }).observe(document.querySelector('head'), {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    })
-  })
+  if (document.readyState === 'complete') {
+    createMutationObserver()
+  } else {
+    document.addEventListener('DOMContentLoaded', createMutationObserver)
+  }
 })()

@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.8.2
+
+- fix handling of text node changes
+
 ## v0.8.1
 
 - remove obsolete permission
