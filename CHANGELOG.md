@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.8.1
+
+- remove obsolete permission
+
 ## v0.8
 
 - migrate to Manifest V3

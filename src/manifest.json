@@ -2,13 +2,12 @@
   "manifest_version": 3,
   "name": "Meta Debugger",
   "description": "Debug the head section of any webpage in a comfortable way.",
-  "version": "0.8",
+  "version": "0.8.1",
   "author": "bluemoehre",
 
   "permissions": [
     "activeTab",
-    "scripting",
-    "nativeMessaging"
+    "scripting"
   ],
   
   "host_permissions": [
