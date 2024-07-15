@@ -26,8 +26,8 @@
       "38": "img/icon38.png"
     },
     "default_title": "Meta Debugger Extension",
-    "default_popup": "html/popup.html"
+    "default_popup": "popup.html"
   },
 
-  "devtools_page": "html/background-devtools.html"
+  "devtools_page": "devtools-page.html"
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.9
+
+- add status bar
+- replace SCSS with pure CSS
+- migrate codebase to TypeScript
+
 ## v0.8.2
 
 - fix handling of text node changes

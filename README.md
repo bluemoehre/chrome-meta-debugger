@@ -24,6 +24,15 @@ If you now open the DevTools a new panel "Meta" should be provided.
 - You can filter by multiple arguments if you use `,` as delimiter (e.g. "title, canonical")
 - To show up result options/actions simply hover its row
 
+## How to build
+
+- Clone this repository
+- Run `npm ci` to install exactly the packages that have been checked in
+- Run `npm run build` to create a new build
+- Open Chrome / Chromium
+- Navigate to `chrome://extensions/`
+- Click "_Load unpacked extension_" and select the `dist` folder from your local copy
+
 ## Future Plans
 
 - better handling of search event within meta panel

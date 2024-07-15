@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "baseUrl": "src",
+    "outDir": "dist",
+    "module": "ESNext",
+    "target": "ESNext",
+    "strict": true,
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "typeRoots": ["node_modules/@types"]
+  },
+}
