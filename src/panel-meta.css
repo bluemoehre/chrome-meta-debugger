@@ -369,6 +369,10 @@ footer {
 
   .value {
     margin-right: 1em;
+
+    &:empty {
+      display: none;
+    }
   }
 
   .attributes {
