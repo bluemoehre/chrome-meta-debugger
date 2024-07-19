@@ -72,6 +72,7 @@ footer {
 
   .search {
     position: relative;
+    margin-right: 2px;
     padding-right: 5px;
     width: calc(15% - 5px);
     min-width: 248px;
@@ -162,10 +163,6 @@ footer {
     white-space: nowrap;
     cursor: pointer;
     box-sizing: border-box;
-
-    &:first-of-type {
-      margin-left: 4px; /* more distance to input */
-    }
 
     input {
       display: none;
