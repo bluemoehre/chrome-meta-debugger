@@ -103,7 +103,6 @@ footer {
       &:valid {
         & ~ .searchIcon {
           fill: var(--control-active-color);
-          filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
         }
       }
 
@@ -180,7 +179,6 @@ footer {
       &:checked {
         & ~ svg {
           fill: var(--control-active-color);
-          filter: drop-shadow(0 0 2px rgba(0, 112, 255, 0.3));
 
           .unchecked {
             fill: none;
@@ -189,7 +187,6 @@ footer {
 
         & ~ span {
           color: var(--control-active-color);
-          text-shadow: 0 0 2px rgba(0, 112, 255, 0.3);
         }
       }
     }
