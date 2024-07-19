@@ -16,6 +16,9 @@
   --warning-color: #ff9d4c;
   --text-bold-weight: 700;
 
+  --scrollbar-track-color: auto;
+  --scrollbar-thumb-color: auto;
+
   --filter-background-color: #ffffff;
   --filter-border-color: #bbbbbb;
   --filter-shadow-color: #00000033;
@@ -49,6 +52,9 @@
   --mark-color: #edd100;
   --warning-color: #ff9d4c;
   --text-bold-weight: 600;
+
+  --scrollbar-track-color: #333333;
+  --scrollbar-thumb-color: #505050;
 
   --filter-background-color: #333333;
   --filter-border-color: #505050;
