@@ -382,8 +382,10 @@ footer {
 
     .name {
       color: var(--attr-name-color);
+    }
 
-      &::after {
+    &:has(.value:not(:empty)){
+      .name::after {
         content: ':';
       }
     }
