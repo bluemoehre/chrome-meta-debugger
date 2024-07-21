@@ -202,7 +202,7 @@ function refreshMetaList() {
         replacePlaceholders(
           metaListItemTemplate,
           {
-            idx: meta.idx,
+            idx: meta.idx.toString(),
             class: classNames.join(' '),
             tag: meta.tag,
             key: keyHtml,
