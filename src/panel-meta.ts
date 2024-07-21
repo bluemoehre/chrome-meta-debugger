@@ -8,7 +8,7 @@ import {
   MSG_ACTION_UPDATE,
   PORT_NAME,
 } from 'config/defaults'
-import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/lib'
+import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -104,9 +104,7 @@ function truncate(string: string, length: number): string {
 function markWords(string: string, words: Array<string> | null): string {
   if (words) {
     for (const word of words) {
-      string = word.length
-        ? string.replace(new RegExp('(' + word + ')', 'gi'), MARK_CHAR + '$1' + MARK_CHAR)
-        : string
+      string = word.length ? string.replace(new RegExp('(' + word + ')', 'gi'), MARK_CHAR + '$1' + MARK_CHAR) : string
     }
   }
 
