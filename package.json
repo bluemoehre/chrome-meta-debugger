@@ -1,6 +1,6 @@
 {
   "name": "chrome-meta-debugger",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "This Google Chrome extension simplifies the daily work with webpage meta data. It allows you to see all these information at a glance, nicely grouped and in real time within your DevTools.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
