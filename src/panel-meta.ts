@@ -31,7 +31,6 @@ let metaListItemAttributeTemplate: string
 let notificationList: HTMLElement
 let notificationWarningTemplate: string
 let statusBar: HTMLElement
-let itemCount: HTMLElement
 let resultCount: HTMLElement
 let statusTimeout: number
 
