@@ -1,6 +1,6 @@
 import { Message } from 'types/Message'
 import { Meta, MetaItem } from 'types/Meta'
-import { HEAD_ELEMENT_SELECTOR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
+import { MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { metaConfig } from 'config/meta'
 
 declare global {
@@ -35,7 +35,7 @@ function filterAttributes(attributes: NamedNodeMap, exclude: string[] = []): Map
  */
 function getPageMeta(): Meta {
   const result: Meta = []
-  const headElements = document.querySelectorAll(HEAD_ELEMENT_SELECTOR)
+  const headElements = document.head.querySelectorAll('*')
 
   for (const [index, headElement] of headElements.entries()) {
     const attributeMappers = metaConfig[headElement.tagName]
@@ -92,7 +92,7 @@ function getPageMeta(): Meta {
 function handleMutation(mutations: MutationRecord[], observer: MutationObserver): void {
   // console.log('DevTools:Meta', 'DOM mutation detected')
   if (currentPort) {
-    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getPageMeta() })
+    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getPageMeta })
   }
 }
 
@@ -103,7 +103,7 @@ function handleMessage(message: any, port: chrome.runtime.Port): void {
   // console.log('DevTools:Meta', 'received message', { message, port: port.name, sender: port.sender })
   switch (message.action) {
     case MSG_ACTION_UPDATE:
-      sendMessage(port, { action: MSG_ACTION_UPDATE, data: getPageMeta() })
+      sendMessage(port, { action: MSG_ACTION_UPDATE, data: getPageMeta })
       break
     default:
     // console.error('DevTools:Meta', 'unknown action "' + message.action + '" in message')
@@ -163,7 +163,7 @@ function init(): void {
     })
 
     // initially send the current data
-    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getPageMeta() })
+    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getPageMeta })
   })
 
   // when document is fully loaded start monitoring the HEAD

@@ -15,6 +15,3 @@ export const IGNORED_DUPLICATE_KEYS = ['msapplication-task', 'msapplication-task
 
 /** Max meta value length to display if not matched by a filter */
 export const MAX_UNMATCHED_VALUE_LENGTH = 900
-
-/** Selector for finding supported head elements */
-export const HEAD_ELEMENT_SELECTOR = 'head title, head base, head meta, head link'

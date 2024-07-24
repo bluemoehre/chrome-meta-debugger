@@ -1,6 +1,5 @@
 import { Meta } from 'types/Meta'
 import {
-  HEAD_ELEMENT_SELECTOR,
   IGNORED_DUPLICATE_KEYS,
   MARK_CHAR,
   MAX_UNMATCHED_VALUE_LENGTH,
@@ -238,7 +237,7 @@ function refreshMetaList() {
  * @param index - meta item index key
  */
 function inspectInElementsPanel(index: number) {
-  chrome.devtools.inspectedWindow.eval(`inspect($$('${HEAD_ELEMENT_SELECTOR}')[${index}])`)
+  chrome.devtools.inspectedWindow.eval(`inspect(document.head.children[${index}])`)
 }
 
 /**
