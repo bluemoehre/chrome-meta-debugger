@@ -1,7 +1,6 @@
 import { Message } from 'types/Message'
-import { Meta, MetaItem } from 'types/Meta'
 import { MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
-import { metaConfig } from 'config/meta'
+import { getMeta } from 'utils/meta'
 
 declare global {
   interface Window {
@@ -16,83 +15,12 @@ let currentPort: chrome.runtime.Port | null = null
 let currentObserver: MutationObserver | null = null
 
 /**
- * Returns the given object but without the excluded keys
- **/
-function filterAttributes(attributes: NamedNodeMap, exclude: string[] = []): Map<string, string> {
-  const result = Object.create(null)
-
-  Array.prototype.slice.call(attributes).forEach((attribute) => {
-    if (exclude.indexOf(attribute.name) < 0) {
-      result[attribute.name] = attribute.value
-    }
-  })
-
-  return result
-}
-
-/**
- * Returns a list of objects representing the page's meta information.
- */
-function getPageMeta(): Meta {
-  const result: Meta = []
-  const headElements = document.head.querySelectorAll('*')
-
-  for (const [index, headElement] of headElements.entries()) {
-    const attributeMappers = metaConfig[headElement.tagName]
-
-    for (const mapper of attributeMappers) {
-      if (mapper.keyAttribute == null || mapper.keyAttribute in headElement.attributes) {
-        let tagName = headElement.tagName.toLowerCase()
-        let key: MetaItem['key']
-        let value: MetaItem['value']
-
-        // determine key
-        switch (mapper.keyNameFrom) {
-          case 'tagName':
-            key = tagName
-            break
-          case 'tagValue':
-            key = headElement.textContent ?? ''
-            break
-          case 'attrName':
-            key = headElement.getAttributeNode(mapper.keyAttribute!)!.name
-            break
-          case 'attrValue':
-            key = headElement.getAttributeNode(mapper.keyAttribute!)!.value
-            break
-        }
-
-        // determine value
-        if (mapper.valueAttribute && mapper.valueAttribute in headElement.attributes) {
-          value = headElement.getAttribute(mapper.valueAttribute!)!
-        } else {
-          value = headElement.textContent ?? ''
-        }
-
-        result.push({
-          idx: index,
-          key,
-          tag: tagName,
-          value,
-          valueLink: headElement.getAttribute('href'),
-          attributes: filterAttributes(headElement.attributes, [mapper.keyAttribute!, mapper.valueAttribute!]),
-        })
-
-        break
-      }
-    }
-  }
-
-  return result
-}
-
-/**
  * Mutation handler for the document head
  */
 function handleMutation(mutations: MutationRecord[], observer: MutationObserver): void {
   // console.log('DevTools:Meta', 'DOM mutation detected')
   if (currentPort) {
-    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getPageMeta })
+    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getMeta(document.head) })
   }
 }
 
@@ -103,7 +31,7 @@ function handleMessage(message: any, port: chrome.runtime.Port): void {
   // console.log('DevTools:Meta', 'received message', { message, port: port.name, sender: port.sender })
   switch (message.action) {
     case MSG_ACTION_UPDATE:
-      sendMessage(port, { action: MSG_ACTION_UPDATE, data: getPageMeta })
+      sendMessage(port, { action: MSG_ACTION_UPDATE, data: getMeta(document.head) })
       break
     default:
     // console.error('DevTools:Meta', 'unknown action "' + message.action + '" in message')
@@ -163,7 +91,7 @@ function init(): void {
     })
 
     // initially send the current data
-    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getPageMeta })
+    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getMeta(document.head) })
   })
 
   // when document is fully loaded start monitoring the HEAD
