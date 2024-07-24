@@ -3,11 +3,12 @@
     "rootDir": "src",
     "baseUrl": "src",
     "outDir": "dist",
-    "module": "ESNext",
     "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
     "sourceMap": true,
     "noEmitOnError": true,
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
   },
 }
