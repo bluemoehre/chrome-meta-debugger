@@ -1,5 +1,5 @@
 import { expect, describe, test } from 'vitest'
-import { getMeta } from 'utils/meta'
+import { filterAttributes, getMeta } from 'utils/meta'
 
 describe('getMeta', () => {
   test('should read base element correctly', () => {
@@ -195,5 +195,27 @@ describe('getMeta', () => {
         attributes: {},
       },
     ])
+  })
+})
+
+describe('filterAttributes', () => {
+  const link = document.createElement('link')
+  link.setAttribute('rel', 'test')
+  link.setAttribute('href', '#test')
+  link.setAttribute('data-test', 'some test')
+
+  test('should return all if no exclusion was provided', () => {
+    expect(filterAttributes(link.attributes)).toEqual({
+      'href': '#test',
+      'rel': 'test',
+      'data-test': 'some test',
+    })
+  })
+
+  test('should exclude listed attributes', () => {
+    expect(filterAttributes(link.attributes, ['data-test'])).toEqual({
+      href: '#test',
+      rel: 'test',
+    })
   })
 })
