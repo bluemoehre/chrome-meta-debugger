@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.9.1
+
+- fix value links
+- fix meta:title is marked as duplicate key
+- fix duplicate key filter sends keys to search box multiple times
+
 ## v0.9
 
 - add status bar
