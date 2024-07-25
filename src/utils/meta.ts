@@ -46,7 +46,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
           key,
           tag: tagName,
           value,
-          valueLink: element.getAttribute('href'),
+          valueLink: 'href' in element ? element.href as string : null,
           attributes: filterAttributes(element.attributes, [mapper.keyAttribute!, mapper.valueAttribute!]),
         })
 
