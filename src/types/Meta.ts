@@ -16,7 +16,7 @@ export type MetaItem = {
   key: string
   value: string
   valueLink: string | null
-  attributes: Map<string, string>
+  attributes: { [key: string]: string }
 }
 
 /** Map of head elements and their corresponding attribute handling */

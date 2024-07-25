@@ -1,5 +1,5 @@
-import { Meta, MetaItem } from "types/Meta";
-import { metaConfig } from "config/meta";
+import { Meta, MetaItem } from 'types/Meta'
+import { metaConfig } from 'config/meta'
 
 /**
  * Returns a unified list of meta information
@@ -10,7 +10,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
   const meta: Meta = []
 
   for (let idx = 0; idx < elements.length; idx++) {
-    const element = elements[idx];
+    const element = elements[idx]
     const attributeMappers = metaConfig[element.tagName] ?? []
     for (const mapper of attributeMappers) {
       if (mapper.keyAttribute == null || mapper.keyAttribute in element.attributes) {
@@ -46,7 +46,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
           key,
           tag: tagName,
           value,
-          valueLink: 'href' in element ? element.href as string : null,
+          valueLink: 'href' in element ? (element.href as string) : null,
           attributes: filterAttributes(element.attributes, [mapper.keyAttribute!, mapper.valueAttribute!]),
         })
 
@@ -61,14 +61,10 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
 /**
  * Returns the given object but without the excluded keys
  **/
-export function filterAttributes(attributes: NamedNodeMap, exclude: string[] = []): Map<string, string> {
-  const result = Object.create(null)
-
-  Array.prototype.slice.call(attributes).forEach((attribute) => {
-    if (exclude.indexOf(attribute.name) < 0) {
-      result[attribute.name] = attribute.value
-    }
-  })
-
-  return result
+export function filterAttributes(attributes: NamedNodeMap, exclude: string[] = []): { [key: string]: string } {
+  return Object.fromEntries(
+    Array.from(attributes)
+      .filter(({ name }) => !exclude.includes(name))
+      .map((attr) => [attr.name, attr.value])
+  )
 }
