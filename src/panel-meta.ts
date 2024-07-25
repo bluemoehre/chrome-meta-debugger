@@ -202,7 +202,7 @@ function refreshMetaList() {
     notificationItems.push(
       replacePlaceholders(notificationWarningTemplate, {
         text: 'Duplicate keys found',
-        search: duplicates.map(({ key }) => key).join(', '),
+        search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
       })
     )
   }
