@@ -1,4 +1,5 @@
 import { Meta, MetaItem } from 'types/Meta'
+import { IGNORED_DUPLICATE_KEYS } from 'config/defaults'
 import { metaConfig } from 'config/meta'
 
 /**
@@ -67,4 +68,31 @@ export function filterAttributes(attributes: NamedNodeMap, exclude: string[] = [
       .filter(({ name }) => !exclude.includes(name))
       .map((attr) => [attr.name, attr.value])
   )
+}
+
+/**
+ * Returns a list of duplicates
+ */
+export function findDuplicates(meta: Meta): Array<MetaItem> {
+  const seen = new Map<string, MetaItem>()
+  const duplicates: Array<MetaItem> = []
+
+  for (const item of meta) {
+    // skip other tags, e.g. scripts
+    if (!['meta', 'base', 'title'].includes(item.tag)) continue
+    // skip ignored keys
+    if (IGNORED_DUPLICATE_KEYS.includes(item.key)) continue
+
+    const id = `${item.tag}:${item.key}`
+    const duplicate = seen.get(id)
+
+    if (duplicate) {
+      duplicates.push(duplicate)
+      duplicates.push(item)
+    } else {
+      seen.set(id, item)
+    }
+  }
+
+  return duplicates
 }

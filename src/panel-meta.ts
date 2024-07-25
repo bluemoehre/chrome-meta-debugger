@@ -1,13 +1,7 @@
 import { Meta } from 'types/Meta'
-import {
-  IGNORED_DUPLICATE_KEYS,
-  MARK_CHAR,
-  MAX_UNMATCHED_VALUE_LENGTH,
-  MSG_ACTION_ERROR,
-  MSG_ACTION_UPDATE,
-  PORT_NAME,
-} from 'config/defaults'
+import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
+import { findDuplicates } from 'utils/meta'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -129,10 +123,8 @@ function convertMarksToHtml(string: string): string {
 function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
-  let distinctKeys: Array<string> = []
-  let duplicateKeys: Array<string> = []
-  /** HTML string array */
-  let listItems: Array<string> = []
+  const duplicates = findDuplicates(currentMeta)
+  const listItems: Array<string> = []
 
   filterString = filterInput.value
   filterRx = new RegExp(
@@ -147,15 +139,6 @@ function refreshMetaList() {
   )
 
   for (const meta of currentMeta) {
-    // mark duplicate meta, base and title definitions
-    if (['meta', 'base', 'title'].includes(meta.tag)) {
-      if (!distinctKeys.includes(meta.key)) {
-        distinctKeys.push(meta.key)
-      } else if (!IGNORED_DUPLICATE_KEYS.includes(meta.key) && !duplicateKeys.includes(meta.key)) {
-        duplicateKeys.push(meta.key)
-      }
-    }
-
     // if filter is active find matches
     let keyMatches: RegExpMatchArray | null = null
     let valueMatches: RegExpMatchArray | null = null
@@ -184,7 +167,7 @@ function refreshMetaList() {
 
       const classNames: Array<string> = []
       // add warning class for duplicate keys
-      if (duplicateKeys.includes(meta.key)) {
+      if (duplicates.includes(meta)) {
         classNames.push('warning')
       }
       // if value has a whitespace ratio of 1:25 else enable word-break
@@ -214,12 +197,12 @@ function refreshMetaList() {
     }
   }
 
-  let notificationItems: Array<string> = []
-  if (duplicateKeys.length) {
+  const notificationItems: Array<string> = []
+  if (duplicates.length > 0) {
     notificationItems.push(
       replacePlaceholders(notificationWarningTemplate, {
         text: 'Duplicate keys found',
-        search: duplicateKeys.join(', '),
+        search: duplicates.map(({ key }) => key).join(', '),
       })
     )
   }
