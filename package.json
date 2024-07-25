@@ -17,7 +17,6 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@types/chrome": "^0.0.268",
-    "@types/jest": "^29.5.12",
     "esbuild": "^0.23.0",
     "jsdom": "^24.1.1",
     "vite-tsconfig-paths": "^4.3.2",
