@@ -25,6 +25,7 @@ let notificationList: HTMLElement
 let notificationWarningTemplate: string
 let statusBar: HTMLElement
 let resultCount: HTMLElement
+let charCount: HTMLElement
 let statusTimeout: number
 
 /**
@@ -189,6 +190,7 @@ function refreshMetaList() {
             tag: meta.tag,
             key: keyHtml,
             value: valueHtml,
+            valueLength: valueHtml.length.toString(),
             attributes: attributesHtml,
           },
           false
@@ -308,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
   notificationWarningTemplate = getTemplate('notificationWarning') as string
   statusBar = document.getElementById('statusBar') as HTMLElement
   resultCount = document.getElementById('resultCount') as HTMLElement
+  charCount = document.getElementById('charCount') as HTMLElement
 
   filterForm.addEventListener('reset', () => {
     setTimeout(() => {
@@ -353,6 +356,18 @@ document.addEventListener('DOMContentLoaded', () => {
           console.error('unknown link action', link.href)
       }
     }
+  })
+
+  metaList.addEventListener('mouseover', (evt) => {
+    const el = evt.target as HTMLElement
+    if (el.nodeName === 'TH' || el.nodeName === 'TD') {
+      const valueLength = el.parentElement?.dataset.length
+      charCount.textContent = valueLength ? `${valueLength} chars` : null
+    }
+  })
+
+  metaList.addEventListener('mouseleave', (evt) => {
+    charCount.textContent = null
   })
 })
 
