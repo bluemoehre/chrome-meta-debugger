@@ -32,7 +32,8 @@ body {
 }
 
 mark {
-  background-color: var(--mark-color);
+  color: var(--mark-color);
+  background-color: var(--mark-background-color);
 }
 
 a {
@@ -191,8 +192,8 @@ footer {
 
     svg {
       margin-right: 6px;
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
     }
 
     &:hover {
@@ -237,54 +238,12 @@ footer {
   width: 100%;
 
   tr {
-    &:nth-child(odd) {
-      td {
-        background-color: var(--odd-item-background-color);
-      }
-
-      &._changed td {
-        animation: 1s oddItemChanged;
-      }
+    &.warning th {
+      background-color: var(--warning-item-background-color);
     }
 
-    &:nth-child(even) {
-      td {
-        background-color: var(--even-item-background-color);
-      }
-
-      &._changed td {
-        animation: 1s evenItemChanged;
-      }
-    }
-
-    &:hover {
-      td,
-      th {
-        background-color: var(--hover-item-background-color);
-      }
-    }
-
-    &.warning {
-      td {
-        background-color: var(--warning-item-background-color);
-      }
-
-      th {
-        background-color: var(--warning-item-background-color);
-      }
-
-      &:hover {
-        td,
-        th {
-          background-color: var(--warning-item-background-color);
-        }
-      }
-    }
-
-    &.break-value {
-      .value {
-        word-break: break-all;
-      }
+    &.break-value .value {
+      word-break: break-all;
     }
   }
 
@@ -298,17 +257,49 @@ footer {
 
   th {
     padding-right: 24px; /* space for actions */
-    background-color: var(--head-item-background-color);
     width: 15%;
     min-width: 220px; /* see input width */
     font-weight: var(--text-bold-weight);
     white-space: nowrap;
     word-break: keep-all;
+    background-color: var(--row-head-background-color);
   }
 
   td {
-    background-color: #ffffff;
     font-weight: normal;
+
+    tr:nth-child(even) & {
+      background-color: var(--row-even-background-color);
+    }
+    tr:nth-child(odd) & {
+      background-color: var(--row-odd-background-color);
+    }
+    tr.warning & {
+      background-color: var(--warning-background-color);
+    }
+    tr.error & {
+      background-color: var(--error-background-color);
+    }
+  }
+
+  th,
+  td {
+    tr:hover & {
+      background-color: color-mix(in hsl, var(--row-head-background-color), var(--row-hover-dim-color) 3%);
+    }
+
+    tr.warning & {
+      background-color: var(--warning-background-color);
+    }
+    tr.warning:hover & {
+      background-color: color-mix(in hsl, var(--warning-background-color), var(--row-hover-dim-color) 5%);
+    }
+    tr.error & {
+      background-color: var(--error-background-color);
+    }
+    tr.error:hover & {
+      background-color: color-mix(in hsl, var(--error-background-color), var(--row-hover-dim-color) 5%);
+    }
   }
 
   a {
@@ -329,25 +320,25 @@ footer {
     font-weight: normal;
     font-size: 10px;
     line-height: 15px;
-    color: #ffffff;
-    background-color: #666666;
+    color: hsl(0, 0%, 100%);
+    background-color: hsl(0, 0%, 50%);
     border-radius: 3px;
     text-transform: uppercase;
 
+    &.-meta {
+      background-color: var(--tag-meta-color);
+    }
+
     &.-title {
-      background-color: #ff4c4c;
+      background-color: var(--tag-title-color);
     }
 
     &.-base {
-      background-color: #ff9d4c;
-    }
-
-    &.-meta {
-      background-color: #1dbb1d;
+      background-color: var(--tag-base-color);
     }
 
     &.-link {
-      background-color: #3682a3;
+      background-color: var(--tag-link-color);
     }
   }
 
@@ -460,23 +451,5 @@ footer {
     .text {
       text-decoration: underline;
     }
-  }
-}
-
-@keyframes oddItemChanged {
-  0% {
-    background-color: var(--changed-item-background-color);
-  }
-  100% {
-    background-color: var(--odd-item-background-color);
-  }
-}
-
-@keyframes evenItemChanged {
-  0% {
-    background-color: var(--changed-item-background-color);
-  }
-  100% {
-    background-color: var(--even-item-background-color);
   }
 }

@@ -22,8 +22,8 @@ body {
   padding: 0 0.75rem;
   min-width: 16rem;
   font: var(--default-font);
-  color: #666;
-  background: #fefefe;
+  color: hsl(0, 0%, 40%);
+  background: hsl(0, 0%, 100%);
   overflow-x: hidden;
 }
 
@@ -39,7 +39,7 @@ p {
 h1 {
   margin: 0 -0.75rem 0.5rem;
   padding: 0.75rem;
-  color: #fff;
+  color: white;
   font-size: 1.25rem;
   font-weight: normal;
   background: var(--brand-color);
@@ -59,8 +59,8 @@ a:focus {
 kbd {
   display: inline-block;
   padding: 0px 0.3rem;
-  border: 1px solid #ddd;
-  background: #eee;
+  border: 1px solid hsl(0, 0%, 90%);
+  background: hsl(0, 0, 95%);
   white-space: nowrap;
   line-height: var(--default-line-height);
 }

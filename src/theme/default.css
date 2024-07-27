@@ -3,78 +3,110 @@
   --default-font-size: 0.75rem;
   --default-line-height: normal;
   --default-font: var(--default-font-size) / var(--default-line-height) var(--default-font-family);
+
+  --brand-color: hsl(198, 100%, 31%);
+
+  /* chrome base colors */
+  --info-color-base: hsl(213, 100%, 50%);
+  --mark-color-base: hsl(60, 100%, 50%);
+  --warning-color-base: hsl(30, 100%, 50%);
+  --error-color-base: hsl(10, 100%, 50%);
 }
 
 /* bright color scheme */
 :root {
-  --background-color: #ffffff;
-
-  --brand-color: #006d9c;
-  --text-color: #000000;
-  --link-color: #006d9c;
-  --mark-color: #ffff00;
-  --warning-color: #ff9d4c;
+  --background-color: hsl(0, 0%, 100%);
+  --text-color: hsl(0, 0%, 13%);
   --text-bold-weight: 700;
+
+  --mark-color: color-mix(in srgb, var(--mark-color-base), black 90%);
+  --mark-background-color: var(--mark-color-base);
+
+  --info-color: var(--brand-color);
+  --warning-color: color-mix(in srgb, var(--warning-color-base), black 10%);
+  --error-color: color-mix(in srgb, var(--error-color-base), black 10%);
+
+  --info-background-color: color-mix(in srgb, var(--brand-color), white 75%);
+  --warning-background-color: color-mix(in srgb, var(--warning-color-base), white 75%);
+  --error-background-color: color-mix(in srgb, var(--error-color-base), white 75%);
+
+  --link-color: var(--info-color);
 
   --scrollbar-track-color: auto;
   --scrollbar-thumb-color: auto;
 
-  --filter-background-color: #ffffff;
-  --filter-border-color: #bbbbbb;
-  --filter-shadow-color: #00000033;
+  --filter-background-color: hsl(0, 0%, 100%);
+  --filter-border-color: hsl(0, 0%, 75%);
+  --filter-shadow-color: hsla(0, 0%, 0%, 0.25);
 
-  --status-color: #777777;
-  --status-background-color: #ffffff;
-  --status-border-color: #bbbbbb;
-  --status-shadow-color: #00000033;
+  --status-color: var(--text-color);
+  --status-background-color: var(--background-color);
+  --status-border-color: hsl(0, 0%, 75%);
+  --status-shadow-color: hsla(0, 0%, 0%, 0.25);
 
-  --control-color: #999999;
-  --control-hover-color: #666666;
-  --control-active-color: #0090ce;
+  --control-color: hsl(0, 0%, 50%);
+  --control-hover-color: hsl(0, 0%, 40%);
+  --control-active-color: var(--info-color);
 
-  --attr-name-color: #aaaaaa;
-  --attr-value-color: #777777;
-  --head-item-background-color: #eeeeee;
-  --odd-item-background-color: #f5f5f5;
-  --even-item-background-color: #ffffff;
-  --warning-item-background-color: #ffdfc8;
-  --hover-item-background-color: #e6f0f8;
-  --changed-item-background-color: #ffe4c4;
+  --attr-name-color: hsl(0, 0%, 60%);
+  --attr-value-color: hsl(0, 0%, 40%);
+
+  --row-head-background-color: hsl(0, 0%, 94%);
+  --row-odd-background-color: hsl(0, 0%, 96%);
+  --row-even-background-color: hsl(0, 0%, 100%);
+  --row-hover-dim-color: black;
+
+  --tag-meta-color: color-mix(in hsl, var(--brand-color), hsl(50, 50%, 50%));
+  --tag-title-color: color-mix(in hsl longer hue, var(--brand-color), hsl(160, 80%, 100%));
+  --tag-base-color: color-mix(in hsl longer hue, var(--brand-color), hsl(210, 80%, 100%));
+  --tag-link-color: color-mix(in hsl, var(--brand-color), white 10%);
 }
 
 /* dark color scheme */
 :root.theme-dark {
-  --background-color: #252525;
-
-  --brand-color: #006d9c;
-  --text-color: #dddddd;
-  --link-color: #0090ce;
-  --mark-color: #edd100;
-  --warning-color: #ff9d4c;
+  --background-color: hsl(0, 0%, 15%);
+  --text-color: hsl(0, 0%, 87%);
   --text-bold-weight: 600;
 
-  --scrollbar-track-color: #333333;
-  --scrollbar-thumb-color: #505050;
+  --mark-color: color-mix(in hsl, var(--mark-color-base), black 90%);
+  --mark-background-color: color-mix(in hsl, var(--mark-color-base), dimgrey 20%);
 
-  --filter-background-color: #333333;
-  --filter-border-color: #505050;
-  --filter-shadow-color: #000000cc;
+  --info-color: color-mix(in hsl, var(--info-color-base), white 40%);
+  --warning-color: color-mix(in hsl, var(--warning-color-base), white 10%);
+  --error-color: color-mix(in hsl, var(--error-color-base), white 10%);
 
-  --status-color: #999999;
-  --status-background-color: #282828;
-  --status-border-color: #505050;
-  --status-shadow-color: #000000cc;
+  --info-background-color: color-mix(in hsl, var(--info-color), black 60%);
+  --warning-background-color: color-mix(in hsl, var(--warning-color), black 60%);
+  --error-background-color: color-mix(in hsl, var(--error-color), black 60%);
 
-  --control-color: #999999;
-  --control-hover-color: #c0c0c0;
-  --control-active-color: #0090ce;
+  --link-color: var(--info-color);
 
-  --attr-name-color: #777777;
-  --attr-value-color: #999999;
-  --head-item-background-color: #333333;
-  --odd-item-background-color: #282828;
-  --even-item-background-color: #2b2b2b;
-  --warning-item-background-color: #96501f;
-  --hover-item-background-color: #3a3a3a;
-  --changed-item-background-color: #3a2812;
+  --scrollbar-track-color: hsl(0, 0%, 20%);
+  --scrollbar-thumb-color: hsl(0, 0%, 30%);
+
+  --filter-background-color: hsl(0, 0%, 20%);
+  --filter-border-color: hsl(0, 0%, 31%);
+  --filter-shadow-color: hsla(0, 0%, 0%, 0.75);
+
+  --status-color: hsl(0, 0%, 60%);
+  --status-background-color: hsl(0, 0%, 15%);
+  --status-border-color: hsl(0, 0%, 30%);
+  --status-shadow-color: hsla(0, 0%, 0%, 0.75);
+
+  --control-color: hsl(0, 0%, 60%);
+  --control-hover-color: hsl(0, 0%, 70%);
+  --control-active-color: var(--info-color);
+
+  --attr-name-color: hsl(0, 0%, 40%);
+  --attr-value-color: hsl(0, 0%, 60%);
+
+  --row-head-background-color: hsl(0, 0%, 19%);
+  --row-odd-background-color: hsl(0, 0%, 17%);
+  --row-even-background-color: hsl(0, 0%, 15%);
+  --row-hover-dim-color: white;
+
+  --tag-meta-color: color-mix(in hsl longer hue, var(--brand-color), hsl(240, 50%, 50%));
+  --tag-title-color: color-mix(in hsl longer hue, var(--brand-color), hsl(180, 50%, 50%));
+  --tag-base-color: color-mix(in hsl, var(--brand-color), hsl(0, 50%, 50%));
+  --tag-link-color: var(--brand-color);
 }
