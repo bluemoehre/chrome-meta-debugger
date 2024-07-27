@@ -190,7 +190,7 @@ function refreshMetaList() {
             tag: meta.tag,
             key: keyHtml,
             value: valueHtml,
-            valueLength: valueHtml.length.toString(),
+            valueLength: valueText.length.toString(),
             attributes: attributesHtml,
           },
           false
