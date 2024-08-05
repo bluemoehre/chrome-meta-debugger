@@ -163,6 +163,40 @@ describe('getMeta', () => {
     ])
   })
 
+  test('should ignore style elements', () => {
+    document.head.innerHTML =
+      '<base href="/"/>' +
+      '<title>test</title>' +
+      '<style>:root { display: none; }</style>' +
+      '<link rel="shortcut icon" href="/favicon.ico" />'
+    expect(getMeta(document.head)).toEqual([
+      {
+        idx: 0,
+        key: 'base',
+        tag: 'base',
+        value: '/',
+        valueLink: document.baseURI,
+        attributes: {},
+      },
+      {
+        idx: 1,
+        key: 'title',
+        tag: 'title',
+        value: 'test',
+        valueLink: null,
+        attributes: {},
+      },
+      {
+        idx: 3,
+        key: 'shortcut icon',
+        tag: 'link',
+        value: '/favicon.ico',
+        valueLink: document.baseURI + 'favicon.ico',
+        attributes: {},
+      },
+    ])
+  })
+
   test('should ignore script elements', () => {
     document.head.innerHTML =
       '<base href="/"/>' +
