@@ -1,18 +1,16 @@
 import { ElementConfig } from "types/Meta"
 
+/** 
+ * standard elements:
+ * `<base>`, `<link>`, `<meta>`, `<noscript>`, `<script>`, `<style>`, `<title>`
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#metadata_content
+ **/
 export const metaConfig: ElementConfig = {
   TITLE: [
     {
       keyNameFrom: 'tagName',
       keyAttribute: null,
       valueAttribute: null,
-    },
-  ],
-  BASE: [
-    {
-      keyNameFrom: 'tagName',
-      keyAttribute: null,
-      valueAttribute: 'href',
     },
   ],
   META: [
@@ -35,6 +33,13 @@ export const metaConfig: ElementConfig = {
       keyNameFrom: 'attrValue',
       keyAttribute: 'http-equiv',
       valueAttribute: 'content',
+    },
+  ],
+  BASE: [
+    {
+      keyNameFrom: 'tagName',
+      keyAttribute: null,
+      valueAttribute: 'href',
     },
   ],
   LINK: [
