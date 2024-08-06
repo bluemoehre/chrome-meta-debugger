@@ -33,49 +33,53 @@
             </svg>
           </button>
         </span>
-        <label class="flag">
-          <input type="checkbox" name="searchKeys" checked />
-          <!-- icon_checkbox.svg -->
-          <!-- icon_checkbox-checked.svg -->
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path
-              class="unchecked"
-              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-            />
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path
-              class="checked"
-              d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-            />
-          </svg>
-          <span>Keys</span>
-        </label>
-        <label class="flag">
-          <input type="checkbox" name="searchValues" />
-          <!-- icon_checkbox.svg -->
-          <!-- icon_checkbox-checked.svg -->
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path
-              class="unchecked"
-              d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-            />
-            <path d="M0 0h24v24H0z" fill="none" />
-            <path
-              class="checked"
-              d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-            />
-          </svg>
-          <span>Values</span>
-        </label>
-        <div class="actions">
-          <button type="button" name="reload" title="Refresh List">
-            <!-- icon_reload.svg -->
-            <svg viewBox="0 0 24 24" width="24" height="24">
-              <path
-                d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"
-              />
-            </svg>
-          </button>
+        <div class="options">
+          <div class="group -flags">
+            <label class="checkboxButton">
+              <input type="checkbox" name="searchKeys" checked />
+              <!-- icon_checkbox.svg -->
+              <!-- icon_checkbox-checked.svg -->
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path
+                  class="unchecked"
+                  d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                />
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  class="checked"
+                  d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                />
+              </svg>
+              <span>Keys</span>
+            </label>
+            <label class="checkboxButton">
+              <input type="checkbox" name="searchValues" />
+              <!-- icon_checkbox.svg -->
+              <!-- icon_checkbox-checked.svg -->
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path
+                  class="unchecked"
+                  d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                />
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  class="checked"
+                  d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                />
+              </svg>
+              <span>Values</span>
+            </label>
+          </div>
+          <div class="group -actions">
+            <button class="actionButton" type="button" name="reload" title="Refresh List">
+              <!-- icon_reload.svg -->
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path
+                  d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </form>
     </header>
@@ -92,10 +96,11 @@
         <th>
           <span class="tag -__tag__">__tag__</span>
           <span class="key">__key__</span>
+          <div class="issues">__issues__</div>
           <div class="actions">
             <a href="#!inspect=__idx__" title="Inspect in Elements Panel">
               <!-- icon_code.svg -->
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <svg viewBox="0 0 24 24" width="24" height="24">
                 <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
               </svg>
             </a>
@@ -107,19 +112,49 @@
         </td>
       </tr>
     </template>
+    <template id="templateMetaItemError">
+      <a class="error" title="__message__">
+        <!-- icon_error.svg -->
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path
+            d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
+          />
+        </svg>
+      </a>
+    </template>
+    <template id="templateMetaItemWarning">
+      <a class="warning" title="__message__">
+        <!-- icon_warning.svg -->
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+        </svg>
+      </a>
+    </template>
     <template id="templateMetaItemAttribute">
       <span class="attribute">
         <span class="name">__name__</span>
         <span class="value">__value__</span>
       </span>
     </template>
-    <template id="notificationWarning">
+    <template id="templateNotificationItemWarning">
       <li class="warning">
         <a href="#!searchKeys=__search__">
           <!-- icon_warning.svg -->
           <svg viewBox="0 0 24 24" width="24" height="24">
-            <path d="M0 0h24v24H0z" fill="none" />
             <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+          </svg>
+          <span class="text">__text__</span>
+        </a>
+      </li>
+    </template>
+    <template id="templateNotificationItemError">
+      <li class="error">
+        <a href="#!searchKeys=__search__">
+          <!-- icon_error.svg -->
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
+            />
           </svg>
           <span class="text">__text__</span>
         </a>

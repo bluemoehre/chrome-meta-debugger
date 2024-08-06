@@ -2,6 +2,7 @@ import { Meta } from 'types/Meta'
 import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
 import { findDuplicates } from 'utils/meta'
+import { SeoReport, validateSeo } from 'utils/seo'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -21,8 +22,11 @@ let filterFlagSearchValues: HTMLInputElement
 let metaList: HTMLElement
 let metaListItemTemplate: string
 let metaListItemAttributeTemplate: string
+let metaListItemErrorTemplate: string
+let metaListItemWarningTemplate: string
 let notificationList: HTMLElement
-let notificationWarningTemplate: string
+let notificationListItemWarningTemplate: string
+let notificationListItemErrorTemplate: string
 let statusBar: HTMLElement
 let resultCount: HTMLElement
 let charCount: HTMLElement
@@ -124,8 +128,31 @@ function convertMarksToHtml(string: string): string {
 function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
-  const duplicates = findDuplicates(currentMeta)
   const listItems: Array<string> = []
+  const issueSummary = []
+
+  // find duplicates
+  const duplicates = findDuplicates(currentMeta)
+  if (duplicates.length > 0) {
+    issueSummary.push({
+      severity: 'warning',
+      message: 'Duplicates found',
+      search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
+    })
+  }
+
+  // find SEO issues
+  const seoIssues = validateSeo(currentMeta)
+  if (seoIssues.length > 0) {
+    issueSummary.push({
+      severity: 'error',
+      message: 'SEO check failed',
+      search: seoIssues
+        .filter(({ meta }) => !!meta)
+        .map(({ meta }) => meta!.key)
+        .join(', '),
+    })
+  }
 
   filterString = filterInput.value
   filterRx = new RegExp(
@@ -152,8 +179,11 @@ function refreshMetaList() {
       }
     }
 
-    // if this entry will get displayed
+    // test if this entry will omitted by filter
     if (!filterString || keyMatches || valueMatches) {
+      const hasDuplicate = duplicates.includes(meta)
+      const seoIssue = seoIssues.find((issue) => issue.meta === meta)
+
       // mark text matches and escape value
       const keyHtml = convertMarksToHtml(htmlEncode(markWords(meta.key, keyMatches)))
 
@@ -167,11 +197,12 @@ function refreshMetaList() {
         : convertMarksToHtml(linkURLs(htmlEncode(markWords(valueText, valueMatches))))
 
       const classNames: Array<string> = []
-      // add warning class for duplicate keys
-      if (duplicates.includes(meta)) {
+      if (seoIssue?.severity === 'error') {
+        classNames.push('error')
+      } else if (seoIssue?.severity === 'warning' || hasDuplicate) {
         classNames.push('warning')
       }
-      // if value has a whitespace ratio of 1:25 else enable word-break
+      // enable word-break if value has a whitespace ratio worse than 1:25
       if ((valueText.match(/([\s]+)/g) || []).length < valueText.length / 25) {
         classNames.push('break-value')
       }
@@ -179,6 +210,32 @@ function refreshMetaList() {
       let attributesHtml = ''
       for (const [name, value] of Object.entries(meta.attributes)) {
         attributesHtml += replacePlaceholders(metaListItemAttributeTemplate, { name, value })
+      }
+
+      let issuesHtml = ''
+      if (seoIssue?.severity === 'error') {
+        issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: seoIssue.message })
+      } else if (seoIssue?.severity === 'warning') {
+        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: seoIssue.message })
+      } else if (hasDuplicate) {
+        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: 'Duplicate' })
+      }
+
+      let valueIssueHtml = ''
+      if (seoIssue?.rule.min && meta.value.length < seoIssue.rule.min) {
+        valueIssueHtml = `<small style="margin-left: 4px; font-weight:600; color:var(--warning-color)">${
+          meta.value.length - seoIssue.rule.min
+        }</small>`
+      }
+      if (seoIssue?.rule.safe && meta.value.length > seoIssue.rule.safe) {
+        valueIssueHtml = `<small style="margin-left: 4px; font-weight:600; color:var(--warning-color)">+${
+          meta.value.length - seoIssue.rule.safe
+        }</small>`
+      }
+      if (seoIssue?.rule.max && meta.value.length > seoIssue.rule.max) {
+        valueIssueHtml = `<small style="margin-left: 4px; font-weight:600; color:var(--error-color)">+${
+          meta.value.length - seoIssue.rule.max
+        }</small>`
       }
 
       listItems.push(
@@ -189,9 +246,10 @@ function refreshMetaList() {
             class: classNames.join(' '),
             tag: meta.tag,
             key: keyHtml,
-            value: valueHtml,
+            value: valueHtml + valueIssueHtml,
             valueLength: valueText.length.toString(),
             attributes: attributesHtml,
+            issues: issuesHtml,
           },
           false
         )
@@ -200,14 +258,17 @@ function refreshMetaList() {
   }
 
   const notificationItems: Array<string> = []
-  if (duplicates.length > 0) {
+  issueSummary.forEach((issue) => {
     notificationItems.push(
-      replacePlaceholders(notificationWarningTemplate, {
-        text: 'Duplicate keys found',
-        search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
-      })
+      replacePlaceholders(
+        issue.severity === 'error' ? notificationListItemErrorTemplate : notificationListItemWarningTemplate,
+        {
+          text: issue.message,
+          search: issue.search,
+        }
+      )
     )
-  }
+  })
 
   notificationList.innerHTML = notificationItems.join('')
   metaList.innerHTML = listItems.join('')
@@ -301,13 +362,16 @@ document.addEventListener('DOMContentLoaded', () => {
   metaList = document.getElementById('meta') as HTMLElement
   metaListItemTemplate = getTemplate('templateMetaItem') as string
   metaListItemAttributeTemplate = getTemplate('templateMetaItemAttribute') as string
+  metaListItemErrorTemplate = getTemplate('templateMetaItemError') as string
+  metaListItemWarningTemplate = getTemplate('templateMetaItemWarning') as string
   filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
   filterClearButton = filterForm.querySelector('button[name="clearFilter"]') as HTMLButtonElement
   filterReloadButton = filterForm.querySelector('button[name="reload"]') as HTMLButtonElement
   filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
   filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
   notificationList = document.getElementById('notifications') as HTMLElement
-  notificationWarningTemplate = getTemplate('notificationWarning') as string
+  notificationListItemErrorTemplate = getTemplate('templateNotificationItemError') as string
+  notificationListItemWarningTemplate = getTemplate('templateNotificationItemWarning') as string
   statusBar = document.getElementById('statusBar') as HTMLElement
   resultCount = document.getElementById('resultCount') as HTMLElement
   charCount = document.getElementById('charCount') as HTMLElement

@@ -1,5 +1,9 @@
 @import 'theme/default.css';
 
+:root {
+  --icon-size: 16px;
+}
+
 body {
   display: grid;
   grid-template-columns: 1fr;
@@ -13,6 +17,7 @@ body {
   line-height: var(--default-line-height);
   background-color: var(--background-color);
   user-select: none;
+  overflow: hidden;
 
   /* if message is displayed */
   &[data-message] {
@@ -60,7 +65,6 @@ footer {
 #filters {
   --input-padding: 2px;
   --input-height: 24px;
-  --filter-icon-size: 16px;
   --clear-button-size: calc(var(--input-height) - var(--input-padding) * 2);
 
   display: flex;
@@ -81,19 +85,19 @@ footer {
     .searchIcon {
       position: absolute;
       left: var(--input-padding);
-      top: calc(var(--input-height) / 2 - var(--filter-icon-size) / 2);
-      width: var(--filter-icon-size);
-      height: var(--filter-icon-size);
+      top: calc(var(--input-height) / 2 - var(--icon-size) / 2);
+      width: var(--icon-size);
+      height: var(--icon-size);
       fill: var(--control-color);
     }
 
     input[type='text'] {
       padding: var(--input-padding) calc(var(--clear-button-size) + var(--input-padding)) var(--input-padding)
-        calc(var(--filter-icon-size) + var(--input-padding) * 2);
+        calc(var(--icon-size) + var(--input-padding) * 2);
       width: 100%;
       height: var(--input-height);
       font-size: var(--default-font-size);
-      line-height: 16px;
+      line-height: var(--icon-size);
       color: inherit;
       vertical-align: middle;
       background: none;
@@ -138,45 +142,33 @@ footer {
     }
   }
 
-  .actions {
-    position: relative;
-    margin-left: auto;
-    padding: 0 0 0 10px;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 5px;
-      bottom: 2px;
-      border-left: 1px solid var(--filter-border-color);
-    }
-  }
-
-  .flag {
-    display: inline-flex;
+  .options {
+    display: flex;
+    flex: auto;
     align-items: center;
-    margin-left: 2px;
-    padding: 0 6px;
-    height: var(--input-height);
-    color: var(--control-color);
-    fill: var(--control-color);
-    line-height: 16px;
-    white-space: nowrap;
-    cursor: pointer;
-    box-sizing: border-box;
+    justify-content: space-between;
 
-    input {
-      display: none;
+    .checkboxButton {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 6px;
+      height: var(--input-height);
+      color: var(--control-color);
+      white-space: nowrap;
+      cursor: pointer;
+      box-sizing: border-box;
 
-      &:not(:checked) ~ svg {
-        .checked {
-          fill: none;
-        }
+      input {
+        display: none;
       }
 
-      &:checked {
-        & ~ svg {
+      svg {
+        margin-right: 6px;
+        width: var(--icon-size);
+        height: var(--icon-size);
+        fill: currentColor;
+
+        input:checked ~ & {
           fill: var(--control-active-color);
 
           .unchecked {
@@ -184,52 +176,87 @@ footer {
           }
         }
 
-        & ~ span {
+        input:not(:checked) ~ & {
+          .checked {
+            fill: none;
+          }
+        }
+      }
+
+      span {
+        input:checked ~ & {
           color: var(--control-active-color);
+        }
+      }
+
+      &:hover {
+        color: var(--control-hover-color);
+      }
+    }
+
+    .toggleButton {
+      display: inline-flex;
+      padding: 0 3px;
+      height: var(--input-height);
+      color: var(--control-color);
+      cursor: pointer;
+
+      input {
+        display: none;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+
+        input:checked ~ & {
+          fill: var(--background-color);
+          background-color: var(--control-active-color);
+        }
+      }
+
+      &:hover {
+        color: var(--control-hover-color);
+      }
+    }
+
+    .actionButton {
+      padding: 4px;
+      height: var(--input-height);
+      color: var(--control-color);
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+
+      svg {
+        width: var(--icon-size);
+        height: var(--icon-size);
+        fill: currentColor;
+      }
+
+      &[name='reload'] {
+        &._animate {
+          transition: transform 1s;
+          transform: rotate(360deg);
         }
       }
     }
 
-    svg {
-      margin-right: 6px;
-      width: 16px;
-      height: 16px;
-    }
+    .group {
+      display: flex;
 
-    &:hover {
-      svg {
-        fill: var(--control-hover-color);
+      &.-flags {
       }
 
-      span {
-        color: var(--control-hover-color);
+      &.-options {
+        margin-left: auto;
+        margin-right: auto;
       }
-    }
-  }
 
-  button[name='reload'] {
-    padding: 4px;
-    width: 24px;
-    height: 24px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-
-    svg {
-      height: 16px;
-      width: 16px;
-      vertical-align: -4px;
-      fill: var(--control-color);
-    }
-
-    &:hover svg {
-      fill: var(--control-hover-color);
-    }
-
-    &._animate {
-      transition: transform 1s;
-      transform: rotate(360deg);
+      &.-actions {
+      }
     }
   }
 }
@@ -256,9 +283,9 @@ footer {
   }
 
   th {
-    padding-right: 24px; /* space for actions */
+    padding-right: 5px;
     width: 15%;
-    min-width: 220px; /* see input width */
+    min-width: 240px; /* see input width */
     font-weight: var(--text-bold-weight);
     white-space: nowrap;
     word-break: keep-all;
@@ -376,30 +403,42 @@ footer {
     }
   }
 
+  .issues,
   .actions {
-    --action-icon-size: 18px;
+    float: right;
+  }
 
-    position: absolute;
-    top: 50%;
-    right: 0;
-    padding: 1px;
-    height: var(--action-icon-size);
+  .issues {
+    .error {
+      color: var(--error-color);
+    }
+
+    .warning {
+      color: var(--warning-color);
+    }
+
+    svg {
+      width: var(--icon-size);
+      height: var(--icon-size);
+      fill: currentColor;
+    }
+  }
+
+  .actions {
     opacity: 0;
-    transform: translateY(-50%);
 
     a {
       color: inherit;
 
       svg {
-        margin-top: 1px;
-        width: var(--action-icon-size);
-        height: var(--action-icon-size);
+        width: var(--icon-size);
+        height: var(--icon-size);
         fill: currentColor;
-        opacity: 0.2;
+        opacity: 0.5;
       }
 
       &:hover svg {
-        opacity: 0.5;
+        opacity: 0.875;
       }
     }
   }
@@ -432,19 +471,36 @@ footer {
 }
 
 #notifications {
+  --icon-size: 16px;
+
+  flex: 1 1;
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  flex-wrap: nowrap;
   margin: 0;
   padding: 0;
   list-style: none;
 
   svg {
-    height: 16px;
-    width: 16px;
+    height: var(--icon-size);
+    width: var(--icon-size);
     vertical-align: top;
     fill: currentColor;
   }
 
-  .warning {
-    color: var(--warning-color);
+  li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.error {
+      color: var(--error-color);
+    }
+
+    &.warning {
+      color: var(--warning-color);
+    }
   }
 
   a:hover {
