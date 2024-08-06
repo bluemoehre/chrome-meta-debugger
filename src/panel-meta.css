@@ -257,6 +257,20 @@ footer {
 
       &.-actions {
       }
+
+      &.-settings {
+        position: relative;
+        padding: 0 0 0 10px;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 2px;
+          left: 5px;
+          bottom: 2px;
+          border-left: 1px solid var(--filter-border-color);
+        }
+      }
     }
   }
 }
