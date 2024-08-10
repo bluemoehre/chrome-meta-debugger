@@ -196,7 +196,9 @@ footer {
 
     .toggleButton {
       display: inline-flex;
-      padding: 0 3px;
+      gap: 4px;
+      align-items: center;
+      padding: 0 6px;
       height: var(--input-height);
       color: var(--control-color);
       cursor: pointer;
@@ -206,25 +208,17 @@ footer {
       }
 
       svg {
-        width: 24px;
-        height: 24px;
+        width: var(--icon-size);
+        height: var(--icon-size);
         fill: currentColor;
-
-        input:checked ~ & {
-          fill: var(--background-color);
-          background-color: var(--control-active-color);
-        }
-      }
-
-      span {
-        input:checked ~ & {
-          color: var(--background-color);
-          background-color: var(--control-active-color);
-        }
       }
 
       &:hover {
         color: var(--control-hover-color);
+      }
+
+      &:has(input:checked) {
+        color: var(--control-active-color);
       }
     }
 
@@ -258,8 +252,18 @@ footer {
       }
 
       &.-options {
-        margin-left: auto;
+        position: relative;
+        padding: 0 0 0 10px;
         margin-right: auto;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 2px;
+          left: 5px;
+          bottom: 2px;
+          border-left: 1px solid var(--filter-border-color);
+        }
       }
 
       &.-actions {
