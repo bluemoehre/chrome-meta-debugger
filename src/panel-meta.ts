@@ -19,6 +19,7 @@ let filterClearButton: HTMLButtonElement
 let filterReloadButton: HTMLButtonElement
 let filterFlagSearchKeys: HTMLInputElement
 let filterFlagSearchValues: HTMLInputElement
+let validateSeoToggle: HTMLInputElement
 let metaList: HTMLElement
 let metaListItemTemplate: string
 let metaListItemAttributeTemplate: string
@@ -128,6 +129,7 @@ function convertMarksToHtml(string: string): string {
 function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
+  let seoIssues: SeoReport | undefined
   const listItems: Array<string> = []
   const issueSummary = []
 
@@ -142,16 +144,18 @@ function refreshMetaList() {
   }
 
   // find SEO issues
-  const seoIssues = validateSeo(currentMeta)
-  if (seoIssues.length > 0) {
-    issueSummary.push({
-      severity: 'error',
-      message: 'SEO check failed',
-      search: seoIssues
-        .filter(({ meta }) => !!meta)
-        .map(({ meta }) => meta!.key)
-        .join(', '),
-    })
+  if (validateSeoToggle.checked) {
+    seoIssues = validateSeo(currentMeta)
+    if (seoIssues.length > 0) {
+      issueSummary.push({
+        severity: 'error',
+        message: 'SEO check failed',
+        search: seoIssues
+          .filter(({ meta }) => !!meta)
+          .map(({ meta }) => meta!.key)
+          .join(', '),
+      })
+    }
   }
 
   filterString = filterInput.value
@@ -182,7 +186,7 @@ function refreshMetaList() {
     // test if this entry will omitted by filter
     if (!filterString || keyMatches || valueMatches) {
       const hasDuplicate = duplicates.includes(meta)
-      const seoIssue = seoIssues.find((issue) => issue.meta === meta)
+      const seoIssue = seoIssues?.find((issue) => issue.meta === meta)
 
       // mark text matches and escape value
       const keyHtml = convertMarksToHtml(htmlEncode(markWords(meta.key, keyMatches)))
@@ -369,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
   filterReloadButton = filterForm.querySelector('button[name="reload"]') as HTMLButtonElement
   filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
   filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
+  validateSeoToggle = filterForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
   notificationList = document.getElementById('notifications') as HTMLElement
   notificationListItemErrorTemplate = getTemplate('templateNotificationItemError') as string
   notificationListItemWarningTemplate = getTemplate('templateNotificationItemWarning') as string
@@ -397,6 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000)
     currentPort?.postMessage({ action: MSG_ACTION_UPDATE })
   })
+
+  validateSeoToggle.addEventListener('change', refreshMetaList)
 
   document.addEventListener('click', (evt) => {
     const link = (evt.target as HTMLElement).closest('a')
