@@ -1,4 +1,4 @@
-import { Meta } from 'types/Meta'
+import { Meta, MetaItem } from 'types/Meta'
 import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
 import { findDuplicates } from 'utils/meta'
@@ -19,6 +19,8 @@ let filterClearButton: HTMLButtonElement
 let filterReloadButton: HTMLButtonElement
 let filterFlagSearchKeys: HTMLInputElement
 let filterFlagSearchValues: HTMLInputElement
+let validateCodeToggle: HTMLInputElement
+let validateMetaToggle: HTMLInputElement
 let validateSeoToggle: HTMLInputElement
 let metaList: HTMLElement
 let metaListItemTemplate: string
@@ -129,18 +131,21 @@ function convertMarksToHtml(string: string): string {
 function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
+  let duplicates: MetaItem[] | undefined
   let seoIssues: SeoReport | undefined
   const listItems: Array<string> = []
   const issueSummary = []
 
   // find duplicates
-  const duplicates = findDuplicates(currentMeta)
-  if (duplicates.length > 0) {
-    issueSummary.push({
-      severity: 'warning',
-      message: 'Duplicates found',
-      search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
-    })
+  if (validateMetaToggle.checked) {
+    duplicates = findDuplicates(currentMeta)
+    if (duplicates.length > 0) {
+      issueSummary.push({
+        severity: 'warning',
+        message: 'Duplicates found',
+        search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
+      })
+    }
   }
 
   // find SEO issues
@@ -185,7 +190,7 @@ function refreshMetaList() {
 
     // test if this entry will omitted by filter
     if (!filterString || keyMatches || valueMatches) {
-      const hasDuplicate = duplicates.includes(meta)
+      const hasDuplicate = duplicates?.includes(meta)
       const seoIssue = seoIssues?.find((issue) => issue.meta === meta)
 
       // mark text matches and escape value
@@ -373,6 +378,8 @@ document.addEventListener('DOMContentLoaded', () => {
   filterReloadButton = filterForm.querySelector('button[name="reload"]') as HTMLButtonElement
   filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
   filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
+  validateCodeToggle = filterForm.querySelector('input[name="validateCode"]') as HTMLInputElement
+  validateMetaToggle = filterForm.querySelector('input[name="validateMeta"]') as HTMLInputElement
   validateSeoToggle = filterForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
   notificationList = document.getElementById('notifications') as HTMLElement
   notificationListItemErrorTemplate = getTemplate('templateNotificationItemError') as string
@@ -403,6 +410,8 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPort?.postMessage({ action: MSG_ACTION_UPDATE })
   })
 
+  validateCodeToggle.addEventListener('change', refreshMetaList)
+  validateMetaToggle.addEventListener('change', refreshMetaList)
   validateSeoToggle.addEventListener('change', refreshMetaList)
 
   document.addEventListener('click', (evt) => {
