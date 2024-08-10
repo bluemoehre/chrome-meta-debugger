@@ -3,8 +3,8 @@ import { IGNORED_DUPLICATE_KEYS } from 'config/defaults'
 import { metaConfig } from 'config/meta'
 
 /**
- * Returns a unified list of meta information
- * @param documentHead The document's head element
+ * Returns a unified list of metadata
+  * @param documentHead The document's head element
  */
 export function getMeta(documentHead: HTMLHeadElement): Meta {
   const elements = documentHead.children
