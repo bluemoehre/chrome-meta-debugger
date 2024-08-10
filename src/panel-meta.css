@@ -216,6 +216,13 @@ footer {
         }
       }
 
+      span {
+        input:checked ~ & {
+          color: var(--background-color);
+          background-color: var(--control-active-color);
+        }
+      }
+
       &:hover {
         color: var(--control-hover-color);
       }
@@ -276,6 +283,11 @@ footer {
 }
 
 #meta {
+  --cell-min-height: 16px;
+  --cell-padding-vertical: 3px;
+  --cell-padding-horizontal: 10px;
+  --cell-border-vertical: 1px solid transparent
+
   width: 100%;
 
   tr {
@@ -291,13 +303,12 @@ footer {
   th,
   td {
     position: relative;
-    padding: 2px 10px;
+    padding: var(--cell-padding-vertical) var(--cell-padding-horizontal);
+    min-height: var(--cell-min-height);
     text-align: left;
-    border-bottom: 1px solid transparent;
   }
 
   th {
-    padding-right: 5px;
     width: 15%;
     min-width: 240px; /* see input width */
     font-weight: var(--text-bold-weight);
@@ -357,14 +368,16 @@ footer {
     margin: 0 5px 0 -3px;
     padding: 0px 5px 0px;
     width: 30px;
-    text-align: center;
-    font-weight: normal;
+    height: 1.5em;
     font-size: 10px;
-    line-height: 15px;
+    font-weight: normal;
+    line-height: 1.5em;
+    text-transform: uppercase;
+    text-align: center;
+    vertical-align: text-bottom;
     color: hsl(0, 0%, 100%);
     background-color: hsl(0, 0%, 50%);
     border-radius: 3px;
-    text-transform: uppercase;
 
     &.-meta {
       background-color: var(--tag-meta-color);
@@ -417,12 +430,35 @@ footer {
     }
   }
 
-  .issues,
-  .actions {
+  .info {
+    display: flex;
+    gap: 2px;
     float: right;
-  }
+    margin: 0 -2px 0 var(--cell-padding-horizontal);
+    height: var(--icon-size);
 
-  .issues {
+    a {
+      color: inherit;
+    }
+
+    svg {
+      width: var(--icon-size);
+      height: var(--icon-size);
+      fill: currentColor;
+    }
+
+    .action {
+      filter: opacity(0);
+
+      tr:hover & {
+        filter: opacity(.5);
+      }
+
+      &:hover {
+        filter: opacity(.875);
+      }
+    }
+
     .error {
       color: var(--error-color);
     }
@@ -431,33 +467,7 @@ footer {
       color: var(--warning-color);
     }
 
-    svg {
-      width: var(--icon-size);
-      height: var(--icon-size);
-      fill: currentColor;
-    }
-  }
-
-  .actions {
-    opacity: 0;
-
-    a {
-      color: inherit;
-
-      svg {
-        width: var(--icon-size);
-        height: var(--icon-size);
-        fill: currentColor;
-        opacity: 0.5;
-      }
-
-      &:hover svg {
-        opacity: 0.875;
-      }
-    }
-  }
-  tr:hover .actions {
-    opacity: 1;
+    
   }
 }
 
