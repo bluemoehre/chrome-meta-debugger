@@ -135,7 +135,8 @@ function refreshMetaList() {
   let filterRx: RegExp
   let duplicates: MetaItem[] | undefined
   let seoIssues: SeoReport | undefined
-  const listItems: Array<string> = []
+  const currentItems: Array<string> = []
+  const missingItems: Array<string> = []
   const issueSummary = []
 
   // find duplicates
@@ -176,6 +177,41 @@ function refreshMetaList() {
       .replace(/\s*,\s*$/, ''),
     'i'
   )
+
+  // add missing items
+  if (seoIssues) {
+    const issues = seoIssues.filter(({ rule, meta }) => rule.required && meta === null)
+
+    for (const issue of issues) {
+      // if filter is active find matches
+      let keyMatches: RegExpMatchArray | null = null
+      if (filterString) {
+        if (filterFlagSearchKeys.checked) {
+          keyMatches = issue.rule.key.match(filterRx)
+        }
+      }
+
+      // test if this entry will be omitted by filter
+      if (!filterString || keyMatches) {
+        missingItems.push(
+          replacePlaceholders(
+            metaListItemTemplate,
+            {
+              idx: '',
+              class: 'error',
+              tag: issue.rule.tag,
+              key: issue.rule.key,
+              value: '',
+              valueLength: '0',
+              attributes: '',
+              issues: replacePlaceholders(metaListItemErrorTemplate, { message: issue.message }),
+            },
+            false
+          )
+        )
+      }
+    }
+  }
 
   for (const meta of currentMeta) {
     // if filter is active find matches
@@ -229,7 +265,7 @@ function refreshMetaList() {
       } else if (seoIssue?.severity === 'warning') {
         issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: seoIssue.message })
       } else if (hasDuplicate) {
-        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: 'Duplicate' })
+        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: 'Element is duplicate' })
       }
 
       let valueIssueHtml = ''
@@ -249,7 +285,7 @@ function refreshMetaList() {
         }</small>`
       }
 
-      listItems.push(
+      currentItems.push(
         replacePlaceholders(
           metaListItemTemplate,
           {
@@ -282,11 +318,14 @@ function refreshMetaList() {
   })
 
   notificationList.innerHTML = notificationItems.join('')
-  metaList.innerHTML = listItems.join('')
+  metaList.innerHTML = missingItems.join('') + currentItems.join('')
   resultCount.innerHTML =
-    listItems.length < currentMeta.length
-      ? `${listItems.length} / ${currentMeta.length} items`
-      : `${currentMeta.length} items`
+    // existing count
+    (currentItems.length < currentMeta.length
+      ? `${currentItems.length} / ${currentMeta.length} items`
+      : `${currentMeta.length} items`) +
+    // missing count
+    (missingItems.length ? ` (${missingItems.length} missing)` : '')
 
   updateColumnWidthInputs()
 }

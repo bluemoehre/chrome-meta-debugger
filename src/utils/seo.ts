@@ -67,7 +67,7 @@ export function validateSeo(meta: Meta, rules = defaultSeoRules): SeoReport {
     if (!matchingMeta.length) {
       issues.push({
         severity: 'error',
-        message: `${rule.tag.toUpperCase()}${rule.tag !== rule.key ? `:'${rule.key}'` : ''} is missing`,
+        message: 'Element is missing',
         rule,
         meta: null,
       })
