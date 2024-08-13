@@ -264,6 +264,12 @@ footer {
           bottom: 2px;
           border-left: 1px solid var(--filter-border-color);
         }
+
+        @media (max-width: 650px) {
+          .text {
+            display: none;
+          }
+        }
       }
 
       &.-actions {
