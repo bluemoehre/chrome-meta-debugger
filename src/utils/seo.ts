@@ -35,24 +35,32 @@ export function validateSeo(meta: Meta, rules = defaultSeoRules): SeoReport {
   for (const rule of rules) {
     const matchingMeta = meta.filter((item) => item.tag === rule.tag && item.key === rule.key)
     for (const item of matchingMeta) {
-      if (rule.max && item.value.length > rule.max) {
+      const value = item.value.trim()
+      if (value.length < 1) {
         issues.push({
           severity: 'error',
-          message: `${item.value.length} / ${rule.max} - maximum length exceeded`,
+          message: `Value is empty`,
           rule,
           meta: item,
         })
-      } else if (rule.safe && item.value.length > rule.safe) {
+      } else if (rule.max && value.length > rule.max) {
         issues.push({
-          severity: 'warning',
-          message: `${item.value.length} / ${rule.safe} - recommended length exceeded`,
+          severity: 'error',
+          message: `${value.length} / ${rule.max} - maximum length exceeded`,
           rule,
           meta: item,
         })
-      } else if (rule.min && item.value.length < rule.min) {
+      } else if (rule.safe && value.length > rule.safe) {
         issues.push({
           severity: 'warning',
-          message: `${item.value.length} / ${rule.min} - recommended length not reached`,
+          message: `${value.length} / ${rule.safe} - recommended length exceeded`,
+          rule,
+          meta: item,
+        })
+      } else if (rule.min && value.length < rule.min) {
+        issues.push({
+          severity: 'warning',
+          message: `${value.length} / ${rule.min} - recommended length not reached`,
           rule,
           meta: item,
         })

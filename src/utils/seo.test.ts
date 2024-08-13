@@ -28,14 +28,14 @@ describe('validateSeo', () => {
     expect(validateSeo(meta, rules)).toEqual([
       {
         severity: 'error',
-        message: 'TITLE is missing',
+        message: 'Element is missing',
         rule: rules[0],
         meta: null,
       },
     ])
   })
 
-  test('should report minimum length issues', () => {
+  test('should report missing values', () => {
     const meta: Meta = [
       {
         idx: 0,
@@ -48,8 +48,50 @@ describe('validateSeo', () => {
     ]
     expect(validateSeo(meta, rules)).toEqual([
       {
+        severity: 'error',
+        message: 'Value is empty',
+        rule: rules[0],
+        meta: meta[0],
+      },
+    ])
+  })
+
+  test('should trim values correctly', () => {
+    const meta: Meta = [
+      {
+        idx: 0,
+        tag: 'title',
+        key: 'title',
+        value: '     ',
+        valueLink: null,
+        attributes: {},
+      },
+    ]
+    expect(validateSeo(meta, rules)).toEqual([
+      {
+        severity: 'error',
+        message: 'Value is empty',
+        rule: rules[0],
+        meta: meta[0],
+      },
+    ])
+  })
+
+  test('should report minimum length issues', () => {
+    const meta: Meta = [
+      {
+        idx: 0,
+        tag: 'title',
+        key: 'title',
+        value: 'Cool stuff',
+        valueLink: null,
+        attributes: {},
+      },
+    ]
+    expect(validateSeo(meta, rules)).toEqual([
+      {
         severity: 'warning',
-        message: '0 / 30 - recommended length not reached',
+        message: '10 / 30 - recommended length not reached',
         rule: rules[0],
         meta: meta[0],
       },

@@ -26,7 +26,6 @@ export const defaultSeoRules: SeoRule[] = [
   {
     tag: 'meta',
     key: 'author',
-    min: 1,
     safe: 30,
     max: 100,
   },
@@ -47,13 +46,11 @@ export const defaultSeoRules: SeoRule[] = [
   {
     tag: 'meta',
     key: 'og:image',
-    min: 1,
     max: 2000,
   },
   {
     tag: 'meta',
     key: 'og:url',
-    min: 1,
     max: 2000,
   },
   {
@@ -73,7 +70,6 @@ export const defaultSeoRules: SeoRule[] = [
   {
     tag: 'meta',
     key: 'twitter:image',
-    min: 1,
     max: 2000,
   },
 ]
