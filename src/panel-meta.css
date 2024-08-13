@@ -290,9 +290,15 @@ footer {
   --cell-min-height: 16px;
   --cell-padding-vertical: 3px;
   --cell-padding-horizontal: 10px;
-  --cell-border-vertical: 1px solid transparent
+  --cell-border-vertical: 1px solid transparent;
 
+  table-layout: fixed;
   width: 100%;
+
+  col {
+    min-width: 200px;
+    max-width: 80%;
+  }
 
   tr {
     &.warning th {
@@ -310,11 +316,11 @@ footer {
     padding: var(--cell-padding-vertical) var(--cell-padding-horizontal);
     min-height: var(--cell-min-height);
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   th {
-    width: 15%;
-    min-width: 240px; /* see input width */
     font-weight: var(--text-bold-weight);
     white-space: nowrap;
     word-break: keep-all;
@@ -323,6 +329,7 @@ footer {
 
   td {
     font-weight: normal;
+    text-overflow: ellipsis;
 
     tr:nth-child(even) & {
       background-color: var(--row-even-background-color);
@@ -420,17 +427,15 @@ footer {
   }
 
   .attribute {
-    display: inline-block;
-    white-space: nowrap;
-
     .name {
       color: var(--attr-name-color);
     }
+    &:has(.value:not(:empty)) .name::after {
+      content: ':';
+    }
 
-    &:has(.value:not(:empty)) {
-      .name::after {
-        content: ':';
-      }
+    .value {
+      word-break: break-all;
     }
   }
 
@@ -455,11 +460,11 @@ footer {
       filter: opacity(0);
 
       tr:hover & {
-        filter: opacity(.5);
-      }
+        filter: opacity(0.5);
 
-      &:hover {
-        filter: opacity(.875);
+        &:hover {
+          filter: opacity(1);
+        }
       }
     }
 
@@ -470,8 +475,42 @@ footer {
     .warning {
       color: var(--warning-color);
     }
+  }
+}
 
-    
+input[name='columnWidth-1'] {
+  display: block;
+  position: sticky;
+  top: 0;
+  left: 0;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 0;
+  z-index: 1;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    height: 100vh;
+    width: 4px;
+    background-color: transparent;
+    cursor: ew-resize;
+
+    /* debug */
+    /* height: 10px;
+    background-color: lightcoral; */
   }
 }
 

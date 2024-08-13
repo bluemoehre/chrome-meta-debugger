@@ -22,7 +22,9 @@ let filterFlagSearchValues: HTMLInputElement
 let validateCodeToggle: HTMLInputElement
 let validateMetaToggle: HTMLInputElement
 let validateSeoToggle: HTMLInputElement
+let metaTable: HTMLTableElement
 let metaList: HTMLElement
+let metaListColumnWidth1: HTMLInputElement
 let metaListItemTemplate: string
 let metaListItemAttributeTemplate: string
 let metaListItemErrorTemplate: string
@@ -285,6 +287,8 @@ function refreshMetaList() {
     listItems.length < currentMeta.length
       ? `${listItems.length} / ${currentMeta.length} items`
       : `${currentMeta.length} items`
+
+  updateColumnWidthInputs()
 }
 
 /**
@@ -360,6 +364,16 @@ function connect(tabId: number): chrome.runtime.Port {
   return currentPort
 }
 
+/**
+ * Sync related inputs to current rendered with of columns
+ */
+function updateColumnWidthInputs() {
+  const tableRect = metaTable.querySelector('colgroup')!.getBoundingClientRect()
+  const colRect = metaTable.querySelector('col')!.getBoundingClientRect()
+  const value = (100 / tableRect.width) * (colRect.width + colRect.left / 2)
+  metaListColumnWidth1.value = value.toString()
+}
+
 // load templates & select elements & bind event handlers
 document.addEventListener('DOMContentLoaded', () => {
   // detect color theme and add class to the document element
@@ -368,7 +382,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   filterForm = document.getElementById('filters') as HTMLFormElement
-  metaList = document.getElementById('meta') as HTMLElement
+  metaTable = document.getElementById('meta') as HTMLTableElement
+  metaList = metaTable.querySelector('tbody') as HTMLElement
+  metaListColumnWidth1 = document.querySelector('input[name="columnWidth-1"]') as HTMLInputElement
   metaListItemTemplate = getTemplate('templateMetaItem') as string
   metaListItemAttributeTemplate = getTemplate('templateMetaItemAttribute') as string
   metaListItemErrorTemplate = getTemplate('templateMetaItemError') as string
@@ -446,8 +462,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  metaList.addEventListener('mouseleave', (evt) => {
+  metaList.addEventListener('mouseleave', () => {
     charCount.textContent = null
+  })
+
+  metaListColumnWidth1.addEventListener('input', () => {
+    metaTable.querySelector('col[name="key"]')?.setAttribute('width', metaListColumnWidth1.value + '%')
+  })
+  metaListColumnWidth1.addEventListener('change', () => {
+    updateColumnWidthInputs()
   })
 })
 
