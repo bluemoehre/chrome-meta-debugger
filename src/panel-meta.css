@@ -304,10 +304,6 @@ footer {
     &.warning th {
       background-color: var(--warning-item-background-color);
     }
-
-    &.break-value .value {
-      word-break: break-all;
-    }
   }
 
   th,
@@ -419,6 +415,10 @@ footer {
     &:empty {
       display: none;
     }
+
+    .break-value td > & {
+      word-break: break-all;
+    }
   }
 
   .attributes {
@@ -432,10 +432,6 @@ footer {
     }
     &:has(.value:not(:empty)) .name::after {
       content: ':';
-    }
-
-    .value {
-      word-break: break-all;
     }
   }
 
