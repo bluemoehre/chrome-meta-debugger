@@ -36,6 +36,9 @@ let statusBar: HTMLElement
 let resultCount: HTMLElement
 let charCount: HTMLElement
 let statusTimeout: number
+let settingsDialog: HTMLDialogElement
+let settingsDialogOpenButton: HTMLButtonElement
+let settingsDialogCloseButton: HTMLButtonElement
 
 /**
  * Regular Expression for URLs
@@ -442,6 +445,9 @@ document.addEventListener('DOMContentLoaded', () => {
   statusBar = document.getElementById('statusBar') as HTMLElement
   resultCount = document.getElementById('resultCount') as HTMLElement
   charCount = document.getElementById('charCount') as HTMLElement
+  settingsDialog = document.getElementById('settings') as HTMLDialogElement
+  settingsDialogOpenButton = document.querySelector('button[name="settings"]') as HTMLButtonElement
+  settingsDialogCloseButton = settingsDialog.querySelector('button[name="close"]') as HTMLButtonElement
 
   filterForm.addEventListener('reset', () => {
     setTimeout(() => {
@@ -511,6 +517,9 @@ document.addEventListener('DOMContentLoaded', () => {
   metaListColumnWidth1.addEventListener('change', () => {
     updateColumnWidthInputs()
   })
+
+  settingsDialogOpenButton.addEventListener('click', () => settingsDialog.showModal())
+  settingsDialogCloseButton.addEventListener('click', () => settingsDialog.close())
 })
 
 // automatically focus filter when user starts typing

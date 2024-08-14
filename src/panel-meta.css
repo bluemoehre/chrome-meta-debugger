@@ -578,3 +578,48 @@ input[name='columnWidth-1'] {
     }
   }
 }
+
+#settings {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 20px;
+  width: auto;
+  height: auto;
+  color: var(--text-color);
+  background: var(--background-color);
+  border: none;
+
+  &:not([open]) {
+    display: none;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    color: color-mix(in srgb, currentColor, transparent);
+    background-color: transparent;
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+
+    svg {
+      width: var(--icon-size);
+      height: var(--icon-size);
+      fill: currentColor;
+    }
+
+    &:hover {
+      color: currentColor;
+    }
+  }
+}
