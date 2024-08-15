@@ -591,7 +591,10 @@ input[name='columnWidth-1'] {
 
 #settings {
   display: grid;
-  place-items: center;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
   position: fixed;
   top: 0;
   left: 0;
