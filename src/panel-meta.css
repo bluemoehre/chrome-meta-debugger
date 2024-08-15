@@ -36,13 +36,17 @@ body {
   }
 }
 
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
 mark {
   color: var(--mark-color);
   background-color: var(--mark-background-color);
 }
 
-a {
-  text-decoration: inherit;
+dialog {
   color: inherit;
 }
 
@@ -60,6 +64,117 @@ main {
 footer {
   grid-area: footer;
   z-index: 100; /* make shadow visible */
+}
+
+.link {
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+}
+
+.button {
+  display: inline-flex;
+  padding: 3px 12px;
+  white-space: nowrap;
+  color: var(--control-color);
+  background: none;
+  border: 1px solid currentColor;
+  border-radius: 1.5cap;
+
+  &:enabled {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--control-hover-color);
+      background-color: color-mix(in srgb, currentColor, transparent 90%);
+    }
+  }
+  &:disabled {
+    color: color-mix(in srgb, var(--control-color), transparent 30%);
+    border-color: color-mix(in srgb, currentColor, transparent 30%);
+    background-color: color-mix(in srgb, currentColor, transparent 90%);
+  }
+}
+
+.actionButton {
+  display: inline-flex;
+  padding: 4px;
+  white-space: nowrap;
+  color: var(--control-color);
+  background: none;
+  border: none;
+
+  &:enabled {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--control-hover-color);
+    }
+  }
+  &:disabled {
+    color: color-mix(in srgb, var(--control-color), transparent 30%);
+  }
+
+  svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    fill: currentColor;
+  }
+
+  /* special for reload button */
+  &[name='reload'] {
+    &._animate {
+      transition: transform 1s;
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.toggleButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  height: var(--input-height);
+  color: var(--control-color);
+  cursor: pointer;
+
+  &:has(input:enabled) {
+    cursor: pointer;
+  }
+  &:has(input:enabled:hover) {
+    color: var(--control-hover-color);
+  }
+  &:has(input:enabled:checked) {
+    color: var(--control-active-color);
+  }
+  &:has(input:disabled) {
+    color: color-mix(in srgb, var(--control-color), transparent 50%);
+    cursor: auto;
+  }
+
+  input {
+    display: none;
+  }
+
+  svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    fill: currentColor;
+  }
+
+  /*
+   * Hide all children with the corresponding status class 
+   */
+  &:has(input:checked) ._unchecked {
+    display: none;
+  }
+  &:has(input:not(:checked)) ._checked {
+    display: none;
+  }
 }
 
 #filters {
@@ -121,24 +236,10 @@ footer {
 
     button[name='clearFilter'] {
       position: absolute;
-      top: var(--input-padding);
+      top: 0;
       right: var(--input-padding);
-      padding: 4px; /* downscale icon */
       width: var(--clear-button-size);
       height: var(--clear-button-size);
-      color: inherit;
-      background: none;
-      border: none;
-      box-sizing: border-box;
-      cursor: pointer;
-      outline: none;
-
-      svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-        fill: currentColor;
-      }
     }
   }
 
@@ -147,103 +248,6 @@ footer {
     flex: auto;
     align-items: center;
     justify-content: space-between;
-
-    .checkboxButton {
-      display: inline-flex;
-      align-items: center;
-      padding: 0 6px;
-      height: var(--input-height);
-      color: var(--control-color);
-      white-space: nowrap;
-      cursor: pointer;
-      box-sizing: border-box;
-
-      input {
-        display: none;
-      }
-
-      svg {
-        margin-right: 6px;
-        width: var(--icon-size);
-        height: var(--icon-size);
-        fill: currentColor;
-
-        input:checked ~ & {
-          fill: var(--control-active-color);
-
-          .unchecked {
-            fill: none;
-          }
-        }
-
-        input:not(:checked) ~ & {
-          .checked {
-            fill: none;
-          }
-        }
-      }
-
-      span {
-        input:checked ~ & {
-          color: var(--control-active-color);
-        }
-      }
-
-      &:hover {
-        color: var(--control-hover-color);
-      }
-    }
-
-    .toggleButton {
-      display: inline-flex;
-      gap: 4px;
-      align-items: center;
-      padding: 0 6px;
-      height: var(--input-height);
-      color: var(--control-color);
-      cursor: pointer;
-
-      input {
-        display: none;
-      }
-
-      svg {
-        width: var(--icon-size);
-        height: var(--icon-size);
-        fill: currentColor;
-      }
-
-      &:hover {
-        color: var(--control-hover-color);
-      }
-
-      &:has(input:checked) {
-        color: var(--control-active-color);
-      }
-    }
-
-    .actionButton {
-      padding: 4px;
-      height: var(--input-height);
-      color: var(--control-color);
-      background: none;
-      border: none;
-      cursor: pointer;
-      outline: none;
-
-      svg {
-        width: var(--icon-size);
-        height: var(--icon-size);
-        fill: currentColor;
-      }
-
-      &[name='reload'] {
-        &._animate {
-          transition: transform 1s;
-          transform: rotate(360deg);
-        }
-      }
-    }
 
     .group {
       display: flex;
@@ -266,7 +270,7 @@ footer {
         }
 
         @media (max-width: 650px) {
-          .text {
+          .toggleButton .text {
             display: none;
           }
         }
