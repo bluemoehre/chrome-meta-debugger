@@ -177,71 +177,77 @@ footer {
   }
 }
 
-#filters {
-  --input-padding: 2px;
-  --input-height: 24px;
-  --clear-button-size: calc(var(--input-height) - var(--input-padding) * 2);
+.searchInput {
+  --gap: 4px;
 
+  position: relative;
+  display: inline-flex;
+  width: 15%;
+  height: 24px;
+  min-width: 248px;
+  border-bottom: 1px solid var(--filter-border-color);
+
+  input {
+    padding-right: calc(var(--icon-size) + var(--gap));
+    padding-left: calc(var(--icon-size) + var(--gap));
+    width: 100%;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    outline: none;
+    border: none;
+  }
+
+  button[name='clear'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0;
+    width: calc(var(--icon-size) + var(--gap));
+    white-space: nowrap;
+    color: var(--control-color);
+    background: none;
+    border: none;
+    box-sizing: content-box;
+    cursor: pointer;
+
+    svg {
+      fill: currentColor;
+      width: 14px;
+      height: 14px;
+    }
+  }
+  &:has(input:invalid) button[name='clear'] {
+    display: none;
+  }
+
+  .icon {
+    position: absolute;
+    left: 2px;
+    top: 4px;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    fill: var(--control-color);
+    z-index: -1;
+  }
+  &:has(input:valid) .icon {
+    fill: var(--control-active-color);
+  }
+}
+
+#filters {
   display: flex;
+  gap: 4px;
   align-items: center;
   padding: 4px 5px;
   background-color: var(--filter-background-color);
   box-sizing: border-box;
   /* border-bottom: 1px solid var(--status-border-color); */
   filter: drop-shadow(0 0 5px var(--filter-shadow-color));
-
-  .search {
-    position: relative;
-    margin-right: 2px;
-    padding-right: 5px;
-    width: calc(15% - 5px);
-    min-width: 248px;
-
-    .searchIcon {
-      position: absolute;
-      left: var(--input-padding);
-      top: calc(var(--input-height) / 2 - var(--icon-size) / 2);
-      width: var(--icon-size);
-      height: var(--icon-size);
-      fill: var(--control-color);
-    }
-
-    input[type='text'] {
-      padding: var(--input-padding) calc(var(--clear-button-size) + var(--input-padding)) var(--input-padding)
-        calc(var(--icon-size) + var(--input-padding) * 2);
-      width: 100%;
-      height: var(--input-height);
-      font-size: var(--default-font-size);
-      line-height: var(--icon-size);
-      color: inherit;
-      vertical-align: middle;
-      background: none;
-      outline: none;
-      border: none;
-      border-bottom: 1px solid var(--filter-border-color);
-      box-sizing: border-box;
-
-      &:valid {
-        & ~ .searchIcon {
-          fill: var(--control-active-color);
-        }
-      }
-
-      &:invalid {
-        & ~ button[name='clearFilter'] {
-          display: none;
-        }
-      }
-    }
-
-    button[name='clearFilter'] {
-      position: absolute;
-      top: 0;
-      right: var(--input-padding);
-      width: var(--clear-button-size);
-      height: var(--clear-button-size);
-    }
-  }
 
   .options {
     display: flex;

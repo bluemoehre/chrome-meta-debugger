@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
   metaListItemErrorTemplate = getTemplate('templateMetaItemError') as string
   metaListItemWarningTemplate = getTemplate('templateMetaItemWarning') as string
   filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
-  filterClearButton = filterForm.querySelector('button[name="clearFilter"]') as HTMLButtonElement
+  filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
   filterReloadButton = filterForm.querySelector('button[name="reload"]') as HTMLButtonElement
   filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
   filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
