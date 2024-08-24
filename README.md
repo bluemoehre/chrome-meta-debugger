@@ -1,10 +1,24 @@
 # chrome-meta-debugger
 
-This Chrome extension was made to simplify the daily work with webpage meta data (head contents) like
-titles, canonicals, Open Graph data, icons and many more things.
+This Chrome extension streamlines your daily tasks by analyzing and displaying webpage metadata like Titles, Descriptions, Canonicals, Open Graph, Social Sharing Tags and more.
 
-It will add another panel to your Chrome DevTools and allow you to see all information at a glance, nicely grouped
-and in real time.
+## Features
+
+- **Standardized view**: \
+  Displays the document's head elements in a consistent format:\
+  `<title>`, `<meta>`, `<base>`, `<link>`, ~~`<style>`~~, ~~`<script>`~~, ~~`<noscript>`~~
+- **Integrated panel**: \
+  Access the "Meta" panel directly within Chrome DevTools.
+- **Advanced filter**: \
+  Searches across all metadata. Options allow focusing on specific purposes.
+- **Real-Time updates**: \
+  All metadata is dynamically updated in real-time.
+- **Element Inspector**: \
+  Provides direct links into the Chrome Element Inspector Panel.
+- **Duplicate Detection**: \
+  Automatically identifies and highlights duplicate metadata elements.
+- **SEO Analysis**: \
+  Automatically detects and highlights (potential) SEO issues.
 
 ## How to install
 
@@ -46,3 +60,8 @@ If you now open the DevTools a new panel "Meta" should be provided.
 The SVG icons used in this project have been created by Google Inc. and
 are licensed under the [Apache-2.0 License](https://github.com/google/material-design-icons/blob/master/LICENSE).
 Have a look into the [Material Design Icons](https://github.com/google/material-design-icons) for more of these.
+
+---
+
+Created with ❤️ in Hamburg, Germany\
+Updated with 🔥 in Lüneburg, Germany
