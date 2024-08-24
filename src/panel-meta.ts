@@ -158,8 +158,6 @@ function refreshMetaList() {
   // find SEO issues
   if (validateSeoToggle.checked) {
     seoIssues = validateSeo(currentMeta)
-    console.log({seoIssues});
-    
     if (seoIssues.length > 0) {
       issueSummary.push({
         severity: 'error',

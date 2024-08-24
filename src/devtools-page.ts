@@ -6,7 +6,7 @@ chrome.devtools.panels.create('Meta', 'icon128.png', '/panel-meta.html', (panel)
     initialized = true
     console.log('panel rendered')
   })
-  
+
   panel.onSearch.addListener((action, queryString) => {
     console.log('panel search triggered', action, queryString)
     //chrome.runtime.sendMessage({

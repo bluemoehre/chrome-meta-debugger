@@ -4,7 +4,7 @@ import { tagMap } from 'config/meta'
 
 /**
  * Returns a unified list of metadata
-  * @param documentHead The document's head element
+ * @param documentHead The document's head element
  */
 export function getMeta(documentHead: HTMLHeadElement): Meta {
   const elements = documentHead.children

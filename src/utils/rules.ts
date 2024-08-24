@@ -12,8 +12,6 @@ export function validateTags(metadata: Meta, rules = tagRules): TagReport {
       let matchCount = 0
 
       if (item.tag === rule.tag && item.key === rule.key) {
-        console.log('item:', item )
-
         const cleanValue = item.value.trim()
 
         if (cleanValue.length < 1) {

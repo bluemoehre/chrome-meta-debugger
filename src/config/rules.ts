@@ -1,4 +1,4 @@
-import { TagRule } from "types/Rules";
+import { TagRule } from 'types/Rules'
 
 export const tagRules: TagRule[] = [
   {

@@ -1,6 +1,6 @@
-import { TagMap } from "types/Meta"
+import { TagMap } from 'types/Meta'
 
-/** 
+/**
  * standard elements:
  * `<base>`, `<link>`, `<meta>`, `<noscript>`, `<script>`, `<style>`, `<title>`
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#metadata_content
