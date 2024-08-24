@@ -14,6 +14,17 @@ describe('validateSeo', () => {
     },
   ]
 
+  test('should not report optional elements', () => {
+    const rules: SeoRule[] = [
+      {
+        tag: 'meta',
+        key: 'title',
+      },
+    ]
+    const meta: Meta = []
+    expect(validateSeo(meta, rules)).toEqual([])
+  })
+
   test('should report missing elements', () => {
     const meta: Meta = [
       {

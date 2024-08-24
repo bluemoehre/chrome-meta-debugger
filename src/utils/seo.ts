@@ -72,7 +72,7 @@ export function validateSeo(meta: Meta, rules = defaultSeoRules): SeoReport {
       //   })
       // }
     }
-    if (!matchingMeta.length) {
+    if (rule.required && !matchingMeta.length) {
       issues.push({
         severity: 'error',
         message: 'Element is missing',
