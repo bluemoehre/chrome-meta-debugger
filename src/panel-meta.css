@@ -515,7 +515,7 @@ input[name='columnWidth-1'] {
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     position: relative;
-    height: calc(100vh - 60px); /* subtract filter + status bar */
+    height: calc(100vh - 62px); /* subtract filter + status bar + rounding tolerance */
     width: 4px;
     background-color: transparent;
     cursor: ew-resize;
