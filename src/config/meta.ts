@@ -1,11 +1,11 @@
-import { ElementConfig } from "types/Meta"
+import { TagMap } from "types/Meta"
 
 /** 
  * standard elements:
  * `<base>`, `<link>`, `<meta>`, `<noscript>`, `<script>`, `<style>`, `<title>`
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Content_categories#metadata_content
  **/
-export const metaConfig: ElementConfig = {
+export const tagMap: TagMap = {
   TITLE: [
     {
       keyNameFrom: 'tagName',

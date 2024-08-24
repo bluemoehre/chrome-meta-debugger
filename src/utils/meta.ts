@@ -1,6 +1,6 @@
 import { Meta, MetaItem } from 'types/Meta'
 import { IGNORED_DUPLICATE_KEYS } from 'config/defaults'
-import { metaConfig } from 'config/meta'
+import { tagMap } from 'config/meta'
 
 /**
  * Returns a unified list of metadata
@@ -12,7 +12,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
 
   for (let idx = 0; idx < elements.length; idx++) {
     const element = elements[idx]
-    const attributeMappers = metaConfig[element.tagName] ?? []
+    const attributeMappers = tagMap[element.tagName] ?? []
     for (const mapper of attributeMappers) {
       if (mapper.keyAttribute == null || mapper.keyAttribute in element.attributes) {
         let tagName = element.tagName.toLowerCase()
