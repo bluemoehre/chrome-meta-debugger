@@ -1,6 +1,6 @@
-import { Rule } from "types/Rules";
+import { TagRule } from "types/Rules";
 
-export const metaRules: Rule[] = [
+export const tagRules: TagRule[] = [
   {
     tag: 'meta',
     key: 'charset',

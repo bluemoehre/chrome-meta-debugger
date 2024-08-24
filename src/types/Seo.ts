@@ -1,8 +1,6 @@
-import { MetaItem } from 'types/Meta'
+import { MetaIdent, MetaItem } from 'types/Meta'
 
-export type SeoRule = {
-  tag: string
-  key: string
+export type SeoRule = MetaIdent & {
   required?: boolean
   min?: number
   safe?: number

@@ -1,9 +1,9 @@
 import { Meta } from 'types/Meta'
-import { Violation } from 'types/Rules'
-import { metaRules } from 'config/rules'
+import { TagReport } from 'types/Rules'
+import { tagRules } from 'config/rules'
 
-export function validateTags(metadata: Meta, rules = metaRules): Violation[] {
-  const issues: Violation[] = []
+export function validateTags(metadata: Meta, rules = tagRules): TagReport {
+  const issues: TagReport = []
 
   for (let i = 0; i < metadata.length; i++) {
     const item = metadata[i]

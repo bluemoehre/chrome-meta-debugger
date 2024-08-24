@@ -1,11 +1,11 @@
 import { expect, describe, test } from 'vitest'
 import { validateTags } from 'utils/rules'
 import { Meta } from 'types/Meta'
-import { Rule } from 'types/Rules'
+import { TagRule } from 'types/Rules'
 
 describe('validateTags', () => {
   test('should report missing elements', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'title',
         key: 'title',
@@ -33,7 +33,7 @@ describe('validateTags', () => {
   })
 
   test('should report missing values', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'title',
         key: 'title',
@@ -61,7 +61,7 @@ describe('validateTags', () => {
   })
 
   test('should trim values correctly', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'title',
         key: 'title',
@@ -89,7 +89,7 @@ describe('validateTags', () => {
   })
 
   test('should report minimum length issues', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'title',
         key: 'title',
@@ -117,7 +117,7 @@ describe('validateTags', () => {
   })
 
   test('should report maximum length issues', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'title',
         key: 'title',
@@ -145,7 +145,7 @@ describe('validateTags', () => {
   })
 
   test('should report pattern issues', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'meta',
         key: 'charset',
@@ -173,7 +173,7 @@ describe('validateTags', () => {
   })
 
   test('should report order issues', () => {
-    const rules: Rule[] = [
+    const rules: TagRule[] = [
       {
         tag: 'meta',
         key: 'charset',

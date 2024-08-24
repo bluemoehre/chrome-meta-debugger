@@ -1,4 +1,4 @@
-import { SeoRule } from 'utils/seo'
+import { SeoRule } from 'types/Seo'
 
 export const defaultSeoRules: SeoRule[] = [
   {
