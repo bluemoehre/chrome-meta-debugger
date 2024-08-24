@@ -1,8 +1,9 @@
 import { Meta, MetaItem } from 'types/Meta'
+import { SeoReport } from 'types/Seo'
 import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
 import { findDuplicates } from 'utils/meta'
-import { SeoReport, validateSeo } from 'utils/seo'
+import { validateSeo } from 'utils/seo'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -157,6 +158,8 @@ function refreshMetaList() {
   // find SEO issues
   if (validateSeoToggle.checked) {
     seoIssues = validateSeo(currentMeta)
+    console.log({seoIssues});
+    
     if (seoIssues.length > 0) {
       issueSummary.push({
         severity: 'error',

@@ -1,6 +1,7 @@
 import { expect, describe, test } from 'vitest'
-import { SeoReport, SeoRule, validateSeo } from 'utils/seo'
-import { Meta, MetaItem } from 'types/Meta'
+import { Meta } from 'types/Meta'
+import { SeoRule } from 'types/Seo'
+import { validateSeo } from 'utils/seo'
 
 describe('validateSeo', () => {
   const rules: SeoRule[] = [

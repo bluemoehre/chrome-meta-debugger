@@ -1,33 +1,6 @@
-import { Meta, MetaItem } from 'types/Meta'
+import { Meta } from 'types/Meta'
+import { SeoReport } from 'types/Seo'
 import { defaultSeoRules } from 'config/seo'
-
-export type SeoRule = {
-  tag: string
-  key: string
-  required?: boolean
-  min?: number
-  safe?: number
-  max?: number
-
-  // for technical checks
-  // pattern?: { rx: RegExp; message: string }
-
-  // for visual checks
-  // config from Google Search (.MBeuO)
-  // visual?: {
-  //  maxWidth: 512px
-  //  fontFamily: 'Arial, sans-serif',
-  //  fontSize: 20px;
-  //  fontWeight: 400;
-  //}
-}
-
-export type SeoReport = Array<{
-  severity: 'warning' | 'error'
-  message: string
-  rule: SeoRule
-  meta: MetaItem | null
-}>
 
 export function validateSeo(meta: Meta, rules = defaultSeoRules): SeoReport {
   const issues: SeoReport = []
