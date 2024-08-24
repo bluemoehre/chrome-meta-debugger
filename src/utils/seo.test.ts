@@ -18,8 +18,8 @@ describe('validateSeo', () => {
     const meta: Meta = [
       {
         idx: 0,
-        tag: 'some',
-        key: 'some',
+        tag: 'meta',
+        key: 'test',
         value: '',
         valueLink: null,
         attributes: {},
