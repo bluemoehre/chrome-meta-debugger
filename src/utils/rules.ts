@@ -2,15 +2,14 @@ import { Meta } from 'types/Meta'
 import { TagReport } from 'types/Rules'
 import { tagRules } from 'config/rules'
 
-export function validateTags(metadata: Meta, rules = tagRules): TagReport {
+export function validateTags(meta: Meta, rules = tagRules): TagReport {
   const issues: TagReport = []
 
-  for (let i = 0; i < metadata.length; i++) {
-    const item = metadata[i]
-
+  // iterate all meta items and check if each matches the related rules
+  for (let idx = 0; idx < meta.length; idx++) {
+    const item = meta[idx]
+    
     for (const rule of rules) {
-      let matchCount = 0
-
       if (item.tag === rule.tag && item.key === rule.key) {
         const cleanValue = item.value.trim()
 
@@ -50,7 +49,7 @@ export function validateTags(metadata: Meta, rules = tagRules): TagReport {
           const illicitPrevItems = rule.before
           console.log({ illicitPrevItems })
 
-          const currentPrevItems = metadata.slice(0, i)
+          const currentPrevItems = meta.slice(0, idx)
           console.log({ currentPrevItems })
 
           const violatingItems = currentPrevItems.filter((item) =>
@@ -71,7 +70,7 @@ export function validateTags(metadata: Meta, rules = tagRules): TagReport {
         if (rule.after) {
           const illicitNextItems = rule.after
           console.log({ illicitNextItems })
-          const currentNextItems = metadata.slice(i + 1)
+          const currentNextItems = meta.slice(idx + 1)
           console.log({ currentNextItems })
           const violatingItems = currentNextItems.filter((item) =>
             illicitNextItems.some((illicit) => illicit.tag === item.tag && illicit.key === item.key)
@@ -86,18 +85,19 @@ export function validateTags(metadata: Meta, rules = tagRules): TagReport {
             })
           }
         }
-
-        matchCount++
       }
+    }
+  }
 
-      if (rule.required && !matchCount) {
-        issues.push({
-          severity: 'error',
-          message: 'Element is missing',
-          rule,
-          meta: null,
-        })
-      }
+  // find all missing meta items based on the rules
+  for (const rule of rules) {
+    if (rule.required && !meta.find((item) => item.tag === rule.tag && item.key === rule.key)) {
+      issues.push({
+        severity: 'error',
+        message: 'Element is missing',
+        rule,
+        meta: null,
+      })
     }
   }
 

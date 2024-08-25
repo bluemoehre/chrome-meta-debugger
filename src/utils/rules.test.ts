@@ -21,6 +21,14 @@ describe('validateTags', () => {
         valueLink: null,
         attributes: {},
       },
+      {
+        idx: 1,
+        tag: 'meta',
+        key: 'data',
+        value: '',
+        valueLink: null,
+        attributes: {},
+      },
     ]
     expect(validateTags(meta, rules)).toEqual([
       {
