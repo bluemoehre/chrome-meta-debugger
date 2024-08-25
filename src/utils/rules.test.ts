@@ -265,4 +265,51 @@ describe('validateTags', () => {
       },
     ])
   })
+
+  test('should report issues in same order as metadata', () => {
+    const rules: TagRule[] = [
+      {
+        tag: 'meta',
+        key: 'description',
+        min: 30,
+      },
+      {
+        tag: 'meta',
+        key: 'title',
+        min: 30,
+      },
+    ]
+    const meta: Meta = [
+      {
+        idx: 0,
+        tag: 'meta',
+        key: 'title',
+        value: '',
+        valueLink: null,
+        attributes: {},
+      },
+      {
+        idx: 1,
+        tag: 'meta',
+        key: 'description',
+        value: '',
+        valueLink: null,
+        attributes: {},
+      },
+    ]
+    expect(validateTags(meta, rules)).toEqual([
+      {
+        severity: 'error',
+        message: 'Value is empty',
+        rule: rules[1],
+        meta: meta[0],
+      },
+      {
+        severity: 'error',
+        message: 'Value is empty',
+        rule: rules[0],
+        meta: meta[1],
+      },
+    ])
+  })
 })
