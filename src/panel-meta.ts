@@ -1,9 +1,13 @@
 import { Meta, MetaItem } from 'types/Meta'
+import { TagReport } from 'types/Rules'
 import { SeoReport } from 'types/Seo'
 import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
-import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
+import { tagRules } from 'config/rules'
+import { ogRules } from 'config/open-graph'
 import { findDuplicates } from 'utils/meta'
+import { validateTags } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
+import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -138,12 +142,13 @@ function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
   let duplicates: MetaItem[] | undefined
-  let seoIssues: SeoReport | undefined
+  let ogIssues: TagReport = []
+  let seoIssues: SeoReport = []
   const currentItems: Array<string> = []
   const missingItems: Array<string> = []
   const issueSummary = []
 
-  // find duplicates
+  // find metadata issues
   if (validateMetaToggle.checked) {
     duplicates = findDuplicates(currentMeta)
     if (duplicates.length > 0) {
@@ -151,6 +156,17 @@ function refreshMetaList() {
         severity: 'warning',
         message: 'Duplicates found',
         search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
+      })
+    }
+    ogIssues = validateTags(currentMeta, ogRules)
+    if (ogIssues.length > 0) {
+      issueSummary.push({
+        severity: 'error',
+        message: 'Meta check failed',
+        search: ogIssues
+          .filter(({ meta }) => !!meta)
+          .map(({ meta }) => meta!.key)
+          .join(', '),
       })
     }
   }
@@ -183,15 +199,16 @@ function refreshMetaList() {
   )
 
   // add missing items
-  if (seoIssues) {
-    const issues = seoIssues.filter(({ rule, meta }) => rule.required && meta === null)
+  const issues = [...ogIssues, ...seoIssues]
+  if (issues.length > 0) {
+    const missingIssues = issues.filter(({ rule, meta }) => rule.required && meta === null)
 
-    for (const issue of issues) {
+    for (const issue of missingIssues) {
       // if filter is active find matches
       let keyMatches: RegExpMatchArray | null = null
       if (filterString) {
         if (filterFlagSearchKeys.checked) {
-          keyMatches = issue.rule.key.match(filterRx)
+          keyMatches = issue.rule.key?.match(filterRx) ?? null
         }
       }
 
@@ -204,7 +221,7 @@ function refreshMetaList() {
               idx: '',
               class: 'error',
               tag: issue.rule.tag,
-              key: issue.rule.key,
+              key: issue.rule.key ?? '',
               value: '',
               valueLength: '0',
               attributes: '',
@@ -230,9 +247,10 @@ function refreshMetaList() {
       }
     }
 
-    // test if this entry will omitted by filter
+    // do all the complex stuff only if item is shown
     if (!filterString || keyMatches || valueMatches) {
       const hasDuplicate = duplicates?.includes(meta)
+      const ogIssue = ogIssues?.find((issue) => issue.meta === meta)
       const seoIssue = seoIssues?.find((issue) => issue.meta === meta)
 
       // mark text matches and escape value
@@ -248,9 +266,9 @@ function refreshMetaList() {
         : convertMarksToHtml(linkURLs(htmlEncode(markWords(valueText, valueMatches))))
 
       const classNames: Array<string> = []
-      if (seoIssue?.severity === 'error') {
+      if (ogIssue?.severity === 'error' || seoIssue?.severity === 'error') {
         classNames.push('error')
-      } else if (seoIssue?.severity === 'warning' || hasDuplicate) {
+      } else if (ogIssue?.severity === 'warning' || seoIssue?.severity === 'warning' || hasDuplicate) {
         classNames.push('warning')
       }
       // enable word-break if value has a whitespace ratio worse than 1:25
@@ -263,15 +281,21 @@ function refreshMetaList() {
         attributesHtml += replacePlaceholders(metaListItemAttributeTemplate, { name, value })
       }
 
+      // TODO show all issues at once
       let issuesHtml = ''
-      if (seoIssue?.severity === 'error') {
+      if (ogIssue?.severity === 'error') {
+        issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: ogIssue.message })
+      } else if (seoIssue?.severity === 'error') {
         issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: seoIssue.message })
+      } else if (ogIssue?.severity === 'warning') {
+        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: ogIssue.message })
       } else if (seoIssue?.severity === 'warning') {
         issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: seoIssue.message })
       } else if (hasDuplicate) {
         issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: 'Element is duplicate' })
       }
 
+      // TODO: migrate HTML to template / stylesheet
       let valueIssueHtml = ''
       if (seoIssue?.rule.min && meta.value.length < seoIssue.rule.min) {
         valueIssueHtml = `<small style="margin-left: 4px; font-weight:600; color:var(--warning-color)">${
