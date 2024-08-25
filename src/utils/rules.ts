@@ -47,15 +47,10 @@ export function validateTags(meta: Meta, rules = tagRules): TagReport {
 
         if (rule.before) {
           const illicitPrevItems = rule.before
-          console.log({ illicitPrevItems })
-
           const currentPrevItems = meta.slice(0, idx)
-          console.log({ currentPrevItems })
-
           const violatingItems = currentPrevItems.filter((item) =>
             illicitPrevItems.some((illicit) => illicit.tag === item.tag && illicit.key === item.key)
           )
-          console.log({ violatingItems })
 
           for (const { tag, key } of violatingItems) {
             issues.push({
@@ -69,13 +64,10 @@ export function validateTags(meta: Meta, rules = tagRules): TagReport {
 
         if (rule.after) {
           const illicitNextItems = rule.after
-          console.log({ illicitNextItems })
           const currentNextItems = meta.slice(idx + 1)
-          console.log({ currentNextItems })
           const violatingItems = currentNextItems.filter((item) =>
             illicitNextItems.some((illicit) => illicit.tag === item.tag && illicit.key === item.key)
           )
-          console.log({ violatingItems })
           for (const { tag, key } of violatingItems) {
             issues.push({
               severity: 'error',
