@@ -142,11 +142,27 @@ function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
   let duplicates: MetaItem[] | undefined
+  let codeIssues: TagReport = []
   let ogIssues: TagReport = []
   let seoIssues: SeoReport = []
   const currentItems: Array<string> = []
   const missingItems: Array<string> = []
   const issueSummary = []
+
+  // find code issues
+  if (validateCodeToggle.checked) {
+    codeIssues = validateTags(currentMeta, tagRules)
+    if (codeIssues.length > 0) {
+      issueSummary.push({
+        severity: 'error',
+        message: 'Code check failed',
+        search: codeIssues
+          .filter(({ meta }) => !!meta)
+          .map(({ meta }) => meta!.key)
+          .join(', '),
+      })
+    }
+  }
 
   // find metadata issues
   if (validateMetaToggle.checked) {
@@ -199,7 +215,7 @@ function refreshMetaList() {
   )
 
   // add missing items
-  const issues = [...ogIssues, ...seoIssues]
+  const issues = [...codeIssues, ...ogIssues, ...seoIssues]
   if (issues.length > 0) {
     const missingIssues = issues.filter(({ rule, meta }) => rule.required && meta === null)
 
@@ -252,6 +268,7 @@ function refreshMetaList() {
       const hasDuplicate = duplicates?.includes(meta)
       const ogIssue = ogIssues?.find((issue) => issue.meta === meta)
       const seoIssue = seoIssues?.find((issue) => issue.meta === meta)
+      const codeIssue = codeIssues?.find((issue) => issue.meta === meta)
 
       // mark text matches and escape value
       const keyHtml = convertMarksToHtml(htmlEncode(markWords(meta.key, keyMatches)))
@@ -266,9 +283,14 @@ function refreshMetaList() {
         : convertMarksToHtml(linkURLs(htmlEncode(markWords(valueText, valueMatches))))
 
       const classNames: Array<string> = []
-      if (ogIssue?.severity === 'error' || seoIssue?.severity === 'error') {
+      if (codeIssue?.severity === 'error' || ogIssue?.severity === 'error' || seoIssue?.severity === 'error') {
         classNames.push('error')
-      } else if (ogIssue?.severity === 'warning' || seoIssue?.severity === 'warning' || hasDuplicate) {
+      } else if (
+        codeIssue?.severity === 'warning' ||
+        ogIssue?.severity === 'warning' ||
+        seoIssue?.severity === 'warning' ||
+        hasDuplicate
+      ) {
         classNames.push('warning')
       }
       // enable word-break if value has a whitespace ratio worse than 1:25
@@ -283,10 +305,14 @@ function refreshMetaList() {
 
       // TODO show all issues at once
       let issuesHtml = ''
-      if (ogIssue?.severity === 'error') {
+      if (codeIssue?.severity === 'error') {
+        issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: codeIssue.message })
+      } else if (ogIssue?.severity === 'error') {
         issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: ogIssue.message })
       } else if (seoIssue?.severity === 'error') {
         issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: seoIssue.message })
+      } else if (codeIssue?.severity === 'warning') {
+        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: codeIssue.message })
       } else if (ogIssue?.severity === 'warning') {
         issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: ogIssue.message })
       } else if (seoIssue?.severity === 'warning') {
