@@ -1,5 +1,5 @@
 import { Meta } from 'types/Meta'
-import { TagReport } from 'types/Rules'
+import { TagReport } from 'types/Reports'
 import { tagRules } from 'config/rules'
 
 export function validateTags(meta: Meta, rules = tagRules): TagReport {
@@ -8,7 +8,7 @@ export function validateTags(meta: Meta, rules = tagRules): TagReport {
   // iterate all meta items and check if each matches the related rules
   for (let idx = 0; idx < meta.length; idx++) {
     const item = meta[idx]
-    
+
     for (const rule of rules) {
       if (item.tag === rule.tag && item.key === rule.key) {
         const cleanValue = item.value.trim()

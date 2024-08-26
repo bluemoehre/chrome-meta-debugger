@@ -1,5 +1,5 @@
 import { Meta } from 'types/Meta'
-import { SeoReport } from 'types/Seo'
+import { SeoReport } from 'types/Reports'
 import { defaultSeoRules } from 'config/seo'
 
 export function validateSeo(meta: Meta, rules = defaultSeoRules): SeoReport {

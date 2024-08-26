@@ -1,15 +1,15 @@
-import { TagRule } from "types/Rules";
+import { MetaRule } from 'types/Rules'
 
 const urlPattern = { rx: /^https?:\/\//, message: 'Value must be a fully qualified URL starting with a protocol' }
 
-export const ogRules: TagRule[] = [
+export const ogRules: MetaRule[] = [
   /** Canonical */
   {
     tag: 'meta',
     key: 'og:url',
     pattern: urlPattern,
   },
-  
+
   /** Image */
   {
     tag: 'meta',
@@ -26,7 +26,7 @@ export const ogRules: TagRule[] = [
     key: 'og:image:secure_url',
     pattern: urlPattern,
   },
-  
+
   /** Audio */
   {
     tag: 'meta',
