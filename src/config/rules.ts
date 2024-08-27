@@ -1,11 +1,15 @@
-import { TagRule } from 'types/Rules'
+import { MetaRule } from 'types/Rules'
 
-export const tagRules: TagRule[] = [
+export const tagRules: MetaRule[] = [
+  {
+    tag: 'base',
+    key: 'base',
+    beforeAll: [{ tag: 'link' }, { tag: 'script' }],
+  },
   {
     tag: 'meta',
     key: 'charset',
-    pattern: { rx: /^utf-8$/i, message: 'Value must be an ASCII case-insensitive match for the string "utf-8"' },
-    before: [
+    beforeAll: [
       { tag: 'title' },
       { tag: 'meta' },
       { tag: 'base' },
@@ -16,15 +20,14 @@ export const tagRules: TagRule[] = [
     ],
   },
   {
-    tag: 'base',
-    key: 'base',
-    before: [{ tag: 'link' }, { tag: 'script' }],
+    tag: 'meta',
+    key: 'charset',
+    pattern: { rx: /utf-8/i, message: 'Value must be an ASCII case-insensitive match for the string "utf-8"' },
   },
   {
     tag: 'title',
     key: 'title',
     required: true,
-    min: 0, // by specs it can be empty
     max: 255,
   },
 ]

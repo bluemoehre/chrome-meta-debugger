@@ -1,31 +1,44 @@
-import { Optional } from 'types/utils'
-import { Meta, MetaIdent, MetaItem } from 'types/Meta'
-import { ErrorMessage } from 'types/Reports'
+import { Meta, MetaIdent, MetaItem, Tag, TagIdent } from 'types/Meta'
+import { Problem, ProblemMessage } from 'types/Reports'
 
-type TagIdent = Optional<MetaIdent, 'key'>
+/** Rules identified by a unique ID */
+export type RuleSet = { [id: string]: Rule }
 
-export type TagRule = TagIdent & {
+export type Rule = {
+  /** Tag name */
+  tag: Tag
+  /** Meta key */
+  key?: string
+  /** Mark item as mandatory */
   required?: boolean
-  min?: number
-  max?: number
-  pattern?: { rx: RegExp; message: ErrorMessage }
-  before?: TagIdent[]
-  after?: TagIdent[]
-  testFn?: () => {}
+  /** Custom test function */
+  test?: (item: MetaItem, meta: Meta, index: number) => Problem | true
 }
 
-export type MetaRule = MetaIdent & {
-  required?: boolean
+export type MetaRule = Rule & {
+  /** Minimum value length */
   min?: number
+  /** Maximum value length */
   max?: number
-  pattern?: { rx: RegExp; message: ErrorMessage }
-  testFn?: (item: MetaItem, meta: Meta, index: number) => ErrorMessage | undefined
+  /** Must match Regex */
+  pattern?: { rx: RegExp; message: ProblemMessage }
+  /** Must directly follow any of the given identities */
+  followsAny?: Array<MetaIdent | TagIdent>
+  /** Must directly precede any of the given identities */
+  precedesAny?: Array<MetaIdent | TagIdent>
+  /** Must be somewhere after all of the given identities */
+  afterAll?: Array<MetaIdent | TagIdent>
+  /** Must be somewhere before all of the given identities */
+  beforeAll?: Array<MetaIdent | TagIdent>
 }
 
-export type SeoRule = MetaIdent & {
-  required?: boolean
+export type SeoRule = Rule & {
+  key: string
+  /** Minimum recommended value length */
   min?: number
+  /** Maximum safe value value length */
   safe?: number
+  /** Maximum recommended value value length */
   max?: number
 
   // TODO: add visual/render checks

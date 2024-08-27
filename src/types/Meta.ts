@@ -14,7 +14,10 @@ export type TagAttributeConfig = {
   valueAttribute: string | null
 }
 
-/** Combination that represents the unique identity of the document's metadata */
+/** Combination that represents the identity of a document's head element */
+export type TagIdent = { tag: Tag; key?: undefined }
+
+/** Combination that represents the identity of a document's metadata item */
 export type MetaIdent = { tag: Tag; key: string }
 
 /** Meta list item to display in the DevTools panel */

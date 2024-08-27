@@ -1,19 +1,20 @@
 import { MetaItem } from 'types/Meta'
-import { MetaRule, SeoRule, TagRule } from 'types/Rules'
+import { MetaRule, SeoRule, Rule } from 'types/Rules'
 
-export type ErrorSeverity = 'warning' | 'error'
-export type ErrorMessage = string
+export type Problem = { severity: ProblemSeverity; message: ProblemMessage }
+export type ProblemSeverity = 'warning' | 'error'
+export type ProblemMessage = string
 
-export type TagReport = Array<{
-  severity: ErrorSeverity
-  message: ErrorMessage
-  rule: TagRule
+export type Report = Array<{
+  severity: ProblemSeverity
+  message: ProblemMessage
+  rule: Rule
   meta: MetaItem | null
 }>
 
 export type MetaReport = Array<{
-  severity: ErrorSeverity
-  message: ErrorMessage
+  severity: ProblemSeverity
+  message: ProblemMessage
   rule: MetaRule
   meta: MetaItem | null
 }>

@@ -1,9 +1,9 @@
 import { Meta } from 'types/Meta'
-import { TagReport } from 'types/Reports'
-import { tagRules } from 'config/rules'
+import { MetaReport } from 'types/Reports'
+import { MetaRule } from 'types/Rules'
 
-export function validateTags(meta: Meta, rules = tagRules): TagReport {
-  const issues: TagReport = []
+export function validateMeta(meta: Meta, rules: MetaRule[]): MetaReport {
+  const issues: MetaReport = []
 
   // iterate all meta items and check if each matches the related rules
   for (let idx = 0; idx < meta.length; idx++) {
@@ -45,11 +45,40 @@ export function validateTags(meta: Meta, rules = tagRules): TagReport {
           })
         }
 
-        if (rule.before) {
-          const illicitPrevItems = rule.before
-          const currentPrevItems = meta.slice(0, idx)
-          const violatingItems = currentPrevItems.filter((item) =>
-            illicitPrevItems.some((illicit) => illicit.tag === item.tag && illicit.key === item.key)
+        if (rule.precedesAny) {
+          const nextItem = meta[idx + 1]
+          const mandatoryNextItems = rule.precedesAny
+          if (!nextItem || !mandatoryNextItems.some(({ tag, key }) => tag === nextItem.tag && key === nextItem.key))
+            issues.push({
+              severity: 'error',
+              message: `Element must precede one of ${mandatoryNextItems
+                .map((item) => `${item.tag}:${item.key}`)
+                .join(', ')}`,
+              rule,
+              meta: item,
+            })
+        }
+
+        if (rule.followsAny) {
+          const prevItem = meta[idx - 1]
+          const mandatoryPrevItems = rule.followsAny
+
+          if (!prevItem || !mandatoryPrevItems.some(({ tag, key }) => tag === prevItem.tag && key === prevItem.key))
+            issues.push({
+              severity: 'error',
+              message: `Element must follow one of ${mandatoryPrevItems
+                .map((item) => `${item.tag}:${item.key}`)
+                .join(', ')}`,
+              rule,
+              meta: item,
+            })
+        }
+
+        if (rule.beforeAll) {
+          const prevItems = meta.slice(0, idx)
+          const illegalPrevItems = rule.beforeAll
+          const violatingItems = prevItems.filter((item) =>
+            illegalPrevItems.some(({ tag, key }) => tag === item.tag && key === item.key)
           )
 
           for (const { tag, key } of violatingItems) {
@@ -62,11 +91,11 @@ export function validateTags(meta: Meta, rules = tagRules): TagReport {
           }
         }
 
-        if (rule.after) {
-          const illicitNextItems = rule.after
-          const currentNextItems = meta.slice(idx + 1)
-          const violatingItems = currentNextItems.filter((item) =>
-            illicitNextItems.some((illicit) => illicit.tag === item.tag && illicit.key === item.key)
+        if (rule.afterAll) {
+          const nextItems = meta.slice(idx + 1)
+          const illegalNextItems = rule.afterAll
+          const violatingItems = nextItems.filter((item) =>
+            illegalNextItems.some(({ tag, key }) => tag === item.tag && key === item.key)
           )
           for (const { tag, key } of violatingItems) {
             issues.push({
@@ -75,6 +104,13 @@ export function validateTags(meta: Meta, rules = tagRules): TagReport {
               rule,
               meta: item,
             })
+          }
+        }
+
+        if (rule.test) {
+          const result = rule.test(item, meta, idx)
+          if (result !== true) {
+            issues.push({ ...result, rule, meta: item })
           }
         }
       }

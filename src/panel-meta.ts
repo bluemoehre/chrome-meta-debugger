@@ -1,11 +1,10 @@
 import { Meta, MetaItem } from 'types/Meta'
-import { TagReport } from 'types/Rules'
-import { SeoReport } from 'types/Seo'
+import { MetaReport, SeoReport } from 'types/Reports'
 import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { tagRules } from 'config/rules'
 import { ogRules } from 'config/open-graph'
 import { findDuplicates } from 'utils/meta'
-import { validateTags } from 'utils/rules'
+import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
 import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
 
@@ -142,8 +141,8 @@ function refreshMetaList() {
   let filterString: string
   let filterRx: RegExp
   let duplicates: MetaItem[] | undefined
-  let codeIssues: TagReport = []
-  let ogIssues: TagReport = []
+  let codeIssues: MetaReport = []
+  let ogIssues: MetaReport = []
   let seoIssues: SeoReport = []
   const currentItems: Array<string> = []
   const missingItems: Array<string> = []
@@ -151,7 +150,7 @@ function refreshMetaList() {
 
   // find code issues
   if (validateCodeToggle.checked) {
-    codeIssues = validateTags(currentMeta, tagRules)
+    codeIssues = validateMeta(currentMeta, tagRules)
     if (codeIssues.length > 0) {
       issueSummary.push({
         severity: 'error',
@@ -162,10 +161,6 @@ function refreshMetaList() {
           .join(', '),
       })
     }
-  }
-
-  // find metadata issues
-  if (validateMetaToggle.checked) {
     duplicates = findDuplicates(currentMeta)
     if (duplicates.length > 0) {
       issueSummary.push({
@@ -174,7 +169,11 @@ function refreshMetaList() {
         search: Array.from(new Set(duplicates.map(({ key }) => key))).join(', '),
       })
     }
-    ogIssues = validateTags(currentMeta, ogRules)
+  }
+
+  // find metadata issues
+  if (validateMetaToggle.checked) {
+    ogIssues = validateMeta(currentMeta, ogRules)
     if (ogIssues.length > 0) {
       issueSummary.push({
         severity: 'error',
