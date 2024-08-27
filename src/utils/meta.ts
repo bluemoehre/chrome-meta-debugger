@@ -1,4 +1,4 @@
-import { Meta, MetaItem } from 'types/Meta'
+import { Meta, MetaItem, Tag } from 'types/Meta'
 import { IGNORED_DUPLICATE_KEYS } from 'config/defaults'
 import { tagMap } from 'config/meta'
 
@@ -15,7 +15,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
     const attributeMappers = tagMap[element.tagName] ?? []
     for (const mapper of attributeMappers) {
       if (mapper.keyAttribute == null || mapper.keyAttribute in element.attributes) {
-        let tagName = element.tagName.toLowerCase()
+        let tagName = element.tagName.toLowerCase() as Tag
         let key: MetaItem['key']
         let value: MetaItem['value']
 

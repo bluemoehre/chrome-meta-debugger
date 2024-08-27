@@ -1,6 +1,6 @@
 import { expect, describe, test } from 'vitest'
 import { Meta } from 'types/Meta'
-import { SeoRule } from 'types/Seo'
+import { SeoRule } from 'types/Rules'
 import { validateSeo } from 'utils/seo'
 
 describe('validateSeo', () => {
