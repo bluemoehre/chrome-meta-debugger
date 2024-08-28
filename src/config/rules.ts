@@ -20,6 +20,19 @@ export const tagRules: MetaRule[] = [
           },
   },
   {
+    tag: 'meta',
+    key: 'content-type',
+    pattern: { rx: /text\/html; charset=utf-8/, message: 'Value must be "text/html; charset=utf-8"' },
+    test: (item, meta, idx) =>
+      meta[0] === item
+        ? true
+        : {
+            severity: 'warning',
+            message:
+              'Charset declaration should be the very first element, as it must be within the first 1024 bytes of the document',
+          },
+  },
+  {
     tag: 'title',
     key: 'title',
     required: true,
