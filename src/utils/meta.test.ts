@@ -33,7 +33,7 @@ describe('getMeta', () => {
       },
       {
         idx: 1,
-        key: 'X-UA-Compatible',
+        key: 'x-ua-compatible',
         tag: 'meta',
         value: 'IE=edge',
         valueLink: null,

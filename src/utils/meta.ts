@@ -22,7 +22,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
         // determine key
         switch (mapper.keyNameFrom) {
           case 'tagName':
-            key = tagName
+            key = tagName.toLowerCase()
             break
           case 'tagValue':
             key = element.textContent ?? ''
@@ -44,7 +44,7 @@ export function getMeta(documentHead: HTMLHeadElement): Meta {
 
         meta.push({
           idx,
-          key,
+          key: key.toLowerCase(),
           tag: tagName,
           value,
           valueLink: 'href' in element ? (element.href as string) : null,
