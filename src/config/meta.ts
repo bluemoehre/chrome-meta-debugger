@@ -29,6 +29,7 @@ export const tagMap: TagMap = {
       keyAttribute: 'property',
       valueAttribute: 'content',
     },
+    // TODO: consider mapping HTTP equivalent pragmas to a virtual "HTTP" tag, because code validation is applied here instead of meta validation. This may confuse users.
     {
       keyNameFrom: 'attrValue',
       keyAttribute: 'http-equiv',
