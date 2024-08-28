@@ -9,20 +9,15 @@ export const tagRules: MetaRule[] = [
   {
     tag: 'meta',
     key: 'charset',
-    beforeAll: [
-      { tag: 'title' },
-      { tag: 'meta' },
-      { tag: 'base' },
-      { tag: 'link' },
-      { tag: 'style' },
-      { tag: 'script' },
-      { tag: 'noscript' },
-    ],
-  },
-  {
-    tag: 'meta',
-    key: 'charset',
     pattern: { rx: /utf-8/i, message: 'Value must be an ASCII case-insensitive match for the string "utf-8"' },
+    test: (item, meta, idx) =>
+      meta[0] === item
+        ? true
+        : {
+            severity: 'warning',
+            message:
+              'Charset declaration should be the very first element, as it must be within the first 1024 bytes of the document',
+          },
   },
   {
     tag: 'title',
