@@ -18,7 +18,7 @@ export function replacePlaceholders(html: string, data: { [key: string]: string 
     if (data.hasOwnProperty(placeholder)) {
       // escape regex special characters
       placeholder = placeholder.replace(/([.*+?\^=!:${}()|\[\]\/\\])/g, '\\$1')
-      replacement = escape ? htmlEncode(data[placeholder]) : data[placeholder]
+      replacement = escape ? htmlEncode(data[placeholder]).replaceAll('"','&quot;') : data[placeholder]
       html = html.replace(new RegExp('__' + placeholder + '__', 'g'), replacement)
     }
   }
