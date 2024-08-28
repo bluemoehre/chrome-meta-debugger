@@ -212,22 +212,22 @@ describe('validateMeta', () => {
       {
         tag: 'meta',
         key: 'charset',
-        beforeAll: [{ tag: 'title', key: 'title' }],
+        beforeAll: [{ tag: 'title' }],
       },
       {
         tag: 'title',
         key: 'title',
-        afterAll: [{ tag: 'meta', key: 'charset' }],
+        afterAll: [{ tag: 'meta' }],
       },
       {
         tag: 'script',
         key: 'javascript',
-        afterAll: [{ tag: 'style', key: 'stylesheet' }],
+        afterAll: [{ tag: 'style' }],
       },
       {
         tag: 'style',
         key: 'stylesheet',
-        beforeAll: [{ tag: 'script', key: 'javascript' }],
+        beforeAll: [{ tag: 'script' }],
       },
     ]
     const meta: Meta = [

@@ -48,7 +48,10 @@ export function validateMeta(meta: Meta, rules: MetaRule[]): MetaReport {
         if (rule.precedesAny) {
           const nextItem = meta[idx + 1]
           const mandatoryNextItems = rule.precedesAny
-          if (!nextItem || !mandatoryNextItems.some(({ tag, key }) => tag === nextItem.tag && key === nextItem.key))
+          if (
+            !nextItem ||
+            !mandatoryNextItems.some(({ tag, key }) => tag === nextItem.tag && (!key || key === nextItem.key))
+          )
             issues.push({
               severity: 'error',
               message: `Element must precede one of ${mandatoryNextItems
@@ -63,7 +66,10 @@ export function validateMeta(meta: Meta, rules: MetaRule[]): MetaReport {
           const prevItem = meta[idx - 1]
           const mandatoryPrevItems = rule.followsAny
 
-          if (!prevItem || !mandatoryPrevItems.some(({ tag, key }) => tag === prevItem.tag && key === prevItem.key))
+          if (
+            !prevItem ||
+            !mandatoryPrevItems.some(({ tag, key }) => tag === prevItem.tag && (!key || key === prevItem.key))
+          )
             issues.push({
               severity: 'error',
               message: `Element must follow one of ${mandatoryPrevItems
@@ -78,7 +84,7 @@ export function validateMeta(meta: Meta, rules: MetaRule[]): MetaReport {
           const prevItems = meta.slice(0, idx)
           const illegalPrevItems = rule.beforeAll
           const violatingItems = prevItems.filter((item) =>
-            illegalPrevItems.some(({ tag, key }) => tag === item.tag && key === item.key)
+            illegalPrevItems.some(({ tag, key }) => tag === item.tag && (!key || key === item.key))
           )
 
           for (const { tag, key } of violatingItems) {
@@ -95,7 +101,7 @@ export function validateMeta(meta: Meta, rules: MetaRule[]): MetaReport {
           const nextItems = meta.slice(idx + 1)
           const illegalNextItems = rule.afterAll
           const violatingItems = nextItems.filter((item) =>
-            illegalNextItems.some(({ tag, key }) => tag === item.tag && key === item.key)
+            illegalNextItems.some(({ tag, key }) => tag === item.tag && (!key || key === item.key))
           )
           for (const { tag, key } of violatingItems) {
             issues.push({
