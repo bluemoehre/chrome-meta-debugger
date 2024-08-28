@@ -33,6 +33,11 @@ export const tagRules: MetaRule[] = [
           },
   },
   {
+    tag: 'meta',
+    key: 'x-ua-compatible',
+    pattern: { rx: /IE=edge/, message: 'Value must be "IE=edge"' },
+  },
+  {
     tag: 'title',
     key: 'title',
     required: true,
