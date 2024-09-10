@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Meta Debugger",
   "description": "Debug the head elements of any webpage in a comfortable way.",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "author": "bluemoehre",
 
   "permissions": [

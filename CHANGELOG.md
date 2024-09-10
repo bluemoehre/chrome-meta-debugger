@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.0.0
+
+- adapt new Chrome DevTools color theme
+- add value length display to status bar
+- improve panel responsiveness
+- make columns resizable
+- add new code & meta validation system
+- merge duplicate detection into general code validation
+- add HTML5 checks to general code validation
+- add basic OpenGraph validation (beta)
+- add basic SEO validation (beta)
+- add settings view (beta)
+
 ## v0.9.1
 
 - fix value links
