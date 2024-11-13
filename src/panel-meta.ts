@@ -31,8 +31,12 @@ let metaList: HTMLElement
 let metaListColumnWidth1: HTMLInputElement
 let metaListItemTemplate: string
 let metaListItemAttributeTemplate: string
+let metaListItemIssuesTemplate: string
 let metaListItemErrorTemplate: string
 let metaListItemWarningTemplate: string
+let metaListItemErrorToggleTemplate: string
+let metaListItemWarningToggleTemplate: string
+let issuesList: HTMLElement
 let notificationList: HTMLElement
 let notificationListItemWarningTemplate: string
 let notificationListItemErrorTemplate: string
@@ -146,6 +150,7 @@ function refreshMetaList() {
   let seoIssues: SeoReport = []
   const currentItems: Array<string> = []
   const missingItems: Array<string> = []
+  const issueTooltips: Array<string> = []
   const issueSummary = []
 
   // find code issues
@@ -218,7 +223,11 @@ function refreshMetaList() {
   if (issues.length > 0) {
     const missingIssues = issues.filter(({ rule, meta }) => rule.required && meta === null)
 
+    // missing items don't have valid indexes, so negative numbers are used
+    let index = 1
     for (const issue of missingIssues) {
+      index--
+
       // if filter is active find matches
       let keyMatches: RegExpMatchArray | null = null
       if (filterString) {
@@ -233,23 +242,36 @@ function refreshMetaList() {
           replacePlaceholders(
             metaListItemTemplate,
             {
-              idx: '',
+              idx: index.toString(),
               class: 'error',
               tag: issue.rule.tag,
               key: issue.rule.key ?? '',
               value: '',
               valueLength: '0',
               attributes: '',
-              issues: replacePlaceholders(metaListItemErrorTemplate, { message: issue.message }),
+              issues: replacePlaceholders(metaListItemErrorToggleTemplate, { idx: index.toString() }),
             },
             false
           )
         )
       }
+
+      issueTooltips.push(
+        replacePlaceholders(
+          metaListItemIssuesTemplate,
+          {
+            idx: index.toString(),
+            children: replacePlaceholders(metaListItemErrorTemplate, { message: issue.message }),
+          },
+          false
+        )
+      )
     }
   }
 
   for (const meta of currentMeta) {
+    const index = meta.idx.toString()
+
     // if filter is active find matches
     let keyMatches: RegExpMatchArray | null = null
     let valueMatches: RegExpMatchArray | null = null
@@ -281,9 +303,12 @@ function refreshMetaList() {
           )}</a>`
         : convertMarksToHtml(linkURLs(htmlEncode(markWords(valueText, valueMatches))))
 
+      // find highest severity
+      let issueToggleButtonHtml = ''
       const classNames: Array<string> = []
       if (codeIssue?.severity === 'error' || ogIssue?.severity === 'error' || seoIssue?.severity === 'error') {
         classNames.push('error')
+        issueToggleButtonHtml = replacePlaceholders(metaListItemErrorToggleTemplate, { idx: index })
       } else if (
         codeIssue?.severity === 'warning' ||
         ogIssue?.severity === 'warning' ||
@@ -291,6 +316,7 @@ function refreshMetaList() {
         hasDuplicate
       ) {
         classNames.push('warning')
+        issueToggleButtonHtml = replacePlaceholders(metaListItemWarningToggleTemplate, { idx: index })
       }
       // enable word-break if value has a whitespace ratio worse than 1:25
       if ((valueText.match(/([\s]+)/g) || []).length < valueText.length / 25) {
@@ -302,22 +328,46 @@ function refreshMetaList() {
         attributesHtml += replacePlaceholders(metaListItemAttributeTemplate, { name, value })
       }
 
-      // TODO show all issues at once
-      let issuesHtml = ''
-      if (codeIssue?.severity === 'error') {
-        issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: codeIssue.message })
-      } else if (ogIssue?.severity === 'error') {
-        issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: ogIssue.message })
-      } else if (seoIssue?.severity === 'error') {
-        issuesHtml = replacePlaceholders(metaListItemErrorTemplate, { message: seoIssue.message })
-      } else if (codeIssue?.severity === 'warning') {
-        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: codeIssue.message })
-      } else if (ogIssue?.severity === 'warning') {
-        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: ogIssue.message })
-      } else if (seoIssue?.severity === 'warning') {
-        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: seoIssue.message })
-      } else if (hasDuplicate) {
-        issuesHtml = replacePlaceholders(metaListItemWarningTemplate, { message: 'Element is duplicate' })
+      let issues: Array<string> = []
+
+      // render code issues
+      if (codeIssue) {
+        issues.push(
+          replacePlaceholders(
+            codeIssue.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate,
+            { idx: index, rule: 'Code', message: codeIssue.message }
+          )
+        )
+      }
+      if (hasDuplicate) {
+        issues.push(
+          replacePlaceholders(metaListItemWarningTemplate, {
+            idx: index,
+            rule: 'Code',
+            message: 'Element is duplicate',
+          })
+        )
+      }
+
+      // render og issues
+      if (ogIssue) {
+        issues.push(
+          replacePlaceholders(ogIssue.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate, {
+            idx: index,
+            rule: 'OpenGraph',
+            message: ogIssue.message,
+          })
+        )
+      }
+
+      // render seo issues
+      if (seoIssue) {
+        issues.push(
+          replacePlaceholders(
+            seoIssue?.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate,
+            { idx: index, rule: 'SEO', message: seoIssue.message }
+          )
+        )
       }
 
       // TODO: migrate HTML to template / stylesheet
@@ -342,18 +392,24 @@ function refreshMetaList() {
         replacePlaceholders(
           metaListItemTemplate,
           {
-            idx: meta.idx.toString(),
+            idx: index,
             class: classNames.join(' '),
             tag: meta.tag,
             key: keyHtml,
             value: valueHtml + valueIssueHtml,
             valueLength: valueText.length.toString(),
             attributes: attributesHtml,
-            issues: issuesHtml,
+            issues: issueToggleButtonHtml,
           },
           false
         )
       )
+
+      if (issues.length) {
+        issueTooltips.push(
+          replacePlaceholders(metaListItemIssuesTemplate, { idx: index, children: issues.join('') }, false)
+        )
+      }
     }
   }
 
@@ -372,6 +428,7 @@ function refreshMetaList() {
 
   notificationList.innerHTML = notificationItems.join('')
   metaList.innerHTML = missingItems.join('') + currentItems.join('')
+  issuesList.innerHTML = issueTooltips.join('')
   resultCount.innerHTML =
     // existing count
     (currentItems.length < currentMeta.length
@@ -479,6 +536,9 @@ document.addEventListener('DOMContentLoaded', () => {
   metaListColumnWidth1 = document.querySelector('input[name="columnWidth-1"]') as HTMLInputElement
   metaListItemTemplate = getTemplate('templateMetaItem') as string
   metaListItemAttributeTemplate = getTemplate('templateMetaItemAttribute') as string
+  metaListItemIssuesTemplate = getTemplate('templateMetaItemIssues') as string
+  metaListItemErrorToggleTemplate = getTemplate('templateMetaItemErrorToggle') as string
+  metaListItemWarningToggleTemplate = getTemplate('templateMetaItemWarningToggle') as string
   metaListItemErrorTemplate = getTemplate('templateMetaItemError') as string
   metaListItemWarningTemplate = getTemplate('templateMetaItemWarning') as string
   filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
@@ -489,6 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
   validateCodeToggle = filterForm.querySelector('input[name="validateCode"]') as HTMLInputElement
   validateMetaToggle = filterForm.querySelector('input[name="validateMeta"]') as HTMLInputElement
   validateSeoToggle = filterForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
+  issuesList = document.getElementById('issues') as HTMLElement
   notificationList = document.getElementById('notifications') as HTMLElement
   notificationListItemErrorTemplate = getTemplate('templateNotificationItemError') as string
   notificationListItemWarningTemplate = getTemplate('templateNotificationItemWarning') as string
