@@ -1,8 +1,9 @@
 import { Meta, MetaItem } from 'types/Meta'
 import { MetaReport, SeoReport } from 'types/Reports'
 import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
-import { tagRules } from 'config/rules/tags'
 import { ogRules } from 'config/rules/open-graph'
+import { tagRules } from 'config/rules/tags'
+import { convertMarksToHtml, markWords, stripWordMarks } from 'utils/marker'
 import { findDuplicates } from 'utils/meta'
 import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
@@ -91,11 +92,6 @@ const rxUrl = new RegExp(
 );
 
 /**
- * Regular Expression to find all mark chars
- */
-const rxMarkChar = new RegExp(MARK_CHAR, 'g')
-
-/**
  * Link all URLs within a string
  */
 function linkURLs(string: string): string {
@@ -109,33 +105,6 @@ function linkURLs(string: string): string {
  */
 function truncate(string: string, length: number): string {
   return string.length > length ? string.substring(0, length) + '…' : string
-}
-
-/**
- * Wraps words within string in special chars
- */
-function markWords(string: string, words: Array<string> | null): string {
-  if (words) {
-    for (const word of words) {
-      string = word.length ? string.replace(new RegExp('(' + word + ')', 'gi'), MARK_CHAR + '$1' + MARK_CHAR) : string
-    }
-  }
-
-  return string
-}
-
-/**
- * Strips all mark chars from the given string
- */
-function stripWordMarks(string: string): string {
-  return string.replace(rxMarkChar, '')
-}
-
-/**
- * Converts marks added by markWords() to HTML tags
- */
-function convertMarksToHtml(string: string): string {
-  return string.replace(new RegExp(MARK_CHAR + '(.+?)' + MARK_CHAR, 'gm'), '<mark>$1</mark>')
 }
 
 /**
