@@ -6,7 +6,7 @@ import { ogRules } from 'config/open-graph'
 import { findDuplicates } from 'utils/meta'
 import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
-import { getTemplate, htmlEncode, replacePlaceholders } from 'utils/templating'
+import { getTemplate, htmlEncode, render } from 'utils/templating'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -239,7 +239,7 @@ function refreshMetaList() {
       // test if this entry will be omitted by filter
       if (!filterString || keyMatches) {
         missingItems.push(
-          replacePlaceholders(
+          render(
             metaListItemTemplate,
             {
               idx: index.toString(),
@@ -249,7 +249,7 @@ function refreshMetaList() {
               value: '',
               valueLength: '0',
               attributes: '',
-              issues: replacePlaceholders(metaListItemErrorToggleTemplate, { idx: index.toString() }),
+              issues: render(metaListItemErrorToggleTemplate, { idx: index.toString() }),
             },
             false
           )
@@ -257,11 +257,11 @@ function refreshMetaList() {
       }
 
       issueTooltips.push(
-        replacePlaceholders(
+        render(
           metaListItemIssuesTemplate,
           {
             idx: index.toString(),
-            children: replacePlaceholders(metaListItemErrorTemplate, { message: issue.message }),
+            children: render(metaListItemErrorTemplate, { message: issue.message }),
           },
           false
         )
@@ -308,7 +308,7 @@ function refreshMetaList() {
       const classNames: Array<string> = []
       if (codeIssue?.severity === 'error' || ogIssue?.severity === 'error' || seoIssue?.severity === 'error') {
         classNames.push('error')
-        issueToggleButtonHtml = replacePlaceholders(metaListItemErrorToggleTemplate, { idx: index })
+        issueToggleButtonHtml = render(metaListItemErrorToggleTemplate, { idx: index })
       } else if (
         codeIssue?.severity === 'warning' ||
         ogIssue?.severity === 'warning' ||
@@ -316,7 +316,7 @@ function refreshMetaList() {
         hasDuplicate
       ) {
         classNames.push('warning')
-        issueToggleButtonHtml = replacePlaceholders(metaListItemWarningToggleTemplate, { idx: index })
+        issueToggleButtonHtml = render(metaListItemWarningToggleTemplate, { idx: index })
       }
       // enable word-break if value has a whitespace ratio worse than 1:25
       if ((valueText.match(/([\s]+)/g) || []).length < valueText.length / 25) {
@@ -325,7 +325,7 @@ function refreshMetaList() {
 
       let attributesHtml = ''
       for (const [name, value] of Object.entries(meta.attributes)) {
-        attributesHtml += replacePlaceholders(metaListItemAttributeTemplate, { name, value })
+        attributesHtml += render(metaListItemAttributeTemplate, { name, value })
       }
 
       let issues: Array<string> = []
@@ -333,15 +333,16 @@ function refreshMetaList() {
       // render code issues
       if (codeIssue) {
         issues.push(
-          replacePlaceholders(
-            codeIssue.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate,
-            { idx: index, rule: 'Code', message: codeIssue.message }
-          )
+          render(codeIssue.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate, {
+            idx: index,
+            rule: 'Code',
+            message: codeIssue.message,
+          })
         )
       }
       if (hasDuplicate) {
         issues.push(
-          replacePlaceholders(metaListItemWarningTemplate, {
+          render(metaListItemWarningTemplate, {
             idx: index,
             rule: 'Code',
             message: 'Element is duplicate',
@@ -352,7 +353,7 @@ function refreshMetaList() {
       // render og issues
       if (ogIssue) {
         issues.push(
-          replacePlaceholders(ogIssue.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate, {
+          render(ogIssue.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate, {
             idx: index,
             rule: 'OpenGraph',
             message: ogIssue.message,
@@ -363,10 +364,11 @@ function refreshMetaList() {
       // render seo issues
       if (seoIssue) {
         issues.push(
-          replacePlaceholders(
-            seoIssue?.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate,
-            { idx: index, rule: 'SEO', message: seoIssue.message }
-          )
+          render(seoIssue?.severity === 'error' ? metaListItemErrorTemplate : metaListItemWarningTemplate, {
+            idx: index,
+            rule: 'SEO',
+            message: seoIssue.message,
+          })
         )
       }
 
@@ -389,7 +391,7 @@ function refreshMetaList() {
       }
 
       currentItems.push(
-        replacePlaceholders(
+        render(
           metaListItemTemplate,
           {
             idx: index,
@@ -406,9 +408,7 @@ function refreshMetaList() {
       )
 
       if (issues.length) {
-        issueTooltips.push(
-          replacePlaceholders(metaListItemIssuesTemplate, { idx: index, children: issues.join('') }, false)
-        )
+        issueTooltips.push(render(metaListItemIssuesTemplate, { idx: index, children: issues.join('') }, false))
       }
     }
   }
@@ -416,13 +416,10 @@ function refreshMetaList() {
   const notificationItems: Array<string> = []
   issueSummary.forEach((issue) => {
     notificationItems.push(
-      replacePlaceholders(
-        issue.severity === 'error' ? notificationListItemErrorTemplate : notificationListItemWarningTemplate,
-        {
-          text: issue.message,
-          search: issue.search,
-        }
-      )
+      render(issue.severity === 'error' ? notificationListItemErrorTemplate : notificationListItemWarningTemplate, {
+        text: issue.message,
+        search: issue.search,
+      })
     )
   })
 
