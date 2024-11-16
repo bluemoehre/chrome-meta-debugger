@@ -531,13 +531,13 @@ document.addEventListener('DOMContentLoaded', () => {
   metaTable = document.getElementById('meta') as HTMLTableElement
   metaList = metaTable.querySelector('tbody') as HTMLElement
   metaListColumnWidth1 = document.querySelector('input[name="columnWidth-1"]') as HTMLInputElement
-  metaListItemTemplate = getTemplate('templateMetaItem') as string
-  metaListItemAttributeTemplate = getTemplate('templateMetaItemAttribute') as string
-  metaListItemIssuesTemplate = getTemplate('templateMetaItemIssues') as string
-  metaListItemErrorToggleTemplate = getTemplate('templateMetaItemErrorToggle') as string
-  metaListItemWarningToggleTemplate = getTemplate('templateMetaItemWarningToggle') as string
-  metaListItemErrorTemplate = getTemplate('templateMetaItemError') as string
-  metaListItemWarningTemplate = getTemplate('templateMetaItemWarning') as string
+  metaListItemTemplate = getTemplate('metaItemTemplate') as string
+  metaListItemAttributeTemplate = getTemplate('metaItemAttributeTemplate') as string
+  metaListItemIssuesTemplate = getTemplate('metaItemIssuesTemplate') as string
+  metaListItemErrorToggleTemplate = getTemplate('metaItemErrorToggleTemplate') as string
+  metaListItemWarningToggleTemplate = getTemplate('metaItemWarningToggleTemplate') as string
+  metaListItemErrorTemplate = getTemplate('metaItemErrorTemplate') as string
+  metaListItemWarningTemplate = getTemplate('metaItemWarningTemplate') as string
   filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
   filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
   filterReloadButton = filterForm.querySelector('button[name="reload"]') as HTMLButtonElement
@@ -548,8 +548,8 @@ document.addEventListener('DOMContentLoaded', () => {
   validateSeoToggle = filterForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
   issuesList = document.getElementById('issues') as HTMLElement
   notificationList = document.getElementById('notifications') as HTMLElement
-  notificationListItemErrorTemplate = getTemplate('templateNotificationItemError') as string
-  notificationListItemWarningTemplate = getTemplate('templateNotificationItemWarning') as string
+  notificationListItemErrorTemplate = getTemplate('notificationItemErrorTemplate') as string
+  notificationListItemWarningTemplate = getTemplate('notificationItemWarningTemplate') as string
   statusBar = document.getElementById('statusBar') as HTMLElement
   resultCount = document.getElementById('resultCount') as HTMLElement
   charCount = document.getElementById('charCount') as HTMLElement
