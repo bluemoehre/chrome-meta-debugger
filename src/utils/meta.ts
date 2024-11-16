@@ -1,6 +1,6 @@
 import { Meta, MetaItem, Tag } from 'types/Meta'
 import { IGNORED_DUPLICATE_KEYS } from 'config/defaults'
-import { tagMap } from 'config/meta'
+import { tagMap } from 'config/mappings'
 
 /**
  * Returns a unified list of metadata
