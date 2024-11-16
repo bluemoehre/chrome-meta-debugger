@@ -1,6 +1,6 @@
 import { Meta, MetaItem } from 'types/Meta'
 import { MetaReport, SeoReport } from 'types/Reports'
-import { MARK_CHAR, MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
+import { MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
 import { ogRules } from 'config/rules/open-graph'
 import { tagRules } from 'config/rules/tags'
 import { convertMarksToHtml, markWords, stripWordMarks } from 'utils/marker'
@@ -8,6 +8,7 @@ import { findDuplicates } from 'utils/meta'
 import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
 import { getTemplate, escapeHtml, render } from 'utils/templating'
+import { linkUrls, truncate } from 'utils/text'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -48,64 +49,6 @@ let statusTimeout: number
 let settingsDialog: HTMLDialogElement
 let settingsDialogOpenButton: HTMLButtonElement
 let settingsDialogCloseButton: HTMLButtonElement
-
-/**
- * Regular Expression for URLs
- * @see https://gist.github.com/dperini/729294
- */
-// prettier-ignore
-const rxUrl = new RegExp(
-  // protocol identifier
-  "(?:(?:[a-z-]+:)?//)" +
-  // user:pass authentication
-  "(?:\\S+(?::\\S*)?@)?" +
-  "(?:" +
-  // IP address exclusion
-  // private & local networks
-  "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
-  "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
-  "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
-  // IP address dotted notation octets
-  // excludes loopback network 0.0.0.0
-  // excludes reserved space >= 224.0.0.0
-  // excludes network & broadcast addresses
-  // (first & last IP address of each class)
-  "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-  "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-  "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-  "|" +
-  // host name
-  "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-  // domain name
-  "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-  // TLD identifier
-  "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-  // TLD may end with dot
-  "\\.?" +
-  ")" +
-  // port number
-  "(?::\\d{2,5})?" +
-  // resource path
-  "(?:[/?#][\\S" + MARK_CHAR + "]*)?"
-  ,
-  "ig"
-);
-
-/**
- * Link all URLs within a string
- */
-function linkURLs(string: string): string {
-  return string.replace(rxUrl, (match) => {
-    return '<a href="' + stripWordMarks(match) + '" target="_blank">' + match + '</a>'
-  })
-}
-
-/**
- * Truncates a string and adds ellipsis at the end
- */
-function truncate(string: string, length: number): string {
-  return string.length > length ? string.substring(0, length) + '…' : string
-}
 
 /**
  * Rebuilds the meta list
@@ -270,7 +213,7 @@ function refreshMetaList() {
         ? `<a href="${meta.valueLink}" target="_blank">${convertMarksToHtml(
             escapeHtml(markWords(valueText, valueMatches))
           )}</a>`
-        : convertMarksToHtml(linkURLs(escapeHtml(markWords(valueText, valueMatches))))
+        : convertMarksToHtml(linkUrls(escapeHtml(markWords(valueText, valueMatches))))
 
       // find highest severity
       let issueToggleButtonHtml = ''
