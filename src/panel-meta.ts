@@ -6,7 +6,7 @@ import { ogRules } from 'config/open-graph'
 import { findDuplicates } from 'utils/meta'
 import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
-import { getTemplate, htmlEncode, render } from 'utils/templating'
+import { getTemplate, escapeHtml, render } from 'utils/templating'
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
@@ -292,16 +292,16 @@ function refreshMetaList() {
       const codeIssue = codeIssues?.find((issue) => issue.meta === meta)
 
       // mark text matches and escape value
-      const keyHtml = convertMarksToHtml(htmlEncode(markWords(meta.key, keyMatches)))
+      const keyHtml = convertMarksToHtml(escapeHtml(markWords(meta.key, keyMatches)))
 
       // truncate value if it does not contain any filter match
       const valueText = valueMatches ? meta.value : truncate(meta.value, MAX_UNMATCHED_VALUE_LENGTH)
       // mark text matches, escape value and convert value to link if necessary
       const valueHtml = meta.valueLink
         ? `<a href="${meta.valueLink}" target="_blank">${convertMarksToHtml(
-            htmlEncode(markWords(valueText, valueMatches))
+            escapeHtml(markWords(valueText, valueMatches))
           )}</a>`
-        : convertMarksToHtml(linkURLs(htmlEncode(markWords(valueText, valueMatches))))
+        : convertMarksToHtml(linkURLs(escapeHtml(markWords(valueText, valueMatches))))
 
       // find highest severity
       let issueToggleButtonHtml = ''

@@ -14,7 +14,7 @@ export function getTemplate(id: string): string | null {
 /**
  * Returns a HTML escaped string
  */
-export function htmlEncode(text: string): string {
+export function escapeHtml(text: string): string {
   const fragment = document.createElement('div')
   fragment.appendChild(document.createTextNode(text))
   return fragment.innerHTML
@@ -31,7 +31,7 @@ export function render(html: string, data: { [key: string]: string }, escape: bo
     if (data.hasOwnProperty(placeholder)) {
       // escape regex special characters
       placeholder = placeholder.replace(/([.*+?\^=!:${}()|\[\]\/\\])/g, '\\$1')
-      replacement = escape ? htmlEncode(data[placeholder]).replaceAll('"', '&quot;') : data[placeholder]
+      replacement = escape ? escapeHtml(data[placeholder]).replaceAll('"', '&quot;') : data[placeholder]
       html = html.replace(new RegExp('__' + placeholder + '__', 'g'), replacement)
     }
   }
