@@ -197,6 +197,19 @@ footer {
   min-width: 248px;
   border-bottom: 1px solid var(--filter-border-color);
 
+  & > svg-icon {
+    position: absolute;
+    left: 2px;
+    top: 4px;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    fill: var(--control-color);
+    z-index: -1;
+  }
+  &:has(input:valid) > svg-icon {
+    fill: var(--control-active-color);
+  }
+
   input {
     padding-right: calc(var(--icon-size) + var(--gap));
     padding-left: calc(var(--icon-size) + var(--gap));
@@ -233,19 +246,6 @@ footer {
   }
   &:has(input:invalid) button[name='clear'] {
     display: none;
-  }
-
-  .icon {
-    position: absolute;
-    left: 2px;
-    top: 4px;
-    width: var(--icon-size);
-    height: var(--icon-size);
-    fill: var(--control-color);
-    z-index: -1;
-  }
-  &:has(input:valid) .icon {
-    fill: var(--control-active-color);
   }
 }
 
