@@ -118,7 +118,7 @@ footer {
     color: color-mix(in srgb, var(--control-color), transparent 30%);
   }
 
-  svg {
+  svg-icon {
     width: var(--icon-size);
     height: var(--icon-size);
     fill: currentColor;
@@ -160,7 +160,7 @@ footer {
     display: none;
   }
 
-  svg {
+  svg-icon {
     width: var(--icon-size);
     height: var(--icon-size);
     fill: currentColor;
@@ -225,7 +225,7 @@ footer {
     box-sizing: content-box;
     cursor: pointer;
 
-    svg {
+    svg-icon {
       fill: currentColor;
       width: 14px;
       height: 14px;
@@ -473,7 +473,7 @@ footer {
       color: inherit;
     }
 
-    svg {
+    svg-icon {
       width: var(--icon-size);
       height: var(--icon-size);
       fill: currentColor;
@@ -535,7 +535,7 @@ footer {
   }
 
   .severity {
-    svg {
+    svg-icon {
       display: inline-block;
       vertical-align: -0.25em;
       width: 1.25em;
@@ -654,7 +654,7 @@ input[name='columnWidth-1'] {
   padding: 0;
   list-style: none;
 
-  svg {
+  svg-icon {
     height: var(--icon-size);
     width: var(--icon-size);
     vertical-align: top;
@@ -718,7 +718,7 @@ input[name='columnWidth-1'] {
     border-radius: 100%;
     cursor: pointer;
 
-    svg {
+    svg-icon {
       width: var(--icon-size);
       height: var(--icon-size);
       fill: currentColor;

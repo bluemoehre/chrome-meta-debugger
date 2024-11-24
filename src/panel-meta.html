@@ -10,12 +10,7 @@
     <header>
       <form id="filters">
         <div class="searchInput">
-          <!-- icon_search.svg -->
-          <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
-            <path
-              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-            />
-          </svg>
+          <svg-icon>search</svg-icon>
           <input
             name="filterString"
             type="text"
@@ -25,105 +20,51 @@
             required
           />
           <button type="button" name="clear" title="Clear filter">
-            <!-- icon_clear.svg -->
-            <svg viewBox="0 0 24 24" width="24" height="24">
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
-            </svg>
+            <svg-icon>clear</svg-icon>
           </button>
         </div>
         <div class="options">
           <div class="group -flags">
             <label class="toggleButton">
               <input type="checkbox" name="searchKeys" checked />
-              <!-- icon_checkbox.svg -->
-              <!-- icon_checkbox-checked.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  class="_unchecked"
-                  d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-                />
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                  class="_checked"
-                  d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-                />
-              </svg>
+              <svg-icon class="_unchecked">checkbox</svg-icon>
+              <svg-icon class="_checked">checkbox-checked</svg-icon>
               <span>Keys</span>
             </label>
             <label class="toggleButton">
               <input type="checkbox" name="searchValues" />
-              <!-- icon_checkbox.svg -->
-              <!-- icon_checkbox-checked.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  class="_unchecked"
-                  d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
-                />
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path
-                  class="_checked"
-                  d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-                />
-              </svg>
+              <svg-icon class="_unchecked">checkbox</svg-icon>
+              <svg-icon class="_checked">checkbox-checked</svg-icon>
               <span>Values</span>
             </label>
           </div>
           <div class="group -options">
             <label class="toggleButton" title="SEO Validation (beta)">
               <input type="checkbox" name="validateSeo" />
-              <!-- icon_seo.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  d="M16.36,14C16.44,13.34 16.5,12.68 16.5,12C16.5,11.32 16.44,10.66 16.36,10H19.74C19.9,10.64 20,11.31 20,12C20,12.69 19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.34 9.5,12.68 9.5,12C9.5,11.32 9.56,10.65 9.66,10H14.34C14.43,10.65 14.5,11.32 14.5,12C14.5,12.68 14.43,13.34 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12C4,11.31 4.1,10.64 4.26,10H7.64C7.56,10.66 7.5,11.32 7.5,12C7.5,12.68 7.56,13.34 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"
-                />
-              </svg>
+              <svg-icon>seo</svg-icon>
               <span class="text">SEO</span>
               <i>beta</i>
             </label>
             <label class="toggleButton" title="Meta Validation (beta)">
               <input type="checkbox" name="validateMeta" />
-              <!-- icon_quality.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"
-                />
-              </svg>
+              <svg-icon>quality</svg-icon>
               <span class="text">Meta</span>
               <i>beta</i>
             </label>
             <label class="toggleButton" title="Code Validation">
               <input type="checkbox" name="validateCode" checked />
-              <!-- icon_bug.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  transform="scale(1.2)"
-                  transform-origin="50% 50%"
-                  d="M20,8H17.19C16.74,7.2 16.12,6.5 15.37,6L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.05,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6C7.87,6.5 7.26,7.21 6.81,8H4V10H6.09C6.03,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.03,15.67 6.09,16H4V18H6.81C8.47,20.87 12.14,21.84 15,20.18C15.91,19.66 16.67,18.9 17.19,18H20V16H17.91C17.97,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.97,10.33 17.91,10H20V8M16,15A4,4 0 0,1 12,19A4,4 0 0,1 8,15V11A4,4 0 0,1 12,7A4,4 0 0,1 16,11V15M14,10V12H10V10H14M10,14H14V16H10V14Z"
-                />
-              </svg>
+              <svg-icon>bug</svg-icon>
               <span class="text">Bugs</span>
             </label>
           </div>
           <div class="group -actions">
             <button class="actionButton" type="button" name="reload" title="Refresh List">
-              <!-- icon_reload.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"
-                />
-              </svg>
+              <svg-icon>reload</svg-icon>
             </button>
           </div>
           <div class="group -settings">
             <button class="actionButton" type="button" name="settings" title="Show Settings">
-              <!-- icon_settings.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"
-                />
-              </svg>
+              <svg-icon>settings</svg-icon>
             </button>
           </div>
         </div>
@@ -144,12 +85,7 @@
 
     <dialog id="settings">
       <button class="closeButton" type="button" name="close" title="Close Settings">
-        <!-- icon_clear.svg -->
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          />
-        </svg>
+        <svg-icon>clear</svg-icon>
       </button>
       <p>Nothing to see here yet.</p>
       <form method="dialog">
@@ -170,10 +106,7 @@
           <span class="key">__key__</span>
           <div class="info">
             <a class="action" href="#!inspect=__idx__" title="Inspect in Elements Panel">
-              <!-- icon_code.svg -->
-              <svg viewBox="0 0 24 24" width="24" height="24">
-                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-              </svg>
+              <svg-icon>code</svg-icon>
             </a>
             __issues__
           </div>
@@ -192,10 +125,7 @@
         style="anchor-name: --tooltip-__idx__"
         popovertarget="tooltip-__idx__"
       >
-        <!-- icon_warning.svg -->
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-        </svg>
+        <svg-icon>warning</svg-icon>
       </button>
     </template>
 
@@ -206,12 +136,7 @@
         style="anchor-name: --tooltip-__idx__"
         popovertarget="tooltip-__idx__"
       >
-        <!-- icon_error.svg -->
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <path
-            d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
-          />
-        </svg>
+        <svg-icon>error</svg-icon>
       </button>
     </template>
 
@@ -224,10 +149,7 @@
     <template id="metaItemWarningTemplate">
       <li class="issue -warning">
         <span class="severity">
-          <!-- icon_warning.svg -->
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-          </svg>
+          <svg-icon>warning</svg-icon>
         </span>
         <span class="rule">__rule__</span>
         <span class="message">__message__</span>
@@ -237,12 +159,7 @@
     <template id="metaItemErrorTemplate">
       <li class="issue -error">
         <span class="severity">
-          <!-- icon_error.svg -->
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path
-              d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
-            />
-          </svg>
+          <svg-icon>error</svg-icon>
         </span>
         <span class="rule">__rule__</span>
         <span class="message">__message__</span>
@@ -259,10 +176,7 @@
     <template id="notificationItemWarningTemplate">
       <li class="warning">
         <a href="#!searchKeys=__search__">
-          <!-- icon_warning.svg -->
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-          </svg>
+          <svg-icon>warning</svg-icon>
           <span class="text">__text__</span>
         </a>
       </li>
@@ -271,12 +185,7 @@
     <template id="notificationItemErrorTemplate">
       <li class="error">
         <a href="#!searchKeys=__search__">
-          <!-- icon_error.svg -->
-          <svg viewBox="0 0 24 24" width="24" height="24">
-            <path
-              d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"
-            />
-          </svg>
+          <svg-icon>error</svg-icon>
           <span class="text">__text__</span>
         </a>
       </li>

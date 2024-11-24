@@ -9,6 +9,10 @@ import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
 import { getTemplate, escapeHtml, render } from 'utils/templating'
 import { linkUrls, truncate } from 'utils/text'
+import { IconElement } from 'elements/icon'
+
+// define custom elements
+customElements.define('svg-icon', IconElement)
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
