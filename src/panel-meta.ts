@@ -23,10 +23,11 @@ let currentPort: chrome.runtime.Port | null = null
 /** List of the page's current meta information */
 let currentMeta: Meta = []
 
+let toolbar: HTMLElement
 let filterForm: HTMLFormElement
 let filterInput: HTMLInputElement
 let filterClearButton: HTMLButtonElement
-let filterReloadButton: HTMLButtonElement
+let reloadButton: HTMLButtonElement
 let filterFlagSearchKeys: HTMLInputElement
 let filterFlagSearchValues: HTMLInputElement
 let validateCodeToggle: HTMLInputElement
@@ -443,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add('theme-dark')
   }
 
+  toolbar = document.getElementById('toolbar') as HTMLElement
   filterForm = document.getElementById('filters') as HTMLFormElement
   metaTable = document.getElementById('meta') as HTMLTableElement
   metaList = metaTable.querySelector('tbody') as HTMLElement
@@ -456,12 +458,12 @@ document.addEventListener('DOMContentLoaded', () => {
   metaListItemWarningTemplate = getTemplate('metaItemWarningTemplate') as string
   filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
   filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
-  filterReloadButton = filterForm.querySelector('button[name="reload"]') as HTMLButtonElement
   filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
   filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
-  validateCodeToggle = filterForm.querySelector('input[name="validateCode"]') as HTMLInputElement
-  validateMetaToggle = filterForm.querySelector('input[name="validateMeta"]') as HTMLInputElement
-  validateSeoToggle = filterForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
+  reloadButton = toolbar.querySelector('button[name="reload"]') as HTMLButtonElement
+  validateCodeToggle = toolbar.querySelector('input[name="validateCode"]') as HTMLInputElement
+  validateMetaToggle = toolbar.querySelector('input[name="validateMeta"]') as HTMLInputElement
+  validateSeoToggle = toolbar.querySelector('input[name="validateSeo"]') as HTMLInputElement
   issuesList = document.getElementById('issues') as HTMLElement
   notificationList = document.getElementById('notifications') as HTMLElement
   notificationListItemErrorTemplate = getTemplate('notificationItemErrorTemplate') as string
@@ -487,10 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
     filterInput.value = ''
     refreshMetaList()
   })
-  filterReloadButton.addEventListener('click', () => {
-    filterReloadButton.classList.add('_animate')
+  reloadButton.addEventListener('click', () => {
+    reloadButton.classList.add('_animate')
     setTimeout(() => {
-      filterReloadButton.classList.remove('_animate')
+      reloadButton.classList.remove('_animate')
     }, 1000)
     currentPort?.postMessage({ action: MSG_ACTION_UPDATE })
   })

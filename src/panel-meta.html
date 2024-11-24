@@ -7,8 +7,8 @@
     <script type="module" src="panel-meta.js"></script>
   </head>
   <body>
-    <header>
-      <form id="filters">
+    <header id="toolbar">
+      <form id="filters" class="group">
         <div class="searchInput">
           <svg-icon>search</svg-icon>
           <input
@@ -24,51 +24,49 @@
           </button>
         </div>
         <div class="options">
-          <div class="group -flags">
-            <label class="toggleButton">
-              <input type="checkbox" name="searchKeys" checked />
-              <svg-icon class="_unchecked">checkbox</svg-icon>
-              <svg-icon class="_checked">checkbox-checked</svg-icon>
-              <span>Keys</span>
-            </label>
-            <label class="toggleButton">
-              <input type="checkbox" name="searchValues" />
-              <svg-icon class="_unchecked">checkbox</svg-icon>
-              <svg-icon class="_checked">checkbox-checked</svg-icon>
-              <span>Values</span>
-            </label>
-          </div>
-          <div class="group -options">
-            <label class="toggleButton" title="SEO Validation (beta)">
-              <input type="checkbox" name="validateSeo" />
-              <svg-icon>seo</svg-icon>
-              <span class="text">SEO</span>
-              <i>beta</i>
-            </label>
-            <label class="toggleButton" title="Meta Validation (beta)">
-              <input type="checkbox" name="validateMeta" />
-              <svg-icon>quality</svg-icon>
-              <span class="text">Meta</span>
-              <i>beta</i>
-            </label>
-            <label class="toggleButton" title="Code Validation">
-              <input type="checkbox" name="validateCode" checked />
-              <svg-icon>bug</svg-icon>
-              <span class="text">Bugs</span>
-            </label>
-          </div>
-          <div class="group -actions">
-            <button class="actionButton" type="button" name="reload" title="Refresh List">
-              <svg-icon>reload</svg-icon>
-            </button>
-          </div>
-          <div class="group -settings">
-            <button class="actionButton" type="button" name="settings" title="Show Settings">
-              <svg-icon>settings</svg-icon>
-            </button>
-          </div>
+          <label class="toggleButton">
+            <input type="checkbox" name="searchKeys" checked />
+            <svg-icon class="_unchecked">checkbox</svg-icon>
+            <svg-icon class="_checked">checkbox-checked</svg-icon>
+            <span>Keys</span>
+          </label>
+          <label class="toggleButton">
+            <input type="checkbox" name="searchValues" />
+            <svg-icon class="_unchecked">checkbox</svg-icon>
+            <svg-icon class="_checked">checkbox-checked</svg-icon>
+            <span>Values</span>
+          </label>
         </div>
       </form>
+      <div id="validators" class="group -options">
+        <label class="toggleButton" title="SEO Validation (beta)">
+          <input type="checkbox" name="validateSeo" />
+          <svg-icon>seo</svg-icon>
+          <span class="text">SEO</span>
+          <i>beta</i>
+        </label>
+        <label class="toggleButton" title="Meta Validation (beta)">
+          <input type="checkbox" name="validateMeta" />
+          <svg-icon>quality</svg-icon>
+          <span class="text">Meta</span>
+          <i>beta</i>
+        </label>
+        <label class="toggleButton" title="Code Validation">
+          <input type="checkbox" name="validateCode" checked />
+          <svg-icon>bug</svg-icon>
+          <span class="text">Bugs</span>
+        </label>
+      </div>
+      <div class="group -actions">
+        <button class="actionButton" type="button" name="reload" title="Refresh List">
+          <svg-icon>reload</svg-icon>
+        </button>
+      </div>
+      <div class="group -settings">
+        <button class="actionButton" type="button" name="settings" title="Show Settings">
+          <svg-icon>settings</svg-icon>
+        </button>
+      </div>
     </header>
 
     <main>

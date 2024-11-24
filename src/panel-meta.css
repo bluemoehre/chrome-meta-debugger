@@ -249,7 +249,7 @@ footer {
   }
 }
 
-#filters {
+#toolbar {
   display: flex;
   gap: 4px;
   align-items: center;
@@ -259,56 +259,58 @@ footer {
   /* border-bottom: 1px solid var(--status-border-color); */
   filter: drop-shadow(0 0 5px var(--filter-shadow-color));
 
+  .group {
+    display: flex;
+
+    &.-flags {
+    }
+
+    &.-options {
+      position: relative;
+      padding: 0 0 0 10px;
+      margin-right: auto;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 5px;
+        bottom: 2px;
+        border-left: 1px solid var(--filter-border-color);
+      }
+
+      @media (max-width: 650px) {
+        .toggleButton .text {
+          display: none;
+        }
+      }
+    }
+
+    &.-actions {
+    }
+
+    &.-settings {
+      position: relative;
+      padding: 0 0 0 10px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 5px;
+        bottom: 2px;
+        border-left: 1px solid var(--filter-border-color);
+      }
+    }
+  }
+}
+
+#filters {
   .options {
     display: flex;
     flex: auto;
     align-items: center;
     justify-content: space-between;
-
-    .group {
-      display: flex;
-
-      &.-flags {
-      }
-
-      &.-options {
-        position: relative;
-        padding: 0 0 0 10px;
-        margin-right: auto;
-
-        &::before {
-          content: '';
-          position: absolute;
-          top: 2px;
-          left: 5px;
-          bottom: 2px;
-          border-left: 1px solid var(--filter-border-color);
-        }
-
-        @media (max-width: 650px) {
-          .toggleButton .text {
-            display: none;
-          }
-        }
-      }
-
-      &.-actions {
-      }
-
-      &.-settings {
-        position: relative;
-        padding: 0 0 0 10px;
-
-        &::before {
-          content: '';
-          position: absolute;
-          top: 2px;
-          left: 5px;
-          bottom: 2px;
-          border-left: 1px solid var(--filter-border-color);
-        }
-      }
-    }
   }
 }
 
