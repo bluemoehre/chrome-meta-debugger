@@ -5,7 +5,7 @@
   "description": "This Google Chrome extension simplifies the daily work with webpage meta data. It allows you to see all these information at a glance, nicely grouped and in real time within your DevTools.",
   "scripts": {
     "test": "vitest",
-    "build": "rm -r ./dist; esbuild ./src/*.ts --bundle --outdir=./dist/ && cp ./src/*.{html,css,json} ./dist/ && cp -R ./src/{fonts,img,theme} ./dist/"
+    "build": "rm -r ./dist; esbuild ./src/*.ts --bundle --outdir=./dist/ && cp ./src/*.{html,css,json} ./dist/ && cp -R ./src/{fonts,icons,img,theme} ./dist/"
   },
   "repository": {
     "type": "git",

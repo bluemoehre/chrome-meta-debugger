@@ -15,7 +15,7 @@ export class IconElement extends HTMLElement {
   async loadIcon(name: string) {
     try {
       if (!name) throw new Error(`Icon name is required`)
-      const response = await fetch(`img/icon_${name}.svg`)
+      const response = await fetch(`/icons/${name}.svg`)
       if (!response.ok) throw new Error(`Failed to fetch icon: ${name}`)
       const svgContent = await response.text()
       this.render(svgContent)
