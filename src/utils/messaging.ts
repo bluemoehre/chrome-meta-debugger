@@ -1,3 +1,4 @@
+import { Message } from 'types/Message'
 import { PORT_NAME } from 'config/defaults'
 
 /** Port to communicate with the devtools panel */
@@ -25,7 +26,7 @@ export function connect(tabId: number): chrome.runtime.Port {
 /**
  * Returns a chainable callback for connecting the handler to a port.
  */
-export function bind(handler: (message: any, port: chrome.runtime.Port) => void) {
+export function bind(handler: (message: Message, port: chrome.runtime.Port) => void) {
   return (port: chrome.runtime.Port) => port.onMessage.addListener(handler)
 }
 
@@ -33,7 +34,7 @@ export function bind(handler: (message: any, port: chrome.runtime.Port) => void)
  * Sends a message to the connected tab
  * @throws Error if not connected
  */
-export function sendMessage(message: any, port = currentPort) {
+export function sendMessage(message: Message, port = currentPort) {
   if (!port) throw new Error('Not connected to tab.')
   port.postMessage(message)
 }
@@ -42,7 +43,7 @@ export function sendMessage(message: any, port = currentPort) {
  * Registers a handler that receives messages from the connected tab
  * @throws Error if not connected
  */
-export function receiveMessage(handler: (message: any, port: chrome.runtime.Port) => void, port = currentPort) {
+export function receiveMessage(handler: (message: Message, port: chrome.runtime.Port) => void, port = currentPort) {
   if (!port) throw new Error('Not connected to tab.')
   port.onMessage.addListener(handler)
 }

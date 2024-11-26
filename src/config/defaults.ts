@@ -1,12 +1,6 @@
 /** Name of the messaging port for identification */
 export const PORT_NAME = 'devtools.panel.meta'
 
-/** Message action key for errors */
-export const MSG_ACTION_ERROR = 'error'
-
-/** Message action key to request updates */
-export const MSG_ACTION_UPDATE = 'update'
-
 /** Special char for marking string parts (U+FEFF - zero width no-break space) */
 export const MARK_CHAR = '\uFEFF'
 

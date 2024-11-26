@@ -1,5 +1,5 @@
 import { Message } from 'types/Message'
-import { MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
+import { PORT_NAME } from 'config/defaults'
 import { getMeta } from 'utils/meta'
 
 declare global {
@@ -20,18 +20,18 @@ let currentObserver: MutationObserver | null = null
 function handleMutation(mutations: MutationRecord[], observer: MutationObserver): void {
   // console.log('DevTools:Meta', 'DOM mutation detected')
   if (currentPort) {
-    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getMeta(document.head) })
+    sendMessage(currentPort, { type: 'data', data: getMeta(document.head) })
   }
 }
 
 /**
  * Message handler for incoming messages from devtools panel
  **/
-function handleMessage(message: any, port: chrome.runtime.Port): void {
+function handleMessage(message: Message, port: chrome.runtime.Port): void {
   // console.log('DevTools:Meta', 'received message', { message, port: port.name, sender: port.sender })
-  switch (message.action) {
-    case MSG_ACTION_UPDATE:
-      sendMessage(port, { action: MSG_ACTION_UPDATE, data: getMeta(document.head) })
+  switch (message.type) {
+    case 'refresh':
+      sendMessage(port, { type: 'data', data: getMeta(document.head) })
       break
     default:
     // console.error('DevTools:Meta', 'unknown action "' + message.action + '" in message')
@@ -91,7 +91,7 @@ function init(): void {
     })
 
     // initially send the current data
-    sendMessage(currentPort, { action: MSG_ACTION_UPDATE, data: getMeta(document.head) })
+    sendMessage(currentPort, { type: 'data', data: getMeta(document.head) })
   })
 
   // when document is fully loaded start monitoring the HEAD

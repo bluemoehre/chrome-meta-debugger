@@ -1,6 +1,7 @@
+import { Message } from 'types/Message'
 import { Meta, MetaItem } from 'types/Meta'
 import { MetaReport, SeoReport } from 'types/Reports'
-import { MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE } from 'config/defaults'
+import { MAX_UNMATCHED_VALUE_LENGTH } from 'config/defaults'
 import { ogRules } from 'config/rules/open-graph'
 import { tagRules } from 'config/rules/tags'
 import { getInspectedTabId, injectDevtools, inspectHeadElement } from 'utils/devtools'
@@ -411,11 +412,11 @@ function updateColumnWidthInputs() {
 /**
  * Processes messages from the browser tab
  */
-function handleMessage(message: any, port: chrome.runtime.Port) {
+function handleMessage(message: Message, port: chrome.runtime.Port) {
   console.log('received message', { message, port })
 
-  switch (message.action) {
-    // case 'refresh':
+  switch (message.type) {
+    // case 'init':
     //   clearTimeout(statusTimeout)
     //   statusTimeout = setTimeout(() => {
     //     document.body.setAttribute('data-message', 'Waiting for metadata …')
@@ -423,15 +424,15 @@ function handleMessage(message: any, port: chrome.runtime.Port) {
     //       document.body.setAttribute('data-message', 'Timeout while getting metadata. A page reload may help.')
     //     }, 3000)
     //   }, 50)
-    //   sendMessage({ action: ACTION_UPDATE })
+    //   sendMessage({ action: 'refresh' })
     //   break
-    case MSG_ACTION_UPDATE:
+    case 'data':
       clearTimeout(statusTimeout)
       document.body.removeAttribute('data-message')
       currentMeta = message.data
       refreshMetaList()
       break
-    case MSG_ACTION_ERROR:
+    case 'error':
       clearTimeout(statusTimeout)
       document.body.setAttribute('data-message', message.error)
       break
@@ -454,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       reloadButton.classList.remove('_animate')
     }, 1000)
-    sendMessage({ action: MSG_ACTION_UPDATE })
+    sendMessage({ type: 'refresh' })
   })
 
   filterForm.addEventListener('reset', () => {
