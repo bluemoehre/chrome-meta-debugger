@@ -57,6 +57,50 @@ let settingsDialogOpenButton: HTMLButtonElement
 let settingsDialogCloseButton: HTMLButtonElement
 
 /**
+ * Assigns all required HTML elements to the corresponding variables
+ */
+function initElements() {
+  toolbar = document.getElementById('toolbar') as HTMLElement
+  reloadButton = toolbar.querySelector('button[name="reload"]') as HTMLButtonElement
+
+  filterForm = document.getElementById('filter') as HTMLFormElement
+  filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
+  filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
+  filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
+  filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
+
+  validationForm = document.getElementById('validation') as HTMLFormElement
+  validateCodeToggle = validationForm.querySelector('input[name="validateCode"]') as HTMLInputElement
+  validateMetaToggle = validationForm.querySelector('input[name="validateMeta"]') as HTMLInputElement
+  validateSeoToggle = validationForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
+
+  metaTable = document.getElementById('meta') as HTMLTableElement
+  metaList = metaTable.querySelector('tbody') as HTMLElement
+  metaListColumnWidth1 = document.querySelector('input[name="columnWidth-1"]') as HTMLInputElement
+  metaListItemTemplate = getTemplate('metaItemTemplate') as string
+  metaListItemAttributeTemplate = getTemplate('metaItemAttributeTemplate') as string
+  metaListItemIssuesTemplate = getTemplate('metaItemIssuesTemplate') as string
+  metaListItemErrorToggleTemplate = getTemplate('metaItemErrorToggleTemplate') as string
+  metaListItemWarningToggleTemplate = getTemplate('metaItemWarningToggleTemplate') as string
+  metaListItemErrorTemplate = getTemplate('metaItemErrorTemplate') as string
+  metaListItemWarningTemplate = getTemplate('metaItemWarningTemplate') as string
+
+  issuesList = document.getElementById('issues') as HTMLElement
+
+  notificationList = document.getElementById('notifications') as HTMLElement
+  notificationListItemErrorTemplate = getTemplate('notificationItemErrorTemplate') as string
+  notificationListItemWarningTemplate = getTemplate('notificationItemWarningTemplate') as string
+
+  statusBar = document.getElementById('statusBar') as HTMLElement
+  resultCount = document.getElementById('resultCount') as HTMLElement
+  charCount = document.getElementById('charCount') as HTMLElement
+
+  settingsDialog = document.getElementById('settings') as HTMLDialogElement
+  settingsDialogOpenButton = document.querySelector('button[name="settings"]') as HTMLButtonElement
+  settingsDialogCloseButton = settingsDialog.querySelector('button[name="close"]') as HTMLButtonElement
+}
+
+/**
  * Rebuilds the meta list
  */
 function refreshMetaList() {
@@ -445,44 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add('theme-dark')
   }
 
-  toolbar = document.getElementById('toolbar') as HTMLElement
-  reloadButton = toolbar.querySelector('button[name="reload"]') as HTMLButtonElement
-
-  filterForm = document.getElementById('filter') as HTMLFormElement
-  filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
-  filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
-  filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
-  filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
-
-  validationForm = document.getElementById('validation') as HTMLFormElement
-  validateCodeToggle = validationForm.querySelector('input[name="validateCode"]') as HTMLInputElement
-  validateMetaToggle = validationForm.querySelector('input[name="validateMeta"]') as HTMLInputElement
-  validateSeoToggle = validationForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
-
-  metaTable = document.getElementById('meta') as HTMLTableElement
-  metaList = metaTable.querySelector('tbody') as HTMLElement
-  metaListColumnWidth1 = document.querySelector('input[name="columnWidth-1"]') as HTMLInputElement
-  metaListItemTemplate = getTemplate('metaItemTemplate') as string
-  metaListItemAttributeTemplate = getTemplate('metaItemAttributeTemplate') as string
-  metaListItemIssuesTemplate = getTemplate('metaItemIssuesTemplate') as string
-  metaListItemErrorToggleTemplate = getTemplate('metaItemErrorToggleTemplate') as string
-  metaListItemWarningToggleTemplate = getTemplate('metaItemWarningToggleTemplate') as string
-  metaListItemErrorTemplate = getTemplate('metaItemErrorTemplate') as string
-  metaListItemWarningTemplate = getTemplate('metaItemWarningTemplate') as string
-
-  issuesList = document.getElementById('issues') as HTMLElement
-
-  notificationList = document.getElementById('notifications') as HTMLElement
-  notificationListItemErrorTemplate = getTemplate('notificationItemErrorTemplate') as string
-  notificationListItemWarningTemplate = getTemplate('notificationItemWarningTemplate') as string
-
-  statusBar = document.getElementById('statusBar') as HTMLElement
-  resultCount = document.getElementById('resultCount') as HTMLElement
-  charCount = document.getElementById('charCount') as HTMLElement
-
-  settingsDialog = document.getElementById('settings') as HTMLDialogElement
-  settingsDialogOpenButton = document.querySelector('button[name="settings"]') as HTMLButtonElement
-  settingsDialogCloseButton = settingsDialog.querySelector('button[name="close"]') as HTMLButtonElement
+  initElements()
 
   filterForm.addEventListener('reset', () => {
     setTimeout(() => {
