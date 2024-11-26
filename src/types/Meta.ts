@@ -1,6 +1,9 @@
 /** HTML elements which are allowed in the document's head */
 export type Tag = 'title' | 'meta' | 'base' | 'link' | 'style' | 'script' | 'noscript'
 
+/** Index position of an element */
+export type TagIndex = number
+
 /** Map of head elements and their corresponding attribute handling */
 export type TagMap = { [tagName: string]: TagAttributeConfig[] }
 

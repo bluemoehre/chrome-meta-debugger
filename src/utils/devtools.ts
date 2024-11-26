@@ -1,8 +1,7 @@
+import { TagIndex } from 'types/Meta'
+
 /** ID of a tab */
 export type TabID = number
-
-/** Index position of an element */
-export type TagIndex = number
 
 /**
  * Returns the tab ID for the current DevTools session
