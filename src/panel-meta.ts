@@ -27,12 +27,13 @@ let toolbar: HTMLElement
 let filterForm: HTMLFormElement
 let filterInput: HTMLInputElement
 let filterClearButton: HTMLButtonElement
-let reloadButton: HTMLButtonElement
 let filterFlagSearchKeys: HTMLInputElement
 let filterFlagSearchValues: HTMLInputElement
+let validationForm: HTMLFormElement
 let validateCodeToggle: HTMLInputElement
 let validateMetaToggle: HTMLInputElement
 let validateSeoToggle: HTMLInputElement
+let reloadButton: HTMLButtonElement
 let metaTable: HTMLTableElement
 let metaList: HTMLElement
 let metaListColumnWidth1: HTMLInputElement
@@ -445,7 +446,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   toolbar = document.getElementById('toolbar') as HTMLElement
-  filterForm = document.getElementById('filters') as HTMLFormElement
+  reloadButton = toolbar.querySelector('button[name="reload"]') as HTMLButtonElement
+
+  filterForm = document.getElementById('filter') as HTMLFormElement
+  filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
+  filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
+  filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
+  filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
+
+  validationForm = document.getElementById('validation') as HTMLFormElement
+  validateCodeToggle = validationForm.querySelector('input[name="validateCode"]') as HTMLInputElement
+  validateMetaToggle = validationForm.querySelector('input[name="validateMeta"]') as HTMLInputElement
+  validateSeoToggle = validationForm.querySelector('input[name="validateSeo"]') as HTMLInputElement
+
   metaTable = document.getElementById('meta') as HTMLTableElement
   metaList = metaTable.querySelector('tbody') as HTMLElement
   metaListColumnWidth1 = document.querySelector('input[name="columnWidth-1"]') as HTMLInputElement
@@ -456,21 +469,17 @@ document.addEventListener('DOMContentLoaded', () => {
   metaListItemWarningToggleTemplate = getTemplate('metaItemWarningToggleTemplate') as string
   metaListItemErrorTemplate = getTemplate('metaItemErrorTemplate') as string
   metaListItemWarningTemplate = getTemplate('metaItemWarningTemplate') as string
-  filterInput = filterForm.querySelector('input[name="filterString"]') as HTMLInputElement
-  filterClearButton = filterForm.querySelector('button[name="clear"]') as HTMLButtonElement
-  filterFlagSearchKeys = filterForm.querySelector('input[name="searchKeys"]') as HTMLInputElement
-  filterFlagSearchValues = filterForm.querySelector('input[name="searchValues"]') as HTMLInputElement
-  reloadButton = toolbar.querySelector('button[name="reload"]') as HTMLButtonElement
-  validateCodeToggle = toolbar.querySelector('input[name="validateCode"]') as HTMLInputElement
-  validateMetaToggle = toolbar.querySelector('input[name="validateMeta"]') as HTMLInputElement
-  validateSeoToggle = toolbar.querySelector('input[name="validateSeo"]') as HTMLInputElement
+
   issuesList = document.getElementById('issues') as HTMLElement
+
   notificationList = document.getElementById('notifications') as HTMLElement
   notificationListItemErrorTemplate = getTemplate('notificationItemErrorTemplate') as string
   notificationListItemWarningTemplate = getTemplate('notificationItemWarningTemplate') as string
+
   statusBar = document.getElementById('statusBar') as HTMLElement
   resultCount = document.getElementById('resultCount') as HTMLElement
   charCount = document.getElementById('charCount') as HTMLElement
+
   settingsDialog = document.getElementById('settings') as HTMLDialogElement
   settingsDialogOpenButton = document.querySelector('button[name="settings"]') as HTMLButtonElement
   settingsDialogCloseButton = settingsDialog.querySelector('button[name="close"]') as HTMLButtonElement
@@ -489,6 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
     filterInput.value = ''
     refreshMetaList()
   })
+
   reloadButton.addEventListener('click', () => {
     reloadButton.classList.add('_animate')
     setTimeout(() => {

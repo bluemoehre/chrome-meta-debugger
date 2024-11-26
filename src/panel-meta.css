@@ -305,7 +305,7 @@ footer {
   }
 }
 
-#filters {
+#filter {
   .options {
     display: flex;
     flex: auto;
