@@ -491,6 +491,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initElements()
 
+  reloadButton.addEventListener('click', () => {
+    reloadButton.classList.add('_animate')
+    setTimeout(() => {
+      reloadButton.classList.remove('_animate')
+    }, 1000)
+    currentPort?.postMessage({ action: MSG_ACTION_UPDATE })
+  })
+
   filterForm.addEventListener('reset', () => {
     setTimeout(() => {
       refreshMetaList()
@@ -506,17 +514,31 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshMetaList()
   })
 
-  reloadButton.addEventListener('click', () => {
-    reloadButton.classList.add('_animate')
-    setTimeout(() => {
-      reloadButton.classList.remove('_animate')
-    }, 1000)
-    currentPort?.postMessage({ action: MSG_ACTION_UPDATE })
-  })
-
   validateCodeToggle.addEventListener('change', refreshMetaList)
   validateMetaToggle.addEventListener('change', refreshMetaList)
   validateSeoToggle.addEventListener('change', refreshMetaList)
+
+  metaList.addEventListener('mouseover', (evt) => {
+    const el = evt.target as HTMLElement
+    if (el.nodeName === 'TH' || el.nodeName === 'TD') {
+      const valueLength = el.parentElement?.dataset.length
+      charCount.textContent = valueLength ? `${valueLength} chars` : null
+    }
+  })
+
+  metaList.addEventListener('mouseleave', () => {
+    charCount.textContent = null
+  })
+
+  metaListColumnWidth1.addEventListener('input', () => {
+    metaTable.querySelector('col[name="key"]')?.setAttribute('width', metaListColumnWidth1.value + '%')
+  })
+  metaListColumnWidth1.addEventListener('change', () => {
+    updateColumnWidthInputs()
+  })
+
+  settingsDialogOpenButton.addEventListener('click', () => settingsDialog.showModal())
+  settingsDialogCloseButton.addEventListener('click', () => settingsDialog.close())
 
   document.addEventListener('click', (evt) => {
     const link = (evt.target as HTMLElement).closest('a')
@@ -541,28 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   })
-
-  metaList.addEventListener('mouseover', (evt) => {
-    const el = evt.target as HTMLElement
-    if (el.nodeName === 'TH' || el.nodeName === 'TD') {
-      const valueLength = el.parentElement?.dataset.length
-      charCount.textContent = valueLength ? `${valueLength} chars` : null
-    }
-  })
-
-  metaList.addEventListener('mouseleave', () => {
-    charCount.textContent = null
-  })
-
-  metaListColumnWidth1.addEventListener('input', () => {
-    metaTable.querySelector('col[name="key"]')?.setAttribute('width', metaListColumnWidth1.value + '%')
-  })
-  metaListColumnWidth1.addEventListener('change', () => {
-    updateColumnWidthInputs()
-  })
-
-  settingsDialogOpenButton.addEventListener('click', () => settingsDialog.showModal())
-  settingsDialogCloseButton.addEventListener('click', () => settingsDialog.close())
 })
 
 // automatically focus filter when user starts typing
