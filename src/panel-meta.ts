@@ -3,6 +3,7 @@ import { MetaReport, SeoReport } from 'types/Reports'
 import { MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE } from 'config/defaults'
 import { ogRules } from 'config/rules/open-graph'
 import { tagRules } from 'config/rules/tags'
+import { getInspectedTabId, injectDevtools, inspectHeadElement } from 'utils/devtools'
 import { convertMarksToHtml, markWords, stripWordMarks } from 'utils/marker'
 import { bind, connect, sendMessage } from 'utils/messaging'
 import { findDuplicates } from 'utils/meta'
@@ -15,8 +16,8 @@ import { IconElement } from 'elements/icon'
 // define custom elements
 customElements.define('svg-icon', IconElement)
 
-/** Tab ID for which the devtools was opened */
-let currentTabId: number = chrome.devtools.inspectedWindow.tabId
+/** Tab ID to which the current DevTools session is linked */
+let currentTabId = getInspectedTabId()
 
 /** List of the page's current meta information */
 let currentMeta: Meta = []
@@ -398,32 +399,6 @@ function refreshMetaList() {
 }
 
 /**
- * Inspect a HEAD element within the DevTools Elements panel
- * @param index - meta item index key
- */
-function inspectInElementsPanel(index: number) {
-  chrome.devtools.inspectedWindow.eval(`inspect(document.head.children[${index}])`)
-}
-
-/**
- * Injects the devTools to given tab
- */
-function injectDevtools(tabId: number): Promise<number> {
-  return new Promise((resolve) => {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId },
-        files: ['content-script.js'],
-      },
-      function () {
-        console.log('content script initialized', { tabId })
-        resolve(tabId)
-      }
-    )
-  })
-}
-
-/**
  * Sync related inputs to current rendered with of columns
  */
 function updateColumnWidthInputs() {
@@ -530,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const value = matches?.[2]
       switch (action) {
         case 'inspect':
-          if (value) inspectInElementsPanel(parseInt(value))
+          if (value) inspectHeadElement(parseInt(value))
           else console.error('invalid link action value', value)
           break
         case 'searchKeys':
