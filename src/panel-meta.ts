@@ -1,9 +1,10 @@
 import { Meta, MetaItem } from 'types/Meta'
 import { MetaReport, SeoReport } from 'types/Reports'
-import { MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE, PORT_NAME } from 'config/defaults'
+import { MAX_UNMATCHED_VALUE_LENGTH, MSG_ACTION_ERROR, MSG_ACTION_UPDATE } from 'config/defaults'
 import { ogRules } from 'config/rules/open-graph'
 import { tagRules } from 'config/rules/tags'
 import { convertMarksToHtml, markWords, stripWordMarks } from 'utils/marker'
+import { bind, connect, sendMessage } from 'utils/messaging'
 import { findDuplicates } from 'utils/meta'
 import { validateMeta } from 'utils/rules'
 import { validateSeo } from 'utils/seo'
@@ -16,9 +17,6 @@ customElements.define('svg-icon', IconElement)
 
 /** Tab ID for which the devtools was opened */
 let currentTabId: number = chrome.devtools.inspectedWindow.tabId
-
-/** Port to communicate with the devtools panel */
-let currentPort: chrome.runtime.Port | null = null
 
 /** List of the page's current meta information */
 let currentMeta: Meta = []
@@ -426,53 +424,6 @@ function injectDevtools(tabId: number): Promise<number> {
 }
 
 /**
- * Connects to the content script in the related tab
- */
-function connect(tabId: number): chrome.runtime.Port {
-  currentPort = chrome.tabs.connect(tabId, { name: PORT_NAME })
-
-  // handle disconnect
-  currentPort.onDisconnect.addListener(() => {
-    if (chrome.runtime.lastError) {
-      console.info(chrome.runtime.lastError.message)
-    }
-    console.log('tab disconnected')
-    currentPort = null
-  })
-
-  // listen for messages
-  currentPort.onMessage.addListener((message, port) => {
-    console.log('received message', { message, port })
-    switch (message.action) {
-      // case 'refresh':
-      //   clearTimeout(statusTimeout)
-      //   statusTimeout = setTimeout(() => {
-      //     document.body.setAttribute('data-message', 'Waiting for metadata …')
-      //     statusTimeout = setTimeout(() => {
-      //       document.body.setAttribute('data-message', 'Timeout while getting metadata. A page reload may help.')
-      //     }, 3000)
-      //   }, 50)
-      //   port?.postMessage({ action: ACTION_UPDATE })
-      //   break
-      case MSG_ACTION_UPDATE:
-        clearTimeout(statusTimeout)
-        document.body.removeAttribute('data-message')
-        currentMeta = message.data
-        refreshMetaList()
-        break
-      case MSG_ACTION_ERROR:
-        clearTimeout(statusTimeout)
-        document.body.setAttribute('data-message', message.error)
-        break
-      default:
-        console.error('unknown action in message')
-    }
-  })
-
-  return currentPort
-}
-
-/**
  * Sync related inputs to current rendered with of columns
  */
 function updateColumnWidthInputs() {
@@ -480,6 +431,38 @@ function updateColumnWidthInputs() {
   const colRect = metaTable.querySelector('col')!.getBoundingClientRect()
   const value = (100 / tableRect.width) * (colRect.width + colRect.left / 2)
   metaListColumnWidth1.value = value.toString()
+}
+
+/**
+ * Processes messages from the browser tab
+ */
+function handleMessage(message: any, port: chrome.runtime.Port) {
+  console.log('received message', { message, port })
+
+  switch (message.action) {
+    // case 'refresh':
+    //   clearTimeout(statusTimeout)
+    //   statusTimeout = setTimeout(() => {
+    //     document.body.setAttribute('data-message', 'Waiting for metadata …')
+    //     statusTimeout = setTimeout(() => {
+    //       document.body.setAttribute('data-message', 'Timeout while getting metadata. A page reload may help.')
+    //     }, 3000)
+    //   }, 50)
+    //   sendMessage({ action: ACTION_UPDATE })
+    //   break
+    case MSG_ACTION_UPDATE:
+      clearTimeout(statusTimeout)
+      document.body.removeAttribute('data-message')
+      currentMeta = message.data
+      refreshMetaList()
+      break
+    case MSG_ACTION_ERROR:
+      clearTimeout(statusTimeout)
+      document.body.setAttribute('data-message', message.error)
+      break
+    default:
+      console.error('unknown action in message')
+  }
 }
 
 // load templates & select elements & bind event handlers
@@ -496,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       reloadButton.classList.remove('_animate')
     }, 1000)
-    currentPort?.postMessage({ action: MSG_ACTION_UPDATE })
+    sendMessage({ action: MSG_ACTION_UPDATE })
   })
 
   filterForm.addEventListener('reset', () => {
@@ -579,7 +562,7 @@ chrome.tabs.onUpdated.addListener((updatedTabId, changeInfo) => {
   if (changeInfo.status !== 'complete') return
 
   console.log('tab updated', { tabId: currentTabId, changeInfo })
-  injectDevtools(currentTabId).then(connect)
+  injectDevtools(currentTabId).then(connect).then(bind(handleMessage))
 })
 
-injectDevtools(currentTabId).then(connect)
+injectDevtools(currentTabId).then(connect).then(bind(handleMessage))
