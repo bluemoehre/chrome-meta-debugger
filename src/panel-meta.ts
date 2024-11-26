@@ -514,9 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshMetaList()
   })
 
-  validateCodeToggle.addEventListener('change', refreshMetaList)
-  validateMetaToggle.addEventListener('change', refreshMetaList)
-  validateSeoToggle.addEventListener('change', refreshMetaList)
+  validationForm.addEventListener('change', refreshMetaList)
 
   metaList.addEventListener('mouseover', (evt) => {
     const el = evt.target as HTMLElement
